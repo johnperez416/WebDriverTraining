@@ -2,6 +2,7 @@ package com.octopus;
 
 import org.junit.Test;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 
 import java.net.URISyntaxException;
 
@@ -37,7 +38,7 @@ public class WaitTest {
         }
     }
 
-    @Test
+    @Test(expected = WebDriverException.class)
     public void clickHiddenElement() throws URISyntaxException {
 
         final AutomatedBrowser automatedBrowser =
