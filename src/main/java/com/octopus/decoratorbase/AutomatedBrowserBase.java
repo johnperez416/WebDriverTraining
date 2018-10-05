@@ -2,17 +2,21 @@ package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class AutomatedBrowserBase implements AutomatedBrowser {
-    static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY
-            = new AutomatedBrowserFactory();
+import java.util.HashMap;
+import java.util.Map;
 
+public class AutomatedBrowserBase implements AutomatedBrowser {
+    static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
+    private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
 
     public AutomatedBrowserBase() {
+
     }
 
     public AutomatedBrowserBase(final AutomatedBrowser automatedBrowser) {
@@ -23,10 +27,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return automatedBrowser;
     }
 
+    @Given("^I set the following aliases:$")
+    public void setAliases(Map<String, String> aliases) {
+        this.aliases.putAll(aliases);
+    }
+
     @Given("^I open the browser \"([^\"]*)\"$")
     public void openBrowser(String browser) {
-        automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+        automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
         automatedBrowser.init();
     }
 
@@ -38,45 +46,27 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
     @Override
-    public void captureHarFile() {
+    public void setDefaultExplicitWaitTime(int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().captureHarFile();
+            getAutomatedBrowser().setDefaultExplicitWaitTime(waitTime);
         }
     }
 
     @Override
-    public void captureCompleteHarFile() {
+    public WebDriver getWebDriver() {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().captureCompleteHarFile();
+            return getAutomatedBrowser().getWebDriver();
         }
+
+        return null;
     }
 
     @Override
-    public void saveHarFile(final String file) {
+    public void setWebDriver(final WebDriver webDriver) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().saveHarFile(file);
-        }
-    }
-
-    @Override
-    public void blockRequestTo(final String url, final int responseCode) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().blockRequestTo(url, responseCode);
-        }
-    }
-
-    @Override
-    public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().alterResponseFrom(url, responseCode, responseBody);
-        }
-    }
-
-    @Override
-    public void maximizeWindow() {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().maximizeWindow();
+            getAutomatedBrowser().setWebDriver(webDriver);
         }
     }
 
@@ -87,21 +77,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
 
         return new DesiredCapabilities();
-    }
-
-    @Override
-    public WebDriver getWebDriver() {
-        if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getWebDriver();
-        }
-        return null;
-    }
-
-    @Override
-    public void setWebDriver(final WebDriver webDriver) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().setWebDriver(webDriver);
-        }
     }
 
     @Override
@@ -118,247 +93,449 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I open the URL \"([^\"]*)\"$")
     @Override
     public void goTo(String url) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().goTo(url);
+            getAutomatedBrowser().goTo(aliases.getOrDefault(url, url));
         }
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\"$")
     @Override
     public void clickElementWithId(final String id) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithId(id);
+            getAutomatedBrowser().clickElementWithId(aliases.getOrDefault(id, id));
         }
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void clickElementWithId(final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithId(id, waitTime);
+            getAutomatedBrowser().clickElementWithId(aliases.getOrDefault(id, id), waitTime);
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\"$")
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithId(optionText, id);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithId(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(id, id));
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithId(optionText, id, waitTime);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithId(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(id, id),
+                    waitTime);
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\" with the text \"([^\"]*)\"$")
     @Override
     public void populateElementWithId(final String id, final String text) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithId(id, text);
+            getAutomatedBrowser().populateElementWithId(
+                    aliases.getOrDefault(id, id),
+                    aliases.getOrDefault(text, text));
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\" with the text \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void populateElementWithId(final String id, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithId(id, text, waitTime);
+            getAutomatedBrowser().populateElementWithId(
+                    aliases.getOrDefault(id, id),
+                    aliases.getOrDefault(text, text),
+                    waitTime);
         }
     }
 
     @Override
     public String getTextFromElementWithId(final String id) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithId(id);
+            return getAutomatedBrowser().getTextFromElementWithId(aliases.getOrDefault(id, id));
         }
+
         return null;
     }
 
     @Override
     public String getTextFromElementWithId(final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithId(id, waitTime);
+            return getAutomatedBrowser().getTextFromElementWithId(aliases.getOrDefault(id, id), waitTime);
         }
+
         return null;
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\"$")
     @Override
     public void clickElementWithXPath(final String xpath) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithXPath(xpath);
+            getAutomatedBrowser().clickElementWithXPath(aliases.getOrDefault(xpath, xpath));
         }
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void clickElementWithXPath(final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithXPath(xpath, waitTime);
+            getAutomatedBrowser().clickElementWithXPath(aliases.getOrDefault(xpath, xpath), waitTime);
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\"$")
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(optionText, xpath);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(xpath, xpath));
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(optionText, xpath, waitTime);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(xpath, xpath),
+                    waitTime);
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\" with the text \"([^\"]*)\"$")
     @Override
-    public void populateElementWithXPath(final String xpath, final String
-            text) {
+    public void populateElementWithXPath(final String xpath, final String text) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithXPath(xpath, text);
+            getAutomatedBrowser().populateElementWithXPath(
+                    aliases.getOrDefault(xpath, xpath),
+                    aliases.getOrDefault(text, text));
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the xpath \"([^\"]*)\" with the text \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void populateElementWithXPath(final String xpath, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithXPath(xpath, text, waitTime);
+            getAutomatedBrowser().populateElementWithXPath(
+                    aliases.getOrDefault(xpath, xpath),
+                    aliases.getOrDefault(text, text),
+                    waitTime);
         }
     }
 
     @Override
     public String getTextFromElementWithXPath(final String xpath) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithXPath(xpath);
+            return getAutomatedBrowser().getTextFromElementWithXPath(aliases.getOrDefault(xpath, xpath));
         }
+
         return null;
     }
 
     @Override
     public String getTextFromElementWithXPath(final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithXPath(xpath,
-                    waitTime);
+            return getAutomatedBrowser().getTextFromElementWithXPath(aliases.getOrDefault(xpath, xpath), waitTime);
         }
+
         return null;
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\"$")
     @Override
     public void clickElementWithCSSSelector(final String cssSelector) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithCSSSelector(cssSelector);
+            getAutomatedBrowser().clickElementWithCSSSelector(aliases.getOrDefault(cssSelector, cssSelector));
         }
     }
 
+    @And("^I click the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
-    public void clickElementWithCSSSelector(final String cssSelector, final
-    int waitTime) {
+    public void clickElementWithCSSSelector(final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithCSSSelector(cssSelector, waitTime);
+            getAutomatedBrowser().clickElementWithCSSSelector(aliases.getOrDefault(cssSelector, cssSelector), waitTime);
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\"$")
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(optionText,
-                    cssSelector);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(cssSelector, cssSelector));
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(optionText,
-                    cssSelector, waitTime);
+            getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(cssSelector, cssSelector),
+                    waitTime);
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\" with the text \"([^\"]*)\"$")
     @Override
     public void populateElementWithCSSSelector(final String cssSelector, final String text) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithCSSSelector(cssSelector, text);
+            getAutomatedBrowser().populateElementWithCSSSelector(
+                    aliases.getOrDefault(cssSelector, cssSelector),
+                    aliases.getOrDefault(text, text));
         }
     }
 
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the css selector \"([^\"]*)\" with the text \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void populateElementWithCSSSelector(final String cssSelector, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElementWithCSSSelector(cssSelector, text, waitTime);
+            getAutomatedBrowser().populateElementWithCSSSelector(
+                    aliases.getOrDefault(cssSelector, cssSelector),
+                    aliases.getOrDefault(text, text),
+                    waitTime);
         }
     }
 
     @Override
     public String getTextFromElementWithCSSSelector(final String cssSelector) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithCSSSelector(cssSelector);
+            return getAutomatedBrowser().getTextFromElementWithCSSSelector(
+                    aliases.getOrDefault(cssSelector, cssSelector));
         }
+
         return null;
     }
 
     @Override
     public String getTextFromElementWithCSSSelector(final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithCSSSelector(cssSelector, waitTime);
+            return getAutomatedBrowser().getTextFromElementWithCSSSelector(
+                    aliases.getOrDefault(cssSelector, cssSelector),
+                    waitTime);
         }
+
+        return null;
+    }
+
+    @And("^I click the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\"$")
+    @Override
+    public void clickElementWithName(final String name) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementWithName(aliases.getOrDefault(name, name));
+        }
+    }
+
+    @And("^I click the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void clickElementWithName(final String name, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementWithName(aliases.getOrDefault(name, name), waitTime);
+        }
+    }
+
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\"$")
+    @Override
+    public void selectOptionByTextFromSelectWithName(final String optionText, final String name) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().selectOptionByTextFromSelectWithName(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(name, name));
+        }
+    }
+
+    @And("^I select the option \"([^\"]*)\" from the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void selectOptionByTextFromSelectWithName(final String optionText, final String name, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().selectOptionByTextFromSelectWithName(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(name, name),
+                    waitTime);
+        }
+    }
+
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\" with the text \"([^\"]*)\"$")
+    @Override
+    public void populateElementWithName(final String name, final String text) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().populateElementWithName(
+                    aliases.getOrDefault(name, name),
+                    aliases.getOrDefault(text, text));
+        }
+    }
+
+    @And("^I populate the \\w+(?:\\s+\\w+)* with the name \"([^\"]*)\" with the text \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void populateElementWithName(final String name, final String text, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().populateElementWithName(
+                    aliases.getOrDefault(name, name),
+                    aliases.getOrDefault(text, text),
+                    waitTime);
+        }
+    }
+
+    @Override
+    public String getTextFromElementWithName(final String name) {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getTextFromElementWithName(aliases.getOrDefault(name, name));
+        }
+
         return null;
     }
 
     @Override
+    public String getTextFromElementWithName(final String name, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getTextFromElementWithName(
+                    aliases.getOrDefault(name, name),
+                    waitTime);
+        }
+
+        return null;
+    }
+
+    @And("^I click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
     public void clickElement(final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(locator);
+            getAutomatedBrowser().clickElement(aliases.getOrDefault(locator, locator));
         }
     }
 
+    @And("^I click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void clickElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(locator, waitTime);
+            getAutomatedBrowser().clickElement(aliases.getOrDefault(locator, locator), waitTime);
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void selectOptionByTextFromSelect(final String optionText, final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(optionText, locator);
+            getAutomatedBrowser().selectOptionByTextFromSelect(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(locator, locator));
         }
     }
 
+    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void selectOptionByTextFromSelect(final String optionText, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(optionText, locator, waitTime);
+            getAutomatedBrowser().selectOptionByTextFromSelect(
+                    aliases.getOrDefault(optionText, optionText),
+                    aliases.getOrDefault(locator, locator),
+                    waitTime);
         }
     }
 
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with the text \"([^\"]*)\"$")
     @Override
     public void populateElement(final String locator, final String text) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElement(locator, text);
+            getAutomatedBrowser().populateElement(
+                    aliases.getOrDefault(locator, locator),
+                    aliases.getOrDefault(text, text));
         }
     }
 
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with the text \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void populateElement(final String locator, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElement(locator, text, waitTime);
+            getAutomatedBrowser().populateElement(
+                    aliases.getOrDefault(locator, locator),
+                    aliases.getOrDefault(text, text),
+                    waitTime);
         }
     }
 
     @Override
     public String getTextFromElement(final String locator) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElement(locator);
+            return getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator));
         }
+
         return null;
     }
 
     @Override
     public String getTextFromElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElement(locator, waitTime);
+            return getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator), waitTime);
         }
+
         return null;
+    }
+
+    @And("^I capture the HAR file$")
+    @Override
+    public void captureHarFile() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().captureHarFile();
+        }
+    }
+
+    @And("^I capture the complete HAR file$")
+    @Override
+    public void captureCompleteHarFile() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().captureCompleteHarFile();
+        }
+    }
+
+    @And("^I save the HAR file to \"([^\"]*)\"$")
+    @Override
+    public void saveHarFile(final String file) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().saveHarFile(aliases.getOrDefault(file, file));
+        }
+    }
+
+    @And("^I block the request to \"([^\"]*)\" returning the HTTP code \"\\d+\"$")
+    @Override
+    public void blockRequestTo(final String url, final int responseCode) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().blockRequestTo(
+                    aliases.getOrDefault(url, url),
+                    responseCode);
+        }
+    }
+
+    @And("^I alter the response fron \"([^\"]*)\" returning the HTTP code \"\\d+\" and the response body:$")
+    @Override
+    public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().alterResponseFrom(
+                    aliases.getOrDefault(url, url),
+                    responseCode,
+                    aliases.getOrDefault(responseBody, responseBody));
+        }
+    }
+
+    @And("^I maximize the window$")
+    @Override
+    public void maximizeWindow() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().maximizeWindow();
+        }
     }
 }
