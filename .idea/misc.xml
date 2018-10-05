@@ -8,6 +8,10 @@
       </list>
     </option>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/src/test/resources/com/octopus/ticketmonster2.feature" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/com/octopus/ticketmonster3.feature" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

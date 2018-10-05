@@ -11,10 +11,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
-
+    private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
     public WebDriverDecorator() {
+
+    }
+
+    @Override
+    public void setDefaultExplicitWaitTime(final int waitTime) {
+        defaultExplicitWaitTime = waitTime;
     }
 
     @Override
@@ -40,13 +46,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void maximizeWindow() {
-        webDriver.manage().window().maximize();
-    }
-
-    @Override
     public void clickElementWithId(final String id) {
-        webDriver.findElement(By.id(id)).click();
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.id(id)).click();
+        } else {
+            clickElementWithId(id, defaultExplicitWaitTime);
+        }
     }
 
     @Override
@@ -61,7 +66,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String selectId) {
-        new Select(webDriver.findElement(By.id(selectId))).selectByVisibleText(optionText);
+        if (defaultExplicitWaitTime <= 0) {
+            new Select(webDriver.findElement(By.id(selectId))).selectByVisibleText(optionText);
+        } else {
+            selectOptionByTextFromSelectWithId(optionText, selectId, defaultExplicitWaitTime);
+        }
     }
 
     @Override
@@ -76,12 +85,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithId(final String id, final String text) {
-        webDriver.findElement(By.id(id)).sendKeys(text);
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.id(id)).sendKeys(text);
+        } else {
+            populateElementWithId(id, text, defaultExplicitWaitTime);
+        }
     }
 
     @Override
-    public void populateElementWithId(final String id, final String text,
-                                      final int waitTime) {
+    public void populateElementWithId(final String id, final String text, final int waitTime) {
         if (waitTime <= 0) {
             populateElementWithId(id, text);
         } else {
@@ -92,12 +104,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithId(final String id) {
-        return webDriver.findElement(By.id(id)).getText();
+        if (defaultExplicitWaitTime <= 0) {
+            return webDriver.findElement(By.id(id)).getText();
+        } else {
+            return getTextFromElementWithId(id, defaultExplicitWaitTime);
+        }
     }
 
     @Override
-    public String getTextFromElementWithId(final String id, final int
-            waitTime) {
+    public String getTextFromElementWithId(final String id, final int waitTime) {
         if (waitTime <= 0) {
             return getTextFromElementWithId(id);
         } else {
@@ -108,7 +123,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithXPath(final String xpath) {
-        webDriver.findElement(By.xpath(xpath)).click();
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.xpath(xpath)).click();
+        } else {
+            clickElementWithXPath(xpath, defaultExplicitWaitTime);
+        }
     }
 
     @Override
@@ -123,12 +142,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath) {
-        new Select(webDriver.findElement(By.xpath(xpath))).selectByVisibleText(optionText);
+        if (defaultExplicitWaitTime <= 0) {
+            new Select(webDriver.findElement(By.xpath(xpath))).selectByVisibleText(optionText);
+        } else {
+            selectOptionByTextFromSelectWithXPath(optionText, xpath, defaultExplicitWaitTime);
+        }
     }
 
     @Override
-    public void selectOptionByTextFromSelectWithXPath(final String
-                                                              optionText, final String xpath, final int waitTime) {
+    public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath, final int waitTime) {
         if (waitTime <= 0) {
             selectOptionByTextFromSelectWithXPath(xpath, optionText);
         } else {
@@ -138,14 +160,16 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElementWithXPath(final String xpath, final String
-            text) {
-        webDriver.findElement(By.xpath(xpath)).sendKeys(text);
+    public void populateElementWithXPath(final String xpath, final String text) {
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.xpath(xpath)).sendKeys(text);
+        } else {
+            populateElementWithXPath(xpath, text, defaultExplicitWaitTime);
+        }
     }
 
     @Override
-    public void populateElementWithXPath(final String xpath, final String
-            text, final int waitTime) {
+    public void populateElementWithXPath(final String xpath, final String text, final int waitTime) {
         if (waitTime <= 0) {
             populateElementWithXPath(xpath, text);
         } else {
@@ -156,12 +180,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithXPath(final String xpath) {
-        return webDriver.findElement(By.xpath(xpath)).getText();
+        if (defaultExplicitWaitTime <= 0) {
+            return webDriver.findElement(By.xpath(xpath)).getText();
+        } else {
+            return getTextFromElementWithXPath(xpath, defaultExplicitWaitTime);
+        }
     }
 
     @Override
-    public String getTextFromElementWithXPath(final String xpath, final int
-            waitTime) {
+    public String getTextFromElementWithXPath(final String xpath, final int waitTime) {
         if (waitTime <= 0) {
             return getTextFromElementWithXPath(xpath);
         } else {
@@ -172,7 +199,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithCSSSelector(final String cssSelector) {
-        webDriver.findElement(By.cssSelector(cssSelector)).click();
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.cssSelector(cssSelector)).click();
+        } else {
+            clickElementWithCSSSelector(cssSelector, defaultExplicitWaitTime);
+        }
     }
 
     @Override
@@ -187,9 +218,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector) {
-        new
-                Select(webDriver.findElement(By.cssSelector(cssSelector))).selectByVisibleText(optionText);
+        if (defaultExplicitWaitTime <= 0) {
+            new Select(webDriver.findElement(By.cssSelector(cssSelector))).selectByVisibleText(optionText);
+        } else {
+            selectOptionByTextFromSelectWithCSSSelector(optionText, cssSelector);
+        }
     }
+
 
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String css, final int waitTime) {
@@ -202,9 +237,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElementWithCSSSelector(final String cssSelector,
-                                               final String text) {
-        webDriver.findElement(By.cssSelector(cssSelector)).sendKeys(text);
+    public void populateElementWithCSSSelector(final String cssSelector, final String text) {
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.cssSelector(cssSelector)).sendKeys(text);
+        } else {
+            populateElementWithCSSSelector(cssSelector, text);
+        }
     }
 
     @Override
@@ -219,7 +257,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithCSSSelector(final String cssSelector) {
-        return webDriver.findElement(By.cssSelector(cssSelector)).getText();
+        if (defaultExplicitWaitTime <= 0) {
+            return webDriver.findElement(By.cssSelector(cssSelector)).getText();
+        } else {
+            return getTextFromElementWithCSSSelector(cssSelector, defaultExplicitWaitTime);
+        }
     }
 
     @Override
@@ -233,8 +275,84 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void clickElementWithName(final String name) {
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.name(name)).click();
+        } else {
+            clickElementWithName(name, defaultExplicitWaitTime);
+        }
+    }
+
+    @Override
+    public void clickElementWithName(final String name, final int waitTime) {
+        if (waitTime <= 0) {
+            clickElementWithName(name);
+        } else {
+            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            wait.until(ExpectedConditions.elementToBeClickable((By.name(name)))).click();
+        }
+    }
+
+    @Override
+    public void selectOptionByTextFromSelectWithName(final String optionText, final String name) {
+        if (defaultExplicitWaitTime <= 0) {
+            new Select(webDriver.findElement(By.name(name))).selectByVisibleText(optionText);
+        } else {
+            selectOptionByTextFromSelectWithName(optionText, name, defaultExplicitWaitTime);
+        }
+    }
+
+    @Override
+    public void selectOptionByTextFromSelectWithName(final String optionText, final String name, final int waitTime) {
+        if (waitTime <= 0) {
+            selectOptionByTextFromSelectWithName(name, optionText);
+        } else {
+            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            new Select(wait.until(ExpectedConditions.elementToBeClickable((By.name(name))))).selectByVisibleText(optionText);
+        }
+    }
+
+    @Override
+    public void populateElementWithName(final String name, final String text) {
+        if (defaultExplicitWaitTime <= 0) {
+            webDriver.findElement(By.name(name)).sendKeys(text);
+        } else {
+            populateElementWithName(name, text, defaultExplicitWaitTime);
+        }
+    }
+
+    @Override
+    public void populateElementWithName(final String name, final String text, final int waitTime) {
+        if (waitTime <= 0) {
+            populateElementWithName(name, text);
+        } else {
+            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            wait.until(ExpectedConditions.elementToBeClickable((By.name(name)))).sendKeys(text);
+        }
+    }
+
+    @Override
+    public String getTextFromElementWithName(final String name) {
+        if (defaultExplicitWaitTime <= 0) {
+            return webDriver.findElement(By.name(name)).getText();
+        } else {
+            return getTextFromElementWithName(name, defaultExplicitWaitTime);
+        }
+    }
+
+    @Override
+    public String getTextFromElementWithName(final String name, final int waitTime) {
+        if (waitTime <= 0) {
+            return getTextFromElementWithName(name);
+        } else {
+            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            return wait.until(ExpectedConditions.presenceOfElementLocated((By.name(name)))).getText();
+        }
+    }
+
+    @Override
     public void clickElement(final String locator) {
-        clickElement(locator, 0);
+        clickElement(locator, defaultExplicitWaitTime);
     }
 
     @Override
@@ -243,13 +361,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by))
-                .click();
+                by -> ExpectedConditions.elementToBeClickable(by)).click();
     }
 
     @Override
     public void selectOptionByTextFromSelect(final String optionText, final String locator) {
-        selectOptionByTextFromSelect(optionText, locator, 0);
+        selectOptionByTextFromSelect(optionText, locator, defaultExplicitWaitTime);
     }
 
     @Override
@@ -258,13 +375,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by)))
-                .selectByVisibleText(optionText);
+                by -> ExpectedConditions.elementToBeClickable(by))).selectByVisibleText(optionText);
     }
 
     @Override
     public void populateElement(final String locator, final String text) {
-        populateElement(locator, text, 0);
+        populateElement(locator, text, defaultExplicitWaitTime);
     }
 
     @Override
@@ -273,13 +389,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by))
-                .sendKeys(text);
+                by -> ExpectedConditions.elementToBeClickable(by)).sendKeys(text);
     }
 
     @Override
     public String getTextFromElement(final String locator) {
-        return getTextFromElement(locator, 0);
+        return getTextFromElement(locator, defaultExplicitWaitTime);
     }
 
     @Override
@@ -288,7 +403,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by))
-                .getText();
+                by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+    }
+
+    @Override
+    public void maximizeWindow() {
+        webDriver.manage().window().maximize();
     }
 }
