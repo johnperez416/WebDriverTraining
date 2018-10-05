@@ -1,5 +1,6 @@
 package com.octopus;
 
+import com.octopus.pages.ticketmonster.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -58,6 +59,40 @@ public class TicketMonsterTest {
             } finally {
                 automatedBrowser.destroy();
             }
+        }
+    }
+
+    @Test
+    public void purchaseTicketsPageObjectModel() {
+
+        final AutomatedBrowser automatedBrowser =
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+
+        try {
+
+            automatedBrowser.init();
+
+            final EventsPage eventsPage = new MainPage(automatedBrowser)
+                    .openPage()
+                    .buyTickets();
+
+            final VenuePage venuePage = eventsPage
+                    .selectEvent("Concert", "Rock concert of the decade");
+
+            final CheckoutPage checkoutPage = venuePage
+                    .selectVenue("Toronto : Roy Thomson Hall")
+                    .book();
+
+            final ConfirmationPage confirmationPage = checkoutPage
+                    .buySectionTickets("A - Premier platinum reserve", 2)
+                    .checkout("email@example.org");
+
+            Assert.assertTrue(confirmationPage.getEmail().contains("email@example.org"));
+            Assert.assertTrue(confirmationPage.getEvent().contains("Rock concert of the decade"));
+            Assert.assertTrue(confirmationPage.getVenue().contains("Roy Thomson Hall"));
+
+        } finally {
+            automatedBrowser.destroy();
         }
     }
 }
