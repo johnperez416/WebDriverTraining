@@ -1,10 +1,15 @@
 package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
+import com.octopus.AutomatedBrowserFactory;
+import cucumber.api.java.en.Given;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class AutomatedBrowserBase implements AutomatedBrowser {
+    static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY
+            = new AutomatedBrowserFactory();
+
     private AutomatedBrowser automatedBrowser;
 
     public AutomatedBrowserBase() {
@@ -16,6 +21,21 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     public AutomatedBrowser getAutomatedBrowser() {
         return automatedBrowser;
+    }
+
+    @Given("^I open the browser \"([^\"]*)\"$")
+    public void openBrowser(String browser) {
+        automatedBrowser =
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+        automatedBrowser.init();
+    }
+
+    @Given("^I close the browser$")
+    public void closeBrowser() {
+        if (automatedBrowser != null) {
+            automatedBrowser.destroy();
+            automatedBrowser = null;
+        }
     }
 
     @Override

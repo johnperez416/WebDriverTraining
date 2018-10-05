@@ -13,6 +13,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <selenium.version>3.14.0</selenium.version>
     <junit.version>4.12</junit.version>
     <browsermob.version>2.1.5</browsermob.version>
+    <cucumber.version>2.3.1</cucumber.version>
   </properties>
   <build>
     <plugins>
@@ -43,6 +44,17 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <groupId>net.lightbody.bmp</groupId>
       <artifactId>browsermob-core</artifactId>
       <version>${browsermob.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
