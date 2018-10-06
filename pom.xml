@@ -16,7 +16,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <cucumber.version>2.3.1</cucumber.version>
     <shade.version>3.1.0</shade.version>
     <aws.lambda.version>1.2.0</aws.lambda.version>
-    <aws.sdk.version>1.11.305</aws.sdk.version>
+    <aws.sdk.version>1.11.422</aws.sdk.version>
     <commons.io.version>2.6</commons.io.version>
   </properties>
   <build>
@@ -59,6 +59,11 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-lambda</artifactId>
+      <version>${aws.sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-ses</artifactId>
       <version>${aws.sdk.version}</version>
     </dependency>
     <dependency>

@@ -5,6 +5,11 @@ provider:
   name: aws
   runtime: java8
   region: us-east-1
+  iamRoleStatements:
+  - Effect: Allow
+    Resource: "*"
+    Action:
+    - ses:SendEmail
 
 package:
   artifact: target/webdrivertraining-1.0-SNAPSHOT.jar

@@ -1,5 +1,9 @@
 package com.octopus;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+import com.amazonaws.services.simpleemail.model.*;
 import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -15,17 +19,19 @@ public class LambdaEntry {
     private static final String CHROME_DRIVER =
             "https://s3.amazonaws.com/webdriver-testing-resources/chromedriver_linux64.zip";
 
-    public String runCucumber(final String feature) throws Throwable {
+    public String runCucumber(String feature) throws Throwable {
 
         File driverDirectory = null;
         File chromeDirectory = null;
         File outputFile = null;
+        File txtOutputFile = null;
         File featureFile = null;
 
         try {
             driverDirectory = downloadChromeDriver();
             chromeDirectory = downloadChromeHeadless();
             outputFile = Files.createTempFile("output", ".json").toFile();
+            txtOutputFile = Files.createTempFile("output", ".txt").toFile();
             featureFile = writeFeatureToFile(feature);
 
             cucumber.api.cli.Main.run(
@@ -33,14 +39,19 @@ public class LambdaEntry {
                             "--monochrome",
                             "--glue", "com.octopus.decoratorbase",
                             "--format", "json:" + outputFile.toString(),
+                            "--format", "pretty:" + txtOutputFile.toString(),
                             featureFile.getAbsolutePath()},
                     Thread.currentThread().getContextClassLoader());
 
+            sendEmail("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()));
+
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
+
         } finally {
             FileUtils.deleteQuietly(driverDirectory);
             FileUtils.deleteQuietly(chromeDirectory);
             FileUtils.deleteQuietly(outputFile);
+            FileUtils.deleteQuietly(txtOutputFile);
             FileUtils.deleteQuietly(featureFile);
         }
     }
@@ -107,5 +118,26 @@ public class LambdaEntry {
             }
         }
         return featureFile;
+    }
+
+    private void sendEmail(final String to, final String results) {
+        try {
+            final AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
+                    .withRegion(Regions.US_EAST_1).build();
+
+            final SendEmailRequest request = new SendEmailRequest()
+                    .withDestination(new Destination()
+                            .withToAddresses(to))
+                    .withMessage(new Message()
+                            .withBody(new Body()
+                                    .withText(new Content()
+                                            .withCharset("UTF-8").withData(results)))
+                            .withSubject(new Content()
+                                    .withCharset("UTF-8").withData("WebDriver Test Results")))
+                    .withSource("admin@matthewcasperson.com");
+            client.sendEmail(request);
+        } catch (final Exception ex) {
+            System.out.println("The email was not sent. Error message: " + ex.getMessage());
+        }
     }
 }
