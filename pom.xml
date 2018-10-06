@@ -15,6 +15,9 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <browsermob.version>2.1.5</browsermob.version>
     <cucumber.version>2.3.1</cucumber.version>
     <shade.version>3.1.0</shade.version>
+    <aws.lambda.version>1.2.0</aws.lambda.version>
+    <aws.sdk.version>1.11.305</aws.sdk.version>
+    <commons.io.version>2.6</commons.io.version>
   </properties>
   <build>
     <plugins>
@@ -47,6 +50,21 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-lambda-java-core</artifactId>
+      <version>${aws.lambda.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-lambda</artifactId>
+      <version>${aws.sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons.io.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

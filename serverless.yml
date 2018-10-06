@@ -1,0 +1,16 @@
+service:
+  name: cucumber-chrome-aws
+
+provider:
+  name: aws
+  runtime: java8
+  region: us-east-1
+
+package:
+  artifact: target/webdrivertraining-1.0-SNAPSHOT.jar
+
+functions:
+  runCucumber:
+    handler: com.octopus.LambdaEntry::runCucumber
+    timeout: 300
+    memorySize: 512
