@@ -19,3 +19,18 @@ functions:
     handler: com.octopus.LambdaEntry::runCucumber
     timeout: 300
     memorySize: 512
+    events:
+    - http:
+        method: post
+        path: runCucumber
+        integration: lambda
+        request:
+          parameters:
+            headers:
+              'X-Amz-Invocation-Type': true
+          template:
+            text/plain: "\"$util.escapeJavaScript($input.body).replaceAll(\"\\'\",\"'\")\""
+        response:
+          headers:
+            Content-Type: "'application/json'"
+          template: $util.parseJson($input.body)
