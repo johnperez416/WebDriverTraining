@@ -1,0 +1,23 @@
+<html>
+<head>
+    <script>
+            function convert() {
+                var output = document.getElementById("input")
+                    .value
+                    .replace(/\\/g, "\\\\")
+                    .replace(/"/g, "\\\"")
+                    .split("\n")
+                    .join("\\n");
+
+                document.getElementById("output").value = "\"" + output + "\"";
+            }
+        </script>
+</head>
+<body>
+<textarea id="input" style="width: 100%;" rows="20"></textarea>
+<br/>
+<input type="button" onclick="convert()" value="Convert" style="width: 100%">
+<br/>
+<input type="text" id="output" style="width: 100%">
+</body>
+</html>

@@ -46,6 +46,10 @@ public class AutomatedBrowserFactory {
             return getBrowserStackAndroidNoImplicitWait();
         }
 
+        if ("ChromeNoImplicitWaitLambda".equalsIgnoreCase(browser)) {
+            return getChromeBrowserNoImplicitWaitLambda();
+        }
+
         throw new IllegalArgumentException("Unknown browser " + browser);
 
     }
@@ -119,6 +123,12 @@ public class AutomatedBrowserFactory {
                 new BrowserStackAndroidDecorator(
                         new WebDriverDecorator()
                 )
+        );
+    }
+
+    private AutomatedBrowser getChromeBrowserNoImplicitWaitLambda() {
+        return new ChromeHeadlessLambdaDecorator(
+                new WebDriverDecorator()
         );
     }
 }
