@@ -10,6 +10,10 @@ provider:
     Resource: "*"
     Action:
     - ses:SendEmail
+  - Effect: Allow
+    Resource: arn:aws:s3:::cucumber-html-report-files/*
+    Action:
+    - s3:PutObject
 
 package:
   artifact: target/webdrivertraining-1.0-SNAPSHOT.jar
@@ -29,7 +33,7 @@ functions:
             headers:
               'X-Amz-Invocation-Type': true
           template:
-            text/plain: "\"$util.escapeJavaScript($input.body).replaceAll(\"\\'\",\"'\")\""
+            text/plain: "{\"feature\":\"$util.escapeJavaScript($input.body).replaceAll(\"\\'\",\"'\")\", \"id\": \"$util.escapeJavaScript($input.params().header.get('Test-Id')).replaceAll(\"\\'\",\"'\")\"}"
         response:
           headers:
             Content-Type: "'application/json'"

@@ -1,5 +1,6 @@
 package com.octopus;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -77,7 +78,11 @@ public class LambdaEntry {
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
-            uploadS3Report(input.getId(), htmlOutput.getAbsolutePath(), "us-east-1", "cucumber-report-files");
+            uploadS3Report(
+                    input.getId(),
+                    htmlOutput.getAbsolutePath(),
+                    "us-east-1",
+                    "cucumber-html-report-files");
             sendEmail("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()));
 
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
@@ -172,7 +177,7 @@ public class LambdaEntry {
 
             final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
-                    .withCredentials(new ProfileCredentialsProvider())
+                    .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                     .build();
 
             // Upload a file as a new object with ContentType and title specified.
@@ -183,7 +188,8 @@ public class LambdaEntry {
             request.setMetadata(metadata);
             s3Client.putObject(request);
 
-            System.out.println("UPLOADED Cucumber Test ID " + id + " to " + fileObjKeyName);
+            System.out.println("UPLOADED Cucumber Test ID " + id +
+                    " to https://s3.amazonaws.com/" + bucketName + "/" + fileObjKeyName);
         } catch(final Exception ex) {
             System.out.println("The report was not uploaded to S3. Error message: " + ex.getMessage());
         } finally {
