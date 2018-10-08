@@ -169,14 +169,12 @@ public class LambdaEntry {
             final String reportDir,
             final String clientRegion,
             final String bucketName) {
-        final String fileObjKeyName = "htmlreport" + UUID.randomUUID() + ".zip";
+        final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-" + id + "-" + UUID.randomUUID() + ".zip";
         
         File report = null;
 
         try {
-            report =  File.createTempFile(
-                    (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-" + id + "-",
-                    ".zip");
+            report =  File.createTempFile("htmlreport", ".zip");
             ZIP_UTILS.zipDirectory(report.getAbsolutePath(), reportDir);
 
             final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
