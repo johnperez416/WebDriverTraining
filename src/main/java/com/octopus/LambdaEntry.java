@@ -175,7 +175,7 @@ public class LambdaEntry {
 
         try {
             report =  File.createTempFile(
-                    (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-",
+                    (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-" + id + "-",
                     ".zip");
             ZIP_UTILS.zipDirectory(report.getAbsolutePath(), reportDir);
 
