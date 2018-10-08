@@ -174,7 +174,9 @@ public class LambdaEntry {
         File report = null;
 
         try {
-            report =  File.createTempFile("htmlreport", ".zip");
+            report =  File.createTempFile(
+                    (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-",
+                    ".zip");
             ZIP_UTILS.zipDirectory(report.getAbsolutePath(), reportDir);
 
             final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()

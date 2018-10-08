@@ -38,37 +38,21 @@ public class ZipUtilsImpl implements ZipUtils {
         final File inputDirectoryFile = new File(inputDirectory);
         final byte[] buffer = new byte[1024];
 
-        FileOutputStream fos = null;
-        ZipOutputStream zos = null;
-
-        try {
-            fos = new FileOutputStream(fileZip);
-            zos = new ZipOutputStream(fos);
-
-            FileInputStream in = null;
-
-            for (final File file: FileUtils.listFiles(inputDirectoryFile, null,true)) {
-                final ZipEntry ze = new ZipEntry(
-                        FilenameUtils.getPath(file.getAbsolutePath()) +
-                            FilenameUtils.getName(file.getAbsolutePath()));
-                zos.putNextEntry(ze);
-                try {
-                    in = new FileInputStream(file.getPath());
-                    int len;
-                    while ((len = in .read(buffer)) > 0) {
-                        zos.write(buffer, 0, len);
+        try (FileOutputStream fos = new FileOutputStream(fileZip)) {
+            try (ZipOutputStream zos = new ZipOutputStream(fos)) {
+                for (final File file : FileUtils.listFiles(inputDirectoryFile, null, true)) {
+                    final ZipEntry ze = new ZipEntry(
+                            FilenameUtils.getPath(file.getAbsolutePath()) +
+                                    FilenameUtils.getName(file.getAbsolutePath()));
+                    zos.putNextEntry(ze);
+                    try (FileInputStream in = new FileInputStream(file.getPath())) {
+                        int len;
+                        while ((len = in.read(buffer)) > 0) {
+                            zos.write(buffer, 0, len);
+                        }
                     }
-                } finally {
-                    in.close();
                 }
-            }
-
-            zos.closeEntry();
-        } finally {
-            try {
-                zos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                zos.closeEntry();
             }
         }
     }
