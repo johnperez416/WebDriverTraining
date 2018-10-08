@@ -80,6 +80,7 @@ public class LambdaEntry {
 
             uploadS3Report(
                     input.getId(),
+                    retValue == 0,
                     htmlOutput.getAbsolutePath(),
                     "us-east-1",
                     "cucumber-html-report-files");
@@ -164,6 +165,7 @@ public class LambdaEntry {
 
     private static void uploadS3Report(
             final String id,
+            final boolean status,
             final String reportDir,
             final String clientRegion,
             final String bucketName) {
@@ -188,7 +190,7 @@ public class LambdaEntry {
             request.setMetadata(metadata);
             s3Client.putObject(request);
 
-            System.out.println("UPLOADED Cucumber Test ID " + id +
+            System.out.println("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
                     " to https://s3.amazonaws.com/" + bucketName + "/" + fileObjKeyName);
         } catch(final Exception ex) {
             System.out.println("The report was not uploaded to S3. Error message: " + ex.getMessage());
