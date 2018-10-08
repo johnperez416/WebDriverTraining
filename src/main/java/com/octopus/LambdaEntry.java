@@ -193,7 +193,7 @@ public class LambdaEntry {
             s3Client.putObject(request);
 
             System.out.println("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
-                    " to https://s3.amazonaws.com/" + bucketName + "/" + fileObjKeyName);
+                    " to s3://" + bucketName + "/" + fileObjKeyName);
         } catch(final Exception ex) {
             System.out.println("The report was not uploaded to S3. Error message: " + ex.getMessage());
         } finally {
