@@ -1,24 +1,24 @@
 package com.octopus;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
+import com.octopus.eventhandlers.EventHandler;
+import com.octopus.eventhandlers.impl.EmailResults;
+import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import org.apache.commons.io.FileUtils;
-import java.io.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.UUID;
+import java.util.Arrays;
 
 class LambdaInput {
     private String id;
@@ -78,13 +78,10 @@ public class LambdaEntry {
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
-            uploadS3Report(
-                    input.getId(),
-                    retValue == 0,
-                    htmlOutput.getAbsolutePath(),
-                    "us-east-1",
-                    "cucumber-html-report-files");
-            sendEmail("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()));
+            Arrays.stream(new EventHandler[]{
+                    new UploadToS3(htmlOutput.getAbsolutePath(), "us-east-1", "cucumber-html-report-files"),
+                    new EmailResults("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()))
+            }).forEach(e -> e.finished(input.getId(), retValue == 0));
 
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
         } finally {
@@ -140,62 +137,5 @@ public class LambdaEntry {
             }
         }
         return featureFile;
-    }
-
-    private void sendEmail(final String to, final String results) {
-        try {
-            final AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-                    .withRegion(Regions.US_EAST_1).build();
-
-            final SendEmailRequest request = new SendEmailRequest()
-                    .withDestination(new Destination()
-                            .withToAddresses(to))
-                    .withMessage(new Message()
-                            .withBody(new Body()
-                                    .withText(new Content()
-                                            .withCharset("UTF-8").withData(results)))
-                            .withSubject(new Content()
-                                    .withCharset("UTF-8").withData("WebDriver Test Results")))
-                    .withSource("admin@matthewcasperson.com");
-            client.sendEmail(request);
-        } catch (final Exception ex) {
-            System.out.println("The email was not sent. Error message: " + ex.getMessage());
-        }
-    }
-
-    private static void uploadS3Report(
-            final String id,
-            final boolean status,
-            final String reportDir,
-            final String clientRegion,
-            final String bucketName) {
-        final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-" + id + "-" + UUID.randomUUID() + ".zip";
-        
-        File report = null;
-
-        try {
-            report =  File.createTempFile("htmlreport", ".zip");
-            ZIP_UTILS.zipDirectory(report.getAbsolutePath(), reportDir);
-
-            final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withRegion(clientRegion)
-                    .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                    .build();
-
-            // Upload a file as a new object with ContentType and title specified.
-            final PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, report);
-            final ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("application/zip");
-            metadata.addUserMetadata("x-amz-meta-title", "Cucumber Report");
-            request.setMetadata(metadata);
-            s3Client.putObject(request);
-
-            System.out.println("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
-                    " to s3://" + bucketName + "/" + fileObjKeyName);
-        } catch(final Exception ex) {
-            System.out.println("The report was not uploaded to S3. Error message: " + ex.getMessage());
-        } finally {
-            FileUtils.deleteQuietly(report);
-        }
     }
 }
