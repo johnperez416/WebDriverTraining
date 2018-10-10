@@ -16,7 +16,7 @@ provider:
     - s3:PutObject
 
 package:
-  artifact: target/webdrivertraining-1.0-SNAPSHOT.jar
+  artifact: target/webdrivertraining.1.0-SNAPSHOT.jar
 
 functions:
   runCucumber:

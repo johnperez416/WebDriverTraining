@@ -1,10 +1,6 @@
 package com.octopus;
 
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.simpleemail.model.*;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.EmailResults;
 import com.octopus.eventhandlers.impl.UploadToS3;
@@ -19,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Map;
 
 class LambdaInput {
