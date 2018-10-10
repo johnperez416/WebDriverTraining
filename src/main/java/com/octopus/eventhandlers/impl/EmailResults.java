@@ -29,7 +29,7 @@ public class EmailResults implements EventHandler {
                                     .withText(new Content()
                                             .withCharset("UTF-8").withData(results)))
                             .withSubject(new Content()
-                                    .withCharset("UTF-8").withData((status ? "SUCCEEDED" : "FAILED") + "WebDriver Test Results ID" + id)))
+                                    .withCharset("UTF-8").withData((status ? "SUCCEEDED" : "FAILED") + " WebDriver Test Results ID " + id)))
                     .withSource("admin@matthewcasperson.com");
             client.sendEmail(request);
         } catch (final Exception ex) {
