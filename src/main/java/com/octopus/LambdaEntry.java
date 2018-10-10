@@ -1,6 +1,7 @@
 package com.octopus;
 
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
@@ -19,10 +20,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Map;
 
 class LambdaInput {
     private String id;
     private String feature;
+    private Map<String, String> headers;
 
     public String getId() {
         return id;
@@ -39,16 +42,26 @@ class LambdaInput {
     public void setFeature(final String feature) {
         this.feature = feature;
     }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(final Map<String, String> headers) {
+        this.headers = headers;
+    }
 }
 
 public class LambdaEntry {
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
+    private static final EventHandler EMAIL_RESULTS = new EmailResults();
+    private static final EventHandler UPLOAD_TO_S3 = new UploadToS3();
     private static final String CHROME_HEADLESS_PACKAGE =
             "https://s3.amazonaws.com/webdriver-testing-resources/stable-headless-chromium-amazonlinux-2017-03.zip";
     private static final String CHROME_DRIVER =
             "https://s3.amazonaws.com/webdriver-testing-resources/chromedriver_linux64.zip";
 
-    public String runCucumber(final LambdaInput input) throws Throwable {
+    public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
         System.out.println("STARTED Cucumber Test ID " + input.getId());
 
         File driverDirectory = null;
@@ -78,10 +91,16 @@ public class LambdaEntry {
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
-            Arrays.stream(new EventHandler[]{
-                    new UploadToS3(htmlOutput.getAbsolutePath(), "us-east-1", "cucumber-html-report-files"),
-                    new EmailResults("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()))
-            }).forEach(e -> e.finished(input.getId(), retValue == 0));
+            EMAIL_RESULTS.finished(
+                    input.getId(),
+                    retValue == 0,
+                    FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()),
+                    input.getHeaders());
+            UPLOAD_TO_S3.finished(
+                    input.getId(),
+                    retValue == 0,
+                    htmlOutput.getAbsolutePath(),
+                    input.getHeaders());
 
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
         } finally {

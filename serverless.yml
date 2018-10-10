@@ -33,7 +33,16 @@ functions:
             headers:
               'X-Amz-Invocation-Type': true
           template:
-            text/plain: "{\"feature\":\"$util.escapeJavaScript($input.body).replaceAll(\"\\'\",\"'\")\", \"id\": \"$util.escapeJavaScript($input.params().header.get('Test-Id')).replaceAll(\"\\'\",\"'\")\"}"
+            text/plain: >
+              {
+                "feature":"$util.escapeJavaScript($input.body).replaceAll("\\'","'")",
+                "id": "$util.escapeJavaScript($input.params().header.get('Test-Id')).replaceAll("\\'","'")",
+                "headers": {
+                  #foreach($param in $input.params().header.keySet())
+                  "$param": "$util.escapeJavaScript($input.params().header.get($param))" #if($foreach.hasNext),#end
+                  #end
+                }
+              }
         response:
           headers:
             Content-Type: "'application/json'"
