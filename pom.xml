@@ -20,6 +20,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <commons.io.version>2.6</commons.io.version>
   </properties>
   <build>
+    <finalName>${project.name}.${project.version}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
