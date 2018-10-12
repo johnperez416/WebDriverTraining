@@ -12,7 +12,7 @@ pipeline {
                 """
             }
         }
-        stage ('UI Testing') {
+        stage ('Deploy') {
             steps {
                 withCredentials([
                   string(credentialsId: 'OctopusAPIKey', variable: 'APIKey'),
