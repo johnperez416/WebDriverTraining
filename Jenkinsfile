@@ -26,7 +26,6 @@ pipeline {
                             --apiKey ${APIKey}
                         ${tool('Octo CLI')}/Octo create-release \
                             --project WebDriverLambda \
-                            --channel ${env.BRANCH_NAME} \
                             --ignoreexisting \
                             --package webdrivertraining:1.0-SNAPSHOT.jar \
                             --version 1.0.${env.BUILD_NUMBER} \
@@ -34,7 +33,6 @@ pipeline {
                             --apiKey ${APIKey}
                         ${tool('Octo CLI')}/Octo deploy-release \
                             --project WebDriverLambda \
-                            --channel ${env.BRANCH_NAME} \
                             --version 1.0.${env.BUILD_NUMBER} \
                             --deploymenttimeout 01:00:00 \
                             --deployto Testing \
