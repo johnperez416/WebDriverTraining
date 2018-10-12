@@ -36,7 +36,7 @@ public class UploadToS3 implements EventHandler {
         File report = null;
 
         try {
-            FileUtils.copyFileToDirectory(new File(featureFile), report);
+            FileUtils.copyFileToDirectory(new File(featureFile), new File(content));
             report =  File.createTempFile("htmlreport", ".zip");
             ZIP_UTILS.zipDirectory(report.getAbsolutePath(), content);
 
