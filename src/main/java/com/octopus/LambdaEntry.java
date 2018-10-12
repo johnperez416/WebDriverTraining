@@ -89,11 +89,13 @@ public class LambdaEntry {
             EMAIL_RESULTS.finished(
                     input.getId(),
                     retValue == 0,
+                    featureFile.getAbsolutePath(),
                     FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()),
                     input.getHeaders());
             UPLOAD_TO_S3.finished(
                     input.getId(),
                     retValue == 0,
+                    featureFile.getAbsolutePath(),
                     htmlOutput.getAbsolutePath(),
                     input.getHeaders());
 
