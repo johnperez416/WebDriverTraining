@@ -55,7 +55,8 @@ public class AutomatedBrowserFactory {
             return getBrowserStackAndroidNoImplicitWait();
         }
 
-        if ("ChromeNoImplicitWaitLambda".equalsIgnoreCase(browser)) {
+        if ("ChromeNoImplicitWaitLambda".equalsIgnoreCase(browser) ||
+                "ChromeNoImplicitWaitDocker".equalsIgnoreCase(browser)) {
             return getChromeBrowserNoImplicitWaitLambda();
         }
 
