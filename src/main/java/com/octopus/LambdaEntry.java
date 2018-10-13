@@ -65,6 +65,7 @@ public class LambdaEntry {
         File txtOutputFile = null;
         File featureFile = null;
         File htmlOutput = null;
+        File junitOutput = null;
 
         try {
             driverDirectory = downloadChromeDriver();
@@ -73,6 +74,7 @@ public class LambdaEntry {
             txtOutputFile = Files.createTempFile("output", ".txt").toFile();
             featureFile = writeFeatureToFile(input.getFeature());
             htmlOutput = Files.createTempDirectory("htmloutput").toFile();
+            junitOutput = Files.createTempFile("junit", ".xml").toFile();
 
             final int retValue = cucumber.api.cli.Main.run(
                     new String[]{
@@ -81,6 +83,7 @@ public class LambdaEntry {
                             "--plugin", "json:" + outputFile.toString(),
                             "--plugin", "pretty:" + txtOutputFile.toString(),
                             "--plugin", "html:" + htmlOutput.toString(),
+                            "--plugin", "junit:" + junitOutput.toString(),
                             featureFile.getAbsolutePath()},
                     Thread.currentThread().getContextClassLoader());
 
@@ -107,6 +110,7 @@ public class LambdaEntry {
             FileUtils.deleteQuietly(txtOutputFile);
             FileUtils.deleteQuietly(featureFile);
             FileUtils.deleteQuietly(htmlOutput);
+            FileUtils.deleteQuietly(junitOutput);
 
             System.out.println("FINISHED Cucumber Test ID " + input.getId());
         }
