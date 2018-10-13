@@ -24,15 +24,11 @@ public class AutomatedBrowserFactory {
         }
 
         if ("ChromeNoImplicitWait".equalsIgnoreCase(browser)) {
-            return getChromeBrowserNoImplicitWait(false, false);
+            return getChromeBrowserNoImplicitWait(false);
         }
 
         if ("ChromeHeadlessNoImplicitWait".equalsIgnoreCase(browser)) {
-            return getChromeBrowserNoImplicitWait(true, false);
-        }
-
-        if ("ChromeHeadlessNoImplicitWaitNoSandbox".equalsIgnoreCase(browser)) {
-            return getChromeBrowserNoImplicitWait(true, true);
+            return getChromeBrowserNoImplicitWait(true);
         }
 
         if ("FirefoxNoImplicitWait".equalsIgnoreCase(browser)) {
@@ -87,8 +83,8 @@ public class AutomatedBrowserFactory {
         );
     }
 
-    private AutomatedBrowser getChromeBrowserNoImplicitWait(final boolean headless, final boolean noSandbox) {
-        return new ChromeDecorator(headless, noSandbox,
+    private AutomatedBrowser getChromeBrowserNoImplicitWait(final boolean headless) {
+        return new ChromeDecorator(headless,
                 new BrowserMobDecorator(
                         new WebDriverDecorator()
                 )
