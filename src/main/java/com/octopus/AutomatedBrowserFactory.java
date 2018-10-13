@@ -27,7 +27,11 @@ public class AutomatedBrowserFactory {
         }
 
         if ("FirefoxNoImplicitWait".equalsIgnoreCase(browser)) {
-            return getFirefoxBrowserNoImplicitWait();
+            return getFirefoxBrowserNoImplicitWait(false);
+        }
+
+        if ("FirefoxHeadlessNoImplicitWait".equalsIgnoreCase(browser)) {
+            return getFirefoxBrowserNoImplicitWait(true);
         }
 
         if ("BrowserStackEdge".equalsIgnoreCase(browser)) {
@@ -82,8 +86,8 @@ public class AutomatedBrowserFactory {
         );
     }
 
-    private AutomatedBrowser getFirefoxBrowserNoImplicitWait() {
-        return new FirefoxDecorator(
+    private AutomatedBrowser getFirefoxBrowserNoImplicitWait(final boolean headless) {
+        return new FirefoxDecorator(headless,
                 new BrowserMobDecorator(
                         new WebDriverDecorator()
                 )
