@@ -1,4 +1,6 @@
 sudo: required
+services:
+- docker
 dist: trusty
 language: java
 jdk:
@@ -20,4 +22,8 @@ before_install:
 - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
 - tar -xzf geckodriver-v0.23.0-linux64.tar.gz
 - sudo cp geckodriver /usr/bin
-script: travis_retry mvn test -B
+script:
+- travis_retry mvn test -B
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker build --no-cache -t mcasperson/webdriver .
+- docker push mcasperson/webdriver
