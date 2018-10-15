@@ -2,6 +2,8 @@ package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
+import cucumber.api.Scenario;
+import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -27,6 +29,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     public AutomatedBrowser getAutomatedBrowser() {
         return automatedBrowser;
+    }
+
+    @After
+    public void afterScenario(final Scenario scenario) {
+        if (scenario.isFailed()) {
+            automatedBrowser.destroy();
+            automatedBrowser = null;
+        }
     }
 
     @Given("^I set the following aliases:$")
