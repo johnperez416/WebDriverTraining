@@ -99,6 +99,14 @@ public interface AutomatedBrowser {
 
     String getTextFromElement(String locator, int waitTime);
 
+    String getRegexGroupFromElement(String group, String regex, String locator);
+
+    String getRegexGroupFromElement(String group, String regex, String locator, int waitTime);
+
+    void verifyTextFromElement(String locator, String regex);
+
+    void verifyTextFromElement(String locator, String regex, int waitTime);
+
     void captureHarFile();
 
     void captureCompleteHarFile();

@@ -4,6 +4,7 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AutomatedBrowserBase implements AutomatedBrowser {
+    static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -468,22 +470,93 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public String getTextFromElement(final String locator) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator));
+            final String text = getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator));
+            aliases.put(LastReturn, text);
+            return text;
         }
 
+        aliases.put(LastReturn, null);
         return null;
     }
 
+    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
     @Override
     public String getTextFromElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator), waitTime);
+            final String text = getAutomatedBrowser().getTextFromElement(
+                    aliases.getOrDefault(locator, locator),
+                    waitTime);
+            aliases.put(LastReturn, text);
+            return text;
         }
 
+        aliases.put(LastReturn, null);
         return null;
+    }
+
+    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
+    public String getRegexGroupFromElement(
+            final String group,
+            final String regex,
+            final String locator) {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getRegexGroupFromElement(
+                    aliases.getOrDefault(group, group),
+                    aliases.getOrDefault(regex, regex),
+                    aliases.getOrDefault(locator, locator));
+            aliases.put(LastReturn, text);
+            return text;
+        }
+
+        aliases.put(LastReturn, null);
+        return null;
+    }
+
+    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public String getRegexGroupFromElement(
+            final String group,
+            final String regex,
+            final String locator,
+            final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getRegexGroupFromElement(
+                    aliases.getOrDefault(group, group),
+                    aliases.getOrDefault(regex, regex),
+                    aliases.getOrDefault(locator, locator),
+                    waitTime);
+            aliases.put(LastReturn, text);
+            return text;
+        }
+
+        aliases.put(LastReturn, null);
+        return null;
+    }
+
+    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\"$")
+    @Override
+    public void verifyTextFromElement(final String locator, final String regex) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyTextFromElement(
+                    aliases.getOrDefault(locator, locator),
+                    aliases.getOrDefault(regex, regex));
+        }
+    }
+
+    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void verifyTextFromElement(final String locator, final String regex, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyTextFromElement(
+                    aliases.getOrDefault(locator, locator),
+                    aliases.getOrDefault(regex, regex),
+                    waitTime);
+        }
     }
 
     @And("^I capture the HAR file$")

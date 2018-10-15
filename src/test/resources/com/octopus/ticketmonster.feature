@@ -39,6 +39,9 @@ Feature: Test TicketMonster
       | Adult Ticket Count | tickets-1 |
       | Add Tickets | add |
       | Checkout | submit |
+      | Email Address | div.col-md-6:nth-child(1) > div:nth-child(1) > p:nth-child(2) |
+      | Event Name | div.col-md-6:nth-child(1) > div:nth-child(1) > p:nth-child(3) |
+      | Venue Name | div.col-md-6:nth-child(1) > div:nth-child(1) > p:nth-child(4) |
     And I set the default explicit wait time to "30" seconds
     When I open the URL "https://ticket-monster.herokuapp.com"
     And I click the "Buy tickets now" button
@@ -51,4 +54,7 @@ Feature: Test TicketMonster
     And I click the "Add Tickets" button
     And I populate the "email" text box with the text "email@example.org"
     And I click the "Checkout" button
+    Then I verify the text from the "Email Address" field matches the regex "Email: email@example\.org"
+    Then I verify the text from the "Event Name" field matches the regex "Event: Rock concert of the decade"
+    Then I verify the text from the "Venue Name" field matches the regex "Venue: Roy Thomson Hall"
     Then I close the browser

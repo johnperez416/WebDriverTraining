@@ -1,13 +1,18 @@
 package com.octopus.decorators;
 
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.VerificationException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
+import cucumber.api.java.en.Then;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
@@ -404,6 +409,43 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+    }
+
+    @Override
+    public void verifyTextFromElement(final String locator, final String regex) {
+        verifyTextFromElement(locator, regex, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public void verifyTextFromElement(final String locator, final String regex, final int waitTime) {
+        final String text = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+
+        if (!Pattern.matches(regex, text)) {
+            throw new VerificationException("Text " + text + " does not match the regex " + regex);
+        }
+    }
+
+    @Override
+    public String getRegexGroupFromElement(
+            final String group,
+            final String regex,
+            final String locator) {
+        return getRegexGroupFromElement(group, regex, locator, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public String getRegexGroupFromElement(
+            final String group,
+            final String regex,
+            final String locator,
+            final int waitTime) {
+        final String text = getTextFromElement(locator, waitTime);
+        final Matcher matcher = Pattern.compile(regex).matcher(text);
+        return matcher.group(Integer.parseInt(group));
     }
 
     @Override
