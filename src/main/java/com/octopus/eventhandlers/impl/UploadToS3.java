@@ -20,7 +20,11 @@ public class UploadToS3 implements EventHandler {
     private static final String CLIENT_REGION = "S3-Client-Region";
 
     @Override
-    public void finished(final String id, final boolean status, final String content, final Map<String, String> headers) {
+    public void finished(final String id,
+                         final boolean status,
+                         final String featureFile,
+                         final String content,
+                         final Map<String, String> headers) {
         if (!(headers.containsKey(BUCKET_NAME) && headers.containsKey(CLIENT_REGION))) {
             System.out.println("The " + BUCKET_NAME + " and " + CLIENT_REGION +
                     " headers must be defined to upload the results to S3.");
@@ -32,6 +36,7 @@ public class UploadToS3 implements EventHandler {
         File report = null;
 
         try {
+            FileUtils.copyFileToDirectory(new File(featureFile), new File(content));
             report =  File.createTempFile("htmlreport", ".zip");
             ZIP_UTILS.zipDirectory(report.getAbsolutePath(), content);
 

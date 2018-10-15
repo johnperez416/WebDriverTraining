@@ -30,6 +30,9 @@ public class ChromeHeadlessLambdaDecorator extends AutomatedBrowserBase
             options.setBinary(System.getProperty("chrome.binary"));
         }
 
+        // Ignore self signed certificates
+        options.setAcceptInsecureCerts(true);
+
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);

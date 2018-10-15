@@ -14,7 +14,11 @@ public class EmailResults implements EventHandler {
     private static final String EMAIL_FROM = "Email-From";
 
     @Override
-    public void finished(final String id, final boolean status, final String content, final Map<String, String> headers) {
+    public void finished(final String id,
+                         final boolean status,
+                         final String featureFile,
+                         final String content,
+                         final Map<String, String> headers) {
         if (!(headers.containsKey(EMAIL_TO) &&
                 headers.containsKey(EMAIL_FROM) &&
                 headers.containsKey(EMAIL_CLIENT_REGION))) {
