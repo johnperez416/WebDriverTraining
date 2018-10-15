@@ -34,8 +34,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @After
     public void afterScenario(final Scenario scenario) {
         if (scenario.isFailed()) {
-            automatedBrowser.destroy();
-            automatedBrowser = null;
+            closeBrowser();
         }
     }
 
