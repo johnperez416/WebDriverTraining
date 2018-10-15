@@ -7,6 +7,7 @@ import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ class LambdaInput {
 }
 
 public class LambdaEntry {
+    private static final String RETRY_HEADER = "Test-Retry";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler EMAIL_RESULTS = new EmailResults();
     private static final EventHandler UPLOAD_TO_S3 = new UploadToS3();
@@ -70,13 +72,21 @@ public class LambdaEntry {
         try {
             driverDirectory = downloadChromeDriver();
             chromeDirectory = downloadChromeHeadless();
-            outputFile = Files.createTempFile("output", ".json").toFile();
-            txtOutputFile = Files.createTempFile("output", ".txt").toFile();
             featureFile = writeFeatureToFile(input.getFeature());
-            htmlOutput = Files.createTempDirectory("htmloutput").toFile();
-            junitOutput = Files.createTempFile("junit", ".xml").toFile();
 
-            final int retValue = cucumber.api.cli.Main.run(
+            final int retryCount = NumberUtils.toInt(
+                    input.getHeaders().getOrDefault(RETRY_HEADER, "1"),
+                    1);
+
+            int retValue = 0;
+
+            for (int x = 0; x < retryCount; ++x) {
+                outputFile = createCleanFile(outputFile, "output", ".json");
+                txtOutputFile = createCleanFile(txtOutputFile, "output", ".txt");
+                junitOutput = createCleanFile(junitOutput, "junit", ".xml");
+                htmlOutput = createCleanDirectory(htmlOutput, "htmloutput");
+
+                retValue = cucumber.api.cli.Main.run(
                     new String[]{
                             "--monochrome",
                             "--glue", "com.octopus.decoratorbase",
@@ -86,6 +96,10 @@ public class LambdaEntry {
                             "--plugin", "junit:" + junitOutput.toString(),
                             featureFile.getAbsolutePath()},
                     Thread.currentThread().getContextClassLoader());
+                if (retValue == 0) {
+                    break;
+                }
+            }
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
@@ -114,6 +128,16 @@ public class LambdaEntry {
 
             System.out.println("FINISHED Cucumber Test ID " + input.getId());
         }
+    }
+
+    private File createCleanFile(final File last, final String prefix, final String suffix) throws IOException {
+        FileUtils.deleteQuietly(last);
+        return Files.createTempFile(prefix, suffix).toFile();
+    }
+
+    private File createCleanDirectory(final File last, final String name) throws IOException {
+        FileUtils.deleteQuietly(last);
+        return Files.createTempDirectory(name).toFile();
     }
 
     private File downloadChromeDriver() throws IOException {
