@@ -16,8 +16,14 @@ import java.util.Map;
 public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
+    static private Map<String, String> externalAliases = new HashMap<>();
     private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
+
+    public static void setExternalAliases(final Map<String, String> externalAliases) {
+        if (externalAliases == null) return;
+        AutomatedBrowserBase.externalAliases.putAll(externalAliases);
+    }
 
     public AutomatedBrowserBase() {
 
@@ -41,6 +47,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Given("^I set the following aliases:$")
     public void setAliases(Map<String, String> aliases) {
         this.aliases.putAll(aliases);
+    }
+
+    private Map<String, String> getAliases() {
+        final Map<String, String> combinedAliases = new HashMap<>();
+        combinedAliases.putAll(aliases);
+        combinedAliases.putAll(externalAliases);
+        return combinedAliases;
     }
 
     @Given("^I open the browser \"([^\"]*)\"$")
@@ -108,7 +121,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void goTo(String url) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().goTo(aliases.getOrDefault(url, url));
+            getAutomatedBrowser().goTo(getAliases().getOrDefault(url, url));
         }
     }
 
@@ -116,7 +129,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithId(final String id) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithId(aliases.getOrDefault(id, id));
+            getAutomatedBrowser().clickElementWithId(getAliases().getOrDefault(id, id));
         }
     }
 
@@ -124,7 +137,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithId(final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithId(aliases.getOrDefault(id, id), waitTime);
+            getAutomatedBrowser().clickElementWithId(getAliases().getOrDefault(id, id), waitTime);
         }
     }
 
@@ -133,8 +146,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithId(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(id, id));
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(id, id));
         }
     }
 
@@ -143,8 +156,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithId(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(id, id),
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(id, id),
                     waitTime);
         }
     }
@@ -154,8 +167,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithId(final String id, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithId(
-                    aliases.getOrDefault(id, id),
-                    aliases.getOrDefault(text, text));
+                    getAliases().getOrDefault(id, id),
+                    getAliases().getOrDefault(text, text));
         }
     }
 
@@ -164,8 +177,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithId(final String id, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithId(
-                    aliases.getOrDefault(id, id),
-                    aliases.getOrDefault(text, text),
+                    getAliases().getOrDefault(id, id),
+                    getAliases().getOrDefault(text, text),
                     waitTime);
         }
     }
@@ -173,7 +186,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElementWithId(final String id) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithId(aliases.getOrDefault(id, id));
+            return getAutomatedBrowser().getTextFromElementWithId(getAliases().getOrDefault(id, id));
         }
 
         return null;
@@ -182,7 +195,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElementWithId(final String id, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithId(aliases.getOrDefault(id, id), waitTime);
+            return getAutomatedBrowser().getTextFromElementWithId(getAliases().getOrDefault(id, id), waitTime);
         }
 
         return null;
@@ -192,7 +205,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithXPath(final String xpath) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithXPath(aliases.getOrDefault(xpath, xpath));
+            getAutomatedBrowser().clickElementWithXPath(getAliases().getOrDefault(xpath, xpath));
         }
     }
 
@@ -200,7 +213,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithXPath(final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithXPath(aliases.getOrDefault(xpath, xpath), waitTime);
+            getAutomatedBrowser().clickElementWithXPath(getAliases().getOrDefault(xpath, xpath), waitTime);
         }
     }
 
@@ -209,8 +222,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(xpath, xpath));
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(xpath, xpath));
         }
     }
 
@@ -219,8 +232,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithXPath(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(xpath, xpath),
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(xpath, xpath),
                     waitTime);
         }
     }
@@ -230,8 +243,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithXPath(final String xpath, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithXPath(
-                    aliases.getOrDefault(xpath, xpath),
-                    aliases.getOrDefault(text, text));
+                    getAliases().getOrDefault(xpath, xpath),
+                    getAliases().getOrDefault(text, text));
         }
     }
 
@@ -240,8 +253,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithXPath(final String xpath, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithXPath(
-                    aliases.getOrDefault(xpath, xpath),
-                    aliases.getOrDefault(text, text),
+                    getAliases().getOrDefault(xpath, xpath),
+                    getAliases().getOrDefault(text, text),
                     waitTime);
         }
     }
@@ -249,7 +262,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElementWithXPath(final String xpath) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithXPath(aliases.getOrDefault(xpath, xpath));
+            return getAutomatedBrowser().getTextFromElementWithXPath(getAliases().getOrDefault(xpath, xpath));
         }
 
         return null;
@@ -258,7 +271,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElementWithXPath(final String xpath, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithXPath(aliases.getOrDefault(xpath, xpath), waitTime);
+            return getAutomatedBrowser().getTextFromElementWithXPath(getAliases().getOrDefault(xpath, xpath), waitTime);
         }
 
         return null;
@@ -268,7 +281,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithCSSSelector(final String cssSelector) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithCSSSelector(aliases.getOrDefault(cssSelector, cssSelector));
+            getAutomatedBrowser().clickElementWithCSSSelector(getAliases().getOrDefault(cssSelector, cssSelector));
         }
     }
 
@@ -276,7 +289,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithCSSSelector(final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithCSSSelector(aliases.getOrDefault(cssSelector, cssSelector), waitTime);
+            getAutomatedBrowser().clickElementWithCSSSelector(getAliases().getOrDefault(cssSelector, cssSelector), waitTime);
         }
     }
 
@@ -285,8 +298,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(cssSelector, cssSelector));
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(cssSelector, cssSelector));
         }
     }
 
@@ -295,8 +308,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithCSSSelector(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(cssSelector, cssSelector),
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(cssSelector, cssSelector),
                     waitTime);
         }
     }
@@ -306,8 +319,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithCSSSelector(final String cssSelector, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithCSSSelector(
-                    aliases.getOrDefault(cssSelector, cssSelector),
-                    aliases.getOrDefault(text, text));
+                    getAliases().getOrDefault(cssSelector, cssSelector),
+                    getAliases().getOrDefault(text, text));
         }
     }
 
@@ -316,8 +329,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithCSSSelector(final String cssSelector, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithCSSSelector(
-                    aliases.getOrDefault(cssSelector, cssSelector),
-                    aliases.getOrDefault(text, text),
+                    getAliases().getOrDefault(cssSelector, cssSelector),
+                    getAliases().getOrDefault(text, text),
                     waitTime);
         }
     }
@@ -326,7 +339,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public String getTextFromElementWithCSSSelector(final String cssSelector) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getTextFromElementWithCSSSelector(
-                    aliases.getOrDefault(cssSelector, cssSelector));
+                    getAliases().getOrDefault(cssSelector, cssSelector));
         }
 
         return null;
@@ -336,7 +349,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public String getTextFromElementWithCSSSelector(final String cssSelector, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getTextFromElementWithCSSSelector(
-                    aliases.getOrDefault(cssSelector, cssSelector),
+                    getAliases().getOrDefault(cssSelector, cssSelector),
                     waitTime);
         }
 
@@ -347,7 +360,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithName(final String name) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithName(aliases.getOrDefault(name, name));
+            getAutomatedBrowser().clickElementWithName(getAliases().getOrDefault(name, name));
         }
     }
 
@@ -355,7 +368,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElementWithName(final String name, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementWithName(aliases.getOrDefault(name, name), waitTime);
+            getAutomatedBrowser().clickElementWithName(getAliases().getOrDefault(name, name), waitTime);
         }
     }
 
@@ -364,8 +377,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithName(final String optionText, final String name) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithName(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(name, name));
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(name, name));
         }
     }
 
@@ -374,8 +387,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelectWithName(final String optionText, final String name, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectWithName(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(name, name),
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(name, name),
                     waitTime);
         }
     }
@@ -385,8 +398,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithName(final String name, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithName(
-                    aliases.getOrDefault(name, name),
-                    aliases.getOrDefault(text, text));
+                    getAliases().getOrDefault(name, name),
+                    getAliases().getOrDefault(text, text));
         }
     }
 
@@ -395,8 +408,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElementWithName(final String name, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElementWithName(
-                    aliases.getOrDefault(name, name),
-                    aliases.getOrDefault(text, text),
+                    getAliases().getOrDefault(name, name),
+                    getAliases().getOrDefault(text, text),
                     waitTime);
         }
     }
@@ -404,7 +417,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElementWithName(final String name) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().getTextFromElementWithName(aliases.getOrDefault(name, name));
+            return getAutomatedBrowser().getTextFromElementWithName(getAliases().getOrDefault(name, name));
         }
 
         return null;
@@ -414,7 +427,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public String getTextFromElementWithName(final String name, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getTextFromElementWithName(
-                    aliases.getOrDefault(name, name),
+                    getAliases().getOrDefault(name, name),
                     waitTime);
         }
 
@@ -425,7 +438,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElement(final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(aliases.getOrDefault(locator, locator));
+            getAutomatedBrowser().clickElement(getAliases().getOrDefault(locator, locator));
         }
     }
 
@@ -433,7 +446,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void clickElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(aliases.getOrDefault(locator, locator), waitTime);
+            getAutomatedBrowser().clickElement(getAliases().getOrDefault(locator, locator), waitTime);
         }
     }
 
@@ -442,8 +455,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelect(final String optionText, final String locator) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelect(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(locator, locator));
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(locator, locator));
         }
     }
 
@@ -452,8 +465,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void selectOptionByTextFromSelect(final String optionText, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelect(
-                    aliases.getOrDefault(optionText, optionText),
-                    aliases.getOrDefault(locator, locator),
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(locator, locator),
                     waitTime);
         }
     }
@@ -463,8 +476,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElement(final String locator, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
-                    aliases.getOrDefault(locator, locator),
-                    aliases.getOrDefault(text, text));
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(text, text));
         }
     }
 
@@ -473,8 +486,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void populateElement(final String locator, final String text, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
-                    aliases.getOrDefault(locator, locator),
-                    aliases.getOrDefault(text, text),
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(text, text),
                     waitTime);
         }
     }
@@ -483,7 +496,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElement(final String locator) {
         if (getAutomatedBrowser() != null) {
-            final String text = getAutomatedBrowser().getTextFromElement(aliases.getOrDefault(locator, locator));
+            final String text = getAutomatedBrowser().getTextFromElement(getAliases().getOrDefault(locator, locator));
             aliases.put(LastReturn, text);
             return text;
         }
@@ -497,7 +510,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public String getTextFromElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             final String text = getAutomatedBrowser().getTextFromElement(
-                    aliases.getOrDefault(locator, locator),
+                    getAliases().getOrDefault(locator, locator),
                     waitTime);
             aliases.put(LastReturn, text);
             return text;
@@ -515,9 +528,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             final String locator) {
         if (getAutomatedBrowser() != null) {
             final String text = getAutomatedBrowser().getRegexGroupFromElement(
-                    aliases.getOrDefault(group, group),
-                    aliases.getOrDefault(regex, regex),
-                    aliases.getOrDefault(locator, locator));
+                    getAliases().getOrDefault(group, group),
+                    getAliases().getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator));
             aliases.put(LastReturn, text);
             return text;
         }
@@ -535,9 +548,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             final int waitTime) {
         if (getAutomatedBrowser() != null) {
             final String text = getAutomatedBrowser().getRegexGroupFromElement(
-                    aliases.getOrDefault(group, group),
-                    aliases.getOrDefault(regex, regex),
-                    aliases.getOrDefault(locator, locator),
+                    getAliases().getOrDefault(group, group),
+                    getAliases().getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator),
                     waitTime);
             aliases.put(LastReturn, text);
             return text;
@@ -552,8 +565,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void verifyTextFromElement(final String locator, final String regex) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().verifyTextFromElement(
-                    aliases.getOrDefault(locator, locator),
-                    aliases.getOrDefault(regex, regex));
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(regex, regex));
         }
     }
 
@@ -562,8 +575,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void verifyTextFromElement(final String locator, final String regex, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().verifyTextFromElement(
-                    aliases.getOrDefault(locator, locator),
-                    aliases.getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(regex, regex),
                     waitTime);
         }
     }
@@ -588,7 +601,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void saveHarFile(final String file) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().saveHarFile(aliases.getOrDefault(file, file));
+            getAutomatedBrowser().saveHarFile(getAliases().getOrDefault(file, file));
         }
     }
 
@@ -597,7 +610,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void blockRequestTo(final String url, final int responseCode) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().blockRequestTo(
-                    aliases.getOrDefault(url, url),
+                    getAliases().getOrDefault(url, url),
                     responseCode);
         }
     }
@@ -607,9 +620,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().alterResponseFrom(
-                    aliases.getOrDefault(url, url),
+                    getAliases().getOrDefault(url, url),
                     responseCode,
-                    aliases.getOrDefault(responseBody, responseBody));
+                    getAliases().getOrDefault(responseBody, responseBody));
         }
     }
 

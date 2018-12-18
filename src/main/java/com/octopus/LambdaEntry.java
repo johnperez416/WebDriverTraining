@@ -1,6 +1,7 @@
 package com.octopus;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.EmailResults;
 import com.octopus.eventhandlers.impl.SlackWebHook;
@@ -23,6 +24,7 @@ class LambdaInput {
     private String id;
     private String feature;
     private Map<String, String> headers;
+    private Map<String, String> aliases;
 
     public String getId() {
         return id;
@@ -46,6 +48,14 @@ class LambdaInput {
 
     public void setHeaders(final Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    public Map<String, String> getAliases() {
+        return aliases;
+    }
+
+    public void setAliases(final Map<String, String> headers) {
+        this.aliases = headers;
     }
 }
 
@@ -72,6 +82,8 @@ public class LambdaEntry {
         File junitOutput = null;
 
         try {
+            AutomatedBrowserBase.setExternalAliases(input.getAliases());
+
             driverDirectory = downloadChromeDriver();
             chromeDirectory = downloadChromeHeadless();
             featureFile = writeFeatureToFile(input.getFeature());
