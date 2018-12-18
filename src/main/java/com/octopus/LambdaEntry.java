@@ -19,12 +19,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 class LambdaInput {
     private String id;
     private String feature;
     private Map<String, String> headers;
-    private Map<String, String> aliases;
 
     public String getId() {
         return id;
@@ -49,17 +49,10 @@ class LambdaInput {
     public void setHeaders(final Map<String, String> headers) {
         this.headers = headers;
     }
-
-    public Map<String, String> getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(final Map<String, String> headers) {
-        this.aliases = headers;
-    }
 }
 
 public class LambdaEntry {
+    private static final String ALIAS_HEADER_PREFIX = "Alias-";
     private static final String RETRY_HEADER = "Test-Retry";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler EMAIL_RESULTS = new EmailResults();
@@ -82,7 +75,18 @@ public class LambdaEntry {
         File junitOutput = null;
 
         try {
-            AutomatedBrowserBase.setExternalAliases(input.getAliases());
+            /*
+                Take any header with the prefix "Alias-" and set it as an
+                alias value in the AutomatedBrowserBase class.
+             */
+            if (input.getHeaders() != null) {
+                AutomatedBrowserBase.setExternalAliases(
+                        input.getHeaders().entrySet().stream()
+                                .filter(s -> s.getKey().startsWith(ALIAS_HEADER_PREFIX))
+                                .collect(Collectors.toMap(x ->
+                                        x.getKey().replaceAll(ALIAS_HEADER_PREFIX, ""),
+                                        x -> x.getValue())));
+            }
 
             driverDirectory = downloadChromeDriver();
             chromeDirectory = downloadChromeHeadless();
