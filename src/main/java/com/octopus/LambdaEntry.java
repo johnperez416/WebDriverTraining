@@ -3,6 +3,7 @@ package com.octopus;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.EmailResults;
+import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.ZipUtilsImpl;
@@ -52,6 +53,7 @@ public class LambdaEntry {
     private static final String RETRY_HEADER = "Test-Retry";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler EMAIL_RESULTS = new EmailResults();
+    private static final EventHandler SLACK_RESULTS = new SlackWebHook();
     private static final EventHandler UPLOAD_TO_S3 = new UploadToS3();
     private static final String CHROME_HEADLESS_PACKAGE =
             "https://s3.amazonaws.com/webdriver-testing-resources/stable-headless-chromium-amazonlinux-2017-03.zip";
@@ -103,17 +105,11 @@ public class LambdaEntry {
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
-            EMAIL_RESULTS.finished(
+            SLACK_RESULTS.finished(
                     input.getId(),
                     retValue == 0,
                     featureFile.getAbsolutePath(),
                     FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()),
-                    input.getHeaders());
-            UPLOAD_TO_S3.finished(
-                    input.getId(),
-                    retValue == 0,
-                    featureFile.getAbsolutePath(),
-                    htmlOutput.getAbsolutePath(),
                     input.getHeaders());
 
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
