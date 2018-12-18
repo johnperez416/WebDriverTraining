@@ -6,7 +6,9 @@ import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.EmailResults;
 import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
+import com.octopus.utils.EnvironmentAliasesProcessor;
 import com.octopus.utils.ZipUtils;
+import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -52,7 +54,8 @@ class LambdaInput {
 }
 
 public class LambdaEntry {
-    private static final String ALIAS_HEADER_PREFIX = "Alias-";
+    private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
+            new EnvironmentAliasesProcessorImpl();
     private static final String RETRY_HEADER = "Test-Retry";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler EMAIL_RESULTS = new EmailResults();
@@ -75,18 +78,7 @@ public class LambdaEntry {
         File junitOutput = null;
 
         try {
-            /*
-                Take any header with the prefix "Alias-" and set it as an
-                alias value in the AutomatedBrowserBase class.
-             */
-            if (input.getHeaders() != null) {
-                AutomatedBrowserBase.setExternalAliases(
-                        input.getHeaders().entrySet().stream()
-                                .filter(s -> s.getKey().startsWith(ALIAS_HEADER_PREFIX))
-                                .collect(Collectors.toMap(x ->
-                                        x.getKey().replaceAll(ALIAS_HEADER_PREFIX, ""),
-                                        x -> x.getValue())));
-            }
+            ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
 
             driverDirectory = downloadChromeDriver();
             chromeDirectory = downloadChromeHeadless();
