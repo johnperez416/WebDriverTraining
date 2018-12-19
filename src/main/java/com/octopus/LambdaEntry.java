@@ -1,7 +1,6 @@
 package com.octopus;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.EmailResults;
 import com.octopus.eventhandlers.impl.SlackWebHook;
@@ -21,7 +20,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 class LambdaInput {
     private String id;
@@ -78,6 +76,8 @@ public class LambdaEntry {
         File junitOutput = null;
 
         try {
+            cleanTmpFolder();
+
             ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
 
             driverDirectory = downloadChromeDriver();
@@ -185,5 +185,17 @@ public class LambdaEntry {
             }
         }
         return featureFile;
+    }
+
+    /**
+     * Before we start, try cleaning the tmp directory to remove
+     * any left over files.
+     */
+    private void cleanTmpFolder() {
+        try {
+            FileUtils.cleanDirectory(new File("/tmp"));
+        } catch (IOException e) {
+            // silent failure
+        }
     }
 }
