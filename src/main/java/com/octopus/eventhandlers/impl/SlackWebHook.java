@@ -28,8 +28,8 @@ public class SlackWebHook implements EventHandler {
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
             final HttpPost httpPost = new HttpPost(headers.get(HOOK_URL));
             httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setEntity(new StringEntity("{\"text\":\"Cucumber test " + id + " " +
-                    (status ? "succeeded": "failed") + "\"}"));
+            httpPost.setEntity(new StringEntity("{\"text\":\"Cucumber test " +
+                    (status ? "succeeded": "failed") + ": " + id + " " + "\"}"));
             try (final CloseableHttpResponse response = client.execute(httpPost)) {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw new Exception("Failed to post to slack");
