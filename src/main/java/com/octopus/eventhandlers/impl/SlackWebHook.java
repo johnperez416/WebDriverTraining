@@ -1,5 +1,6 @@
 package com.octopus.eventhandlers.impl;
 
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -29,7 +30,9 @@ public class SlackWebHook implements EventHandler {
             final HttpPost httpPost = new HttpPost(headers.get(HOOK_URL));
             httpPost.setHeader("Content-Type", "application/json");
             httpPost.setEntity(new StringEntity("{\"text\":\"Cucumber test " +
-                    (status ? "succeeded": "failed") + ": " + id + " " + "\"}"));
+                    (status ? "succeeded": "failed") + ": " + id + ". " +
+                    "Average wait time " +
+                    (AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds\"}"));
             try (final CloseableHttpResponse response = client.execute(httpPost)) {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw new Exception("Failed to post to slack");
