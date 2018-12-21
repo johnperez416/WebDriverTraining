@@ -9,10 +9,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 public class SlackWebHook implements EventHandler {
     private static final String HOOK_URL = "Hook-Url";
+    private static final DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     public void finished(final String id,
@@ -32,7 +34,7 @@ public class SlackWebHook implements EventHandler {
             httpPost.setEntity(new StringEntity("{\"text\":\"Cucumber test " +
                     (status ? "succeeded": "failed") + ": " + id + ". " +
                     "Average wait time " +
-                    (AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds\"}"));
+                    df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds\"}"));
             try (final CloseableHttpResponse response = client.execute(httpPost)) {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw new Exception("Failed to post to slack");
