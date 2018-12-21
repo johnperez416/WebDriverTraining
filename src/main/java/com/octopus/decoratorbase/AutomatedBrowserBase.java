@@ -20,16 +20,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     static private Map<String, String> externalAliases = new HashMap<>();
+    static private long totalWaitTime = 0;
+    static private long numberWaitCount = 0;
+
     private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
-    private long totalWaitTime = 0;
-    private long numberWaitCount = 0;
 
-    private <T> T addNewTimedCall(final Callable<T> timedExecution) {
+    static public double getAverageWaitTime() {
+        if (numberWaitCount == 0) {
+            return 0;
+        }
+
+        return totalWaitTime / (double)numberWaitCount;
+    }
+
+    static private <T> T addNewTimedCall(final Callable<T> timedExecution) {
         final TimedResult<T> result =
                 new TimedExecutionImpl<T>().timedExecution(timedExecution);
-        ++totalWaitTime;
-        numberWaitCount += result.getMillis();
+        ++numberWaitCount;
+        totalWaitTime += result.getMillis();
         return result.getResult();
     }
 
