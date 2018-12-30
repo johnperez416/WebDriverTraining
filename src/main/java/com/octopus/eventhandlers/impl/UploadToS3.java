@@ -40,7 +40,7 @@ public class UploadToS3 implements EventHandler {
         if (proceed(status, headers, S3_FAILURE_ONLY)) {
             final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-" +
                     // Sanitise the filename
-                    StringUtils.left(id.replaceAll("[/\\\\]", "_"), 100) + "-" +
+                    StringUtils.left(id.replaceAll("[:/\\\\]", "_"), 100) + "-" +
                     UUID.randomUUID() + ".zip";
 
             File report = null;
