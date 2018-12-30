@@ -10,6 +10,7 @@ import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class UploadToS3 implements EventHandler {
         }
 
         if (proceed(status, headers, S3_FAILURE_ONLY)) {
-            final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-htmlreport-" + id + "-" + UUID.randomUUID() + ".zip";
+            final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-" + StringUtils.left(id, 10) + "-" + UUID.randomUUID() + ".zip";
 
             File report = null;
 
