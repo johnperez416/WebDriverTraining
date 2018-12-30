@@ -62,7 +62,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @After
     public void afterScenario(final Scenario scenario) {
         if (scenario.isFailed()) {
+            takeScreenshot();
             closeBrowser();
+        }
+    }
+
+    @And("^I take a screenshot$")
+    public void takeScreenshot() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().takeScreenshot();
         }
     }
 

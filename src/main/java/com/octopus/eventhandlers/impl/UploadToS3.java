@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.ZipUtilsImpl;
+import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -42,6 +43,9 @@ public class UploadToS3 implements EventHandler {
 
             try {
                 FileUtils.copyFileToDirectory(new File(featureFile), new File(content));
+                FileUtils.listFiles(new File("."), new String[]{"png"}, false)
+                        .forEach(file -> Try.run(() -> FileUtils.copyFileToDirectory(file, new File(content))));
+
                 report = File.createTempFile("htmlreport", ".zip");
                 ZIP_UTILS.zipDirectory(report.getAbsolutePath(), content);
 

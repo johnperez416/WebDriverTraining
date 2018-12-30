@@ -1,21 +1,28 @@
 package com.octopus.decorators;
 
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VerificationException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
-import cucumber.api.java.en.Then;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    private static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy HH.mm.ss.SSS");
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
@@ -48,6 +55,16 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void goTo(final String url) {
         webDriver.get(url);
+    }
+
+    @Override
+    public void takeScreenshot() {
+        try {
+            final File screenshot = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenshot, new File(DATE_FORMATTER.format(new Date()) + ".png"));
+        } catch (final Exception ex) {
+            throw new SaveException(ex);
+        }
     }
 
     @Override
