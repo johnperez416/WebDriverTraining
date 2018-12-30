@@ -17,25 +17,27 @@ public class SlackWebHook implements EventHandler {
     private static final DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
-    public void finished(final String id,
-                         final boolean status,
-                         final String featureFile,
-                         final String content,
-                         final Map<String, String> headers) {
+    public Map<String, String> finished(final String id,
+                                        final boolean status,
+                                        final String featureFile,
+                                        final String content,
+                                        final Map<String, String> headers,
+                                        final Map<String, String> previousResults) {
         if (!headers.containsKey(HOOK_URL)) {
             System.out.println("The " + HOOK_URL +
                     " headers must be defined to return the results via Slack");
-            return;
+            return previousResults;
         }
 
-        if (!status || !headers.containsKey(SLACK_FAILURE_ONLY) || headers.get(SLACK_FAILURE_ONLY).equalsIgnoreCase(Boolean.FALSE.toString())) {
+        if (proceed(status, headers, SLACK_FAILURE_ONLY)) {
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
                 final HttpPost httpPost = new HttpPost(headers.get(HOOK_URL));
                 httpPost.setHeader("Content-Type", "application/json");
                 httpPost.setEntity(new StringEntity("{\"text\":\"Cucumber test " +
                         (status ? "succeeded" : "failed") + ": " + id + ". " +
                         "Average wait time " +
-                        df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds\"}"));
+                        df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds\"}" +
+                        (previousResults.containsKey(UploadToS3.S3_REPORT_URL) ? " " + previousResults.get(UploadToS3.S3_REPORT_URL) : "")));
                 try (final CloseableHttpResponse response = client.execute(httpPost)) {
                     if (response.getStatusLine().getStatusCode() != 200) {
                         throw new Exception("Failed to post to slack");
@@ -45,5 +47,7 @@ public class SlackWebHook implements EventHandler {
                 System.out.println("Failed to send result to Slack.");
             }
         }
+
+        return previousResults;
     }
 }

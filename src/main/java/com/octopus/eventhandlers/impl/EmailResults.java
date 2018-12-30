@@ -1,6 +1,5 @@
 package com.octopus.eventhandlers.impl;
 
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
@@ -14,17 +13,18 @@ public class EmailResults implements EventHandler {
     private static final String EMAIL_FROM = "Email-From";
 
     @Override
-    public void finished(final String id,
-                         final boolean status,
-                         final String featureFile,
-                         final String content,
-                         final Map<String, String> headers) {
+    public Map<String, String> finished(final String id,
+                                        final boolean status,
+                                        final String featureFile,
+                                        final String content,
+                                        final Map<String, String> headers,
+                                        final Map<String, String> previousResults) {
         if (!(headers.containsKey(EMAIL_TO) &&
                 headers.containsKey(EMAIL_FROM) &&
                 headers.containsKey(EMAIL_CLIENT_REGION))) {
             System.out.println("The " + EMAIL_TO + ", " + EMAIL_FROM + " and " + EMAIL_CLIENT_REGION +
                     " headers must be defined to send an email report.");
-            return;
+            return previousResults;
         }
 
         try {
@@ -45,5 +45,7 @@ public class EmailResults implements EventHandler {
         } catch (final Exception ex) {
             System.out.println("The email was not sent. Error message: " + ex.getMessage());
         }
+
+        return previousResults;
     }
 }

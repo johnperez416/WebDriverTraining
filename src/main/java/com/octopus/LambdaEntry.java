@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.SaveKubernetesConfigMap;
 import com.octopus.eventhandlers.impl.SlackWebHook;
+import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.EnvironmentAliasesProcessor;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
@@ -18,6 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 class LambdaInput {
@@ -56,6 +59,7 @@ public class LambdaEntry {
     private static final String RETRY_HEADER = "Test-Retry";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
+            new UploadToS3(),
             new SlackWebHook(),
             new SaveKubernetesConfigMap()
     };
@@ -113,14 +117,20 @@ public class LambdaEntry {
 
             System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
 
-            for (final EventHandler eventHandler : EVENT_HANDLERS) {
-                eventHandler.finished(
-                        input.getId(),
-                        retValue == 0,
-                        featureFile.getAbsolutePath(),
-                        FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()),
-                        input.getHeaders());
-            }
+            final String featureFilePath = featureFile.getAbsolutePath();
+            final boolean status = retValue == 0;
+            final String outputTextFile = FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset());
+            Arrays.stream(EVENT_HANDLERS).reduce(
+                    new HashMap<String, String>(),
+                    (results, handler) -> new HashMap<>(handler.finished(
+                            input.getId(),
+                            status,
+                            featureFilePath,
+                            outputTextFile,
+                            input.getHeaders(),
+                            results)),
+                    (a, b) -> a
+            );
 
             return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
         } finally {

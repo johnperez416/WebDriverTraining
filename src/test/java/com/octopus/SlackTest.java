@@ -18,6 +18,7 @@ public class SlackTest {
                 "content",
                 new HashMap<String, String>() {{
                     this.put("Hook-Url", System.getenv("HookUrl"));
-                }});
+                }},
+                new HashMap<>());
     }
 }

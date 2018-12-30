@@ -23,11 +23,12 @@ public class SaveKubernetesConfigMap implements EventHandler {
     private static final String UI_AVERAGE_KEY = "ui-test-avg";
 
     @Override
-    public void finished(final String id,
-                         final boolean status,
-                         final String featureFile,
-                         final String content,
-                         final Map<String, String> headers) {
+    public Map<String, String> finished(final String id,
+                                        final boolean status,
+                                        final String featureFile,
+                                        final String content,
+                                        final Map<String, String> headers,
+                                        final Map<String, String> previousResults) {
         if (!headers.containsKey(KUBERNETES_URL) ||
                 !headers.containsKey(KUBERNETES_TOKEN) ||
                 !headers.containsKey(KUBERNETES_NAMESPACE) ||
@@ -38,7 +39,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
                     KUBERNETES_NAMESPACE + " and " +
                     KUBERNETES_CONFIGMAP +
                     " headers must be defined to save the results into a config map");
-            return;
+            return previousResults;
         }
 
         System.out.println(
@@ -71,6 +72,8 @@ public class SaveKubernetesConfigMap implements EventHandler {
         } catch (final Exception ex) {
             System.out.println("Failed to send result to Kubernetes.\n" + ex.toString());
         }
+
+        return previousResults;
     }
 
     public Object deserialize(final String jsonStr, final Class<?> targetClass) {

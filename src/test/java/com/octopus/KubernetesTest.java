@@ -21,6 +21,7 @@ public class KubernetesTest {
                     this.put(SaveKubernetesConfigMap.KUBERNETES_NAMESPACE, System.getenv("k8snamespace"));
                     this.put(SaveKubernetesConfigMap.KUBERNETES_TOKEN, System.getenv("k8stoken"));
                     this.put(SaveKubernetesConfigMap.KUBERNETES_URL, System.getenv("k8surl"));
-                }});
+                }},
+                new HashMap<>());
     }
 }
