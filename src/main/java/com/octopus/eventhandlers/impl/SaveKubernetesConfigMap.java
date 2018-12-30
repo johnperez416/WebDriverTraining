@@ -11,6 +11,7 @@ import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.util.Config;
 
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
     public static final String KUBERNETES_CONFIGMAP = "Kubernetes-ConfigMap";
     private static final DecimalFormat df = new DecimalFormat("#.##");
     private static final String UI_AVERAGE_KEY = "ui-test-avg";
+    private static final String UI_EXE_TIME_KEY = "ui-test-exe-time";
 
     @Override
     public Map<String, String> finished(final String id,
@@ -53,14 +55,25 @@ public class SaveKubernetesConfigMap implements EventHandler {
                 false);
         Configuration.setDefaultApiClient(client);
 
-        final CoreV1Api api = new CoreV1Api();
+        final String result = status ? df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) : "";
+        final String averageTime = "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
+                "\"value\":\"" + result + "\"}";
+        applyPatch(averageTime, headers);
 
+        final String testTime = "{\"op\":\"add\",\"path\":\"/data/" + UI_EXE_TIME_KEY + "\"," +
+                "\"value\":\"" + Instant.now().getEpochSecond() + "\"}";
+        applyPatch(testTime, headers);
+
+        return previousResults;
+    }
+
+    private void applyPatch(final String json, final Map<String, String> headers) {
         try {
-            final String result = status ? df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) : "";
+            final CoreV1Api api = new CoreV1Api();
+
             final ArrayList<JsonObject> arr = new ArrayList<>();
             arr.add(((JsonElement) deserialize(
-                    "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
-                            "\"value\":\"" + result + "\"}",
+                    json,
                     JsonElement.class)).getAsJsonObject());
 
             api.patchNamespacedConfigMap(
@@ -72,8 +85,6 @@ public class SaveKubernetesConfigMap implements EventHandler {
         } catch (final Exception ex) {
             System.out.println("Failed to send result to Kubernetes.\n" + ex.toString());
         }
-
-        return previousResults;
     }
 
     public Object deserialize(final String jsonStr, final Class<?> targetClass) {
