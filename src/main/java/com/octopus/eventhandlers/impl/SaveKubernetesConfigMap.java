@@ -55,10 +55,11 @@ public class SaveKubernetesConfigMap implements EventHandler {
         final CoreV1Api api = new CoreV1Api();
 
         try {
+            final String result = status ? df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) : "";
             final ArrayList<JsonObject> arr = new ArrayList<>();
             arr.add(((JsonElement) deserialize(
                     "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
-                            "\"value\":\"" + df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + "\"}",
+                            "\"value\":\"" + result + "\"}",
                     JsonElement.class)).getAsJsonObject());
 
             api.patchNamespacedConfigMap(
