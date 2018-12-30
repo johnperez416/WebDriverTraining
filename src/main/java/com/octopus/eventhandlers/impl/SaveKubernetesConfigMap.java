@@ -66,7 +66,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
     }
 
     public Object deserialize(final String jsonStr, final Class<?> targetClass) {
-        Object obj = (new Gson()).fromJson(jsonStr, targetClass);
+        final Object obj = (new Gson()).fromJson(jsonStr, targetClass);
         return obj;
     }
 
