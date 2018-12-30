@@ -29,7 +29,9 @@ public class SaveKubernetesConfigMap implements EventHandler {
                          final String content,
                          final Map<String, String> headers) {
         if (!headers.containsKey(KUBERNETES_URL) ||
-                !headers.containsKey(KUBERNETES_TOKEN)) {
+                !headers.containsKey(KUBERNETES_TOKEN) ||
+                !headers.containsKey(KUBERNETES_NAMESPACE) ||
+                !headers.containsKey(KUBERNETES_CONFIGMAP)) {
             System.out.println("The " +
                     KUBERNETES_URL + ", " +
                     KUBERNETES_TOKEN + ", " +
@@ -38,6 +40,11 @@ public class SaveKubernetesConfigMap implements EventHandler {
                     " headers must be defined to save the results into a config map");
             return;
         }
+
+        System.out.println(
+                "Attempting to update configmap " + headers.get(KUBERNETES_CONFIGMAP) +
+                        " in namespace " + headers.get(KUBERNETES_NAMESPACE) +
+                        " in cluster " + headers.get(KUBERNETES_URL));
 
         final ApiClient client = Config.fromToken(
                 headers.get(KUBERNETES_URL),
