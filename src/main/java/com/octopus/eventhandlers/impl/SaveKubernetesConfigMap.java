@@ -50,7 +50,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
         try {
             final ArrayList<JsonObject> arr = new ArrayList<>();
             arr.add(((JsonElement) deserialize(
-                    "{\"op\":\"replace\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
+                    "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
                             "\"value\":\"" + df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + "\"}",
                     JsonElement.class)).getAsJsonObject());
 
@@ -61,7 +61,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
                     "false"
             );
         } catch (final Exception ex) {
-            System.out.println("Failed to send result to Kubernetes.");
+            System.out.println("Failed to send result to Kubernetes.\n" + ex.toString());
         }
     }
 
