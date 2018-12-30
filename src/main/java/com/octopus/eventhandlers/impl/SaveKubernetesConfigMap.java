@@ -1,15 +1,17 @@
 package com.octopus.eventhandlers.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.CoreV1Api;
-import io.kubernetes.client.models.V1ConfigMap;
 import io.kubernetes.client.util.Config;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SaveKubernetesConfigMap implements EventHandler {
@@ -43,29 +45,29 @@ public class SaveKubernetesConfigMap implements EventHandler {
                 false);
         Configuration.setDefaultApiClient(client);
 
-        final V1ConfigMap configMap = new V1ConfigMap();
-        configMap.setApiVersion("v1");
-        configMap.setKind("ConfigMap");
-        configMap.setData(new HashMap<String, String>() {{
-                              this.put(
-                                      UI_AVERAGE_KEY,
-                                      status
-                                              ? df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000)
-                                              : "");
-                          }}
-        );
-
         final CoreV1Api api = new CoreV1Api();
 
         try {
+            final ArrayList<JsonObject> arr = new ArrayList<>();
+            arr.add(((JsonElement) deserialize(
+                    "{\"op\":\"replace\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
+                            "\"value\":\"" + df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + "\"}",
+                    JsonElement.class)).getAsJsonObject());
+
             api.patchNamespacedConfigMap(
                     headers.get(KUBERNETES_CONFIGMAP),
                     headers.get(KUBERNETES_NAMESPACE),
-                    configMap,
+                    arr,
                     "false"
             );
         } catch (final Exception ex) {
             System.out.println("Failed to send result to Kubernetes.");
         }
     }
+
+    public Object deserialize(final String jsonStr, final Class<?> targetClass) {
+        Object obj = (new Gson()).fromJson(jsonStr, targetClass);
+        return obj;
+    }
+
 }
