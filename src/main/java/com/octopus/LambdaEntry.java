@@ -73,6 +73,8 @@ public class LambdaEntry {
     public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
         System.out.println("STARTED Cucumber Test ID " + input.getId());
 
+        cleanTmpFolder();
+
         File outputFile = null;
         File txtOutputFile = null;
         File htmlOutput = null;
@@ -81,8 +83,6 @@ public class LambdaEntry {
         try (final AutoDeletingTempDir driverDirectory = new AutoDeletingTempDir(downloadChromeDriver())) {
             try (final AutoDeletingTempDir chromeDirectory = new AutoDeletingTempDir(downloadChromeHeadless())) {
                 try (final AutoDeletingTempFile featureFile = new AutoDeletingTempFile(writeFeatureToFile(input.getFeature()))) {
-
-                    cleanTmpFolder();
 
                     ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
 
