@@ -39,7 +39,9 @@ public class SlackWebHook implements EventHandler {
                         (status ? "succeeded" : "failed") + ": " + id + ". " +
                         "Average wait time " +
                         df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds" +
-                        (previousResults.containsKey(UploadToS3.S3_REPORT_URL) ? " " + previousResults.get(UploadToS3.S3_REPORT_URL) : "") +
+                        (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
+                                ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
+                                : "") +
                         "\"}"));
                 try (final CloseableHttpResponse response = client.execute(httpPost)) {
                     if (response.getStatusLine().getStatusCode() != 200) {

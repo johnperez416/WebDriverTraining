@@ -1,6 +1,7 @@
 package com.octopus;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.SaveKubernetesConfigMap;
 import com.octopus.eventhandlers.impl.SlackWebHook;
@@ -97,6 +98,8 @@ public class LambdaEntry {
                         txtOutputFile = createCleanFile(txtOutputFile, "output", ".txt");
                         junitOutput = createCleanFile(junitOutput, "junit", ".xml");
                         htmlOutput = createCleanDirectory(htmlOutput, "htmloutput");
+
+                        AutomatedBrowserBase.setOutputDir(htmlOutput.getAbsolutePath());
 
                         retValue = cucumber.api.cli.Main.run(
                                 new String[]{

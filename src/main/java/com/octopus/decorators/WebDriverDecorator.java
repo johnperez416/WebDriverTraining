@@ -61,7 +61,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void takeScreenshot() {
         try {
             final File screenshot = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
-            final File dest = new File(DATE_FORMATTER.format(new Date()) + ".png");
+            final File dest = new File(new File(AutomatedBrowserBase.getOutputDir()) + File.separator + DATE_FORMATTER.format(new Date()) + ".png");
             System.out.println("Saving screenshot to " + dest.getAbsolutePath());
             FileUtils.copyFile(screenshot, dest);
         } catch (final Exception ex) {

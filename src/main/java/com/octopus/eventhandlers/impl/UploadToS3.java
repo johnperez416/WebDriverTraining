@@ -9,7 +9,6 @@ import com.octopus.eventhandlers.EventHandler;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.ZipUtilsImpl;
-import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -48,8 +47,6 @@ public class UploadToS3 implements EventHandler {
 
             try (final AutoDeletingTempFile report = new AutoDeletingTempFile("htmlreport", ".zip")) {
                 FileUtils.copyFileToDirectory(new File(featureFile), new File(htmlOutputDir));
-                FileUtils.listFiles(new File("."), new String[]{"png"}, false)
-                        .forEach(file -> Try.run(() -> FileUtils.copyFileToDirectory(file, new File(htmlOutputDir))));
                 ZIP_UTILS.zipDirectory(report.getFile().getAbsolutePath(), new File(htmlOutputDir).getAbsolutePath());
 
                 final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()

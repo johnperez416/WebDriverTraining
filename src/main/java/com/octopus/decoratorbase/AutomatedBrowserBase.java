@@ -20,6 +20,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     static private Map<String, String> externalAliases = new HashMap<>();
+    static private String outDir = "";
     static private long totalWaitTime = 0;
     static private long numberWaitCount = 0;
 
@@ -45,6 +46,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public static void setExternalAliases(final Map<String, String> externalAliases) {
         if (externalAliases == null) return;
         AutomatedBrowserBase.externalAliases.putAll(externalAliases);
+    }
+
+    public static String getOutputDir() {
+        return AutomatedBrowserBase.outDir;
+    }
+
+    public static void setOutputDir(final String outputDir) {
+        AutomatedBrowserBase.outDir = outputDir;
     }
 
     public AutomatedBrowserBase() {
