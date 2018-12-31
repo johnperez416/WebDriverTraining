@@ -143,8 +143,6 @@ public class LambdaEntry {
             FileUtils.deleteQuietly(txtOutputFile);
             FileUtils.deleteQuietly(htmlOutput);
             FileUtils.deleteQuietly(junitOutput);
-            FileUtils.listFiles(new File("."), new String[]{"png"}, false)
-                    .forEach(file -> FileUtils.deleteQuietly(file));
 
             System.out.println("FINISHED Cucumber Test ID " + input.getId());
         }
