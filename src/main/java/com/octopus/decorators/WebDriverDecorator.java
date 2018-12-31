@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
-    private static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy HH.mm.ss.SSS");
+    private static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 

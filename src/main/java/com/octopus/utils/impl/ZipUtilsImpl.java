@@ -2,7 +2,6 @@ package com.octopus.utils.impl;
 
 import com.octopus.utils.ZipUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,9 +40,7 @@ public class ZipUtilsImpl implements ZipUtils {
         try (FileOutputStream fos = new FileOutputStream(fileZip)) {
             try (ZipOutputStream zos = new ZipOutputStream(fos)) {
                 for (final File file : FileUtils.listFiles(inputDirectoryFile, null, true)) {
-                    final ZipEntry ze = new ZipEntry(
-                            FilenameUtils.getPath(file.getAbsolutePath()) +
-                                    FilenameUtils.getName(file.getAbsolutePath()));
+                    final ZipEntry ze = new ZipEntry(file.toPath().relativize(inputDirectoryFile.toPath()).toString());
                     zos.putNextEntry(ze);
                     try (FileInputStream in = new FileInputStream(file.getPath())) {
                         int len;

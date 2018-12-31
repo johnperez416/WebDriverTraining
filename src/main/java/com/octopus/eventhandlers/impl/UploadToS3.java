@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UploadToS3 implements EventHandler {
+    private static final int MAX_ID_LENGTH = 50;
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     public static final String S3_REPORT_URL = "S3-Report-Url";
     private static final String BUCKET_NAME = "S3-Bucket-Name";
@@ -40,7 +41,7 @@ public class UploadToS3 implements EventHandler {
         if (proceed(status, headers, S3_FAILURE_ONLY)) {
             final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-" +
                     // Sanitise the filename
-                    StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), 100) + "-" +
+                    StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), MAX_ID_LENGTH) + "-" +
                     UUID.randomUUID() + ".zip";
 
             File report = null;
@@ -74,7 +75,7 @@ public class UploadToS3 implements EventHandler {
                     this.put(S3_REPORT_URL, "s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
                 }};
             } catch (final Exception ex) {
-                System.out.println("The report was not uploaded to S3. Error message: " + ex.getMessage());
+                System.out.println("The report file " + fileObjKeyName + " was not uploaded to S3. Error message: " + ex.getMessage());
             } finally {
                 FileUtils.deleteQuietly(report);
             }
