@@ -16,7 +16,8 @@ public class EmailResults implements EventHandler {
     public Map<String, String> finished(final String id,
                                         final boolean status,
                                         final String featureFile,
-                                        final String content,
+                                        final String txtOutput,
+                                        final String htmlOutputDir,
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!(headers.containsKey(EMAIL_TO) &&
@@ -37,7 +38,7 @@ public class EmailResults implements EventHandler {
                     .withMessage(new Message()
                             .withBody(new Body()
                                     .withText(new Content()
-                                            .withCharset("UTF-8").withData(content)))
+                                            .withCharset("UTF-8").withData(txtOutput)))
                             .withSubject(new Content()
                                     .withCharset("UTF-8").withData((status ? "SUCCEEDED" : "FAILED") + " WebDriver Test Results ID " + id)))
                     .withSource(headers.get(EMAIL_FROM));

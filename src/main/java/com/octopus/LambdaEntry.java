@@ -7,6 +7,8 @@ import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.EnvironmentAliasesProcessor;
 import com.octopus.utils.ZipUtils;
+import com.octopus.utils.impl.AutoDeletingTempDir;
+import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import org.apache.commons.io.FileUtils;
@@ -71,74 +73,71 @@ public class LambdaEntry {
     public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
         System.out.println("STARTED Cucumber Test ID " + input.getId());
 
-        File driverDirectory = null;
-        File chromeDirectory = null;
         File outputFile = null;
         File txtOutputFile = null;
-        File featureFile = null;
         File htmlOutput = null;
         File junitOutput = null;
 
-        try {
-            cleanTmpFolder();
+        try (final AutoDeletingTempDir driverDirectory = new AutoDeletingTempDir(downloadChromeDriver())) {
+            try (final AutoDeletingTempDir chromeDirectory = new AutoDeletingTempDir(downloadChromeHeadless())) {
+                try (final AutoDeletingTempFile featureFile = new AutoDeletingTempFile(writeFeatureToFile(input.getFeature()))) {
 
-            ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
+                    cleanTmpFolder();
 
-            driverDirectory = downloadChromeDriver();
-            chromeDirectory = downloadChromeHeadless();
-            featureFile = writeFeatureToFile(input.getFeature());
+                    ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
 
-            final int retryCount = NumberUtils.toInt(
-                    input.getHeaders().getOrDefault(RETRY_HEADER, "1"),
-                    1);
+                    final int retryCount = NumberUtils.toInt(
+                            input.getHeaders().getOrDefault(RETRY_HEADER, "1"),
+                            1);
 
-            int retValue = 0;
+                    int retValue = 0;
 
-            for (int x = 0; x < retryCount; ++x) {
-                outputFile = createCleanFile(outputFile, "output", ".json");
-                txtOutputFile = createCleanFile(txtOutputFile, "output", ".txt");
-                junitOutput = createCleanFile(junitOutput, "junit", ".xml");
-                htmlOutput = createCleanDirectory(htmlOutput, "htmloutput");
+                    for (int x = 0; x < retryCount; ++x) {
+                        outputFile = createCleanFile(outputFile, "output", ".json");
+                        txtOutputFile = createCleanFile(txtOutputFile, "output", ".txt");
+                        junitOutput = createCleanFile(junitOutput, "junit", ".xml");
+                        htmlOutput = createCleanDirectory(htmlOutput, "htmloutput");
 
-                retValue = cucumber.api.cli.Main.run(
-                    new String[]{
-                            "--monochrome",
-                            "--glue", "com.octopus.decoratorbase",
-                            "--plugin", "json:" + outputFile.toString(),
-                            "--plugin", "pretty:" + txtOutputFile.toString(),
-                            "--plugin", "html:" + htmlOutput.toString(),
-                            "--plugin", "junit:" + junitOutput.toString(),
-                            featureFile.getAbsolutePath()},
-                    Thread.currentThread().getContextClassLoader());
-                if (retValue == 0) {
-                    break;
+                        retValue = cucumber.api.cli.Main.run(
+                                new String[]{
+                                        "--monochrome",
+                                        "--glue", "com.octopus.decoratorbase",
+                                        "--plugin", "json:" + outputFile.toString(),
+                                        "--plugin", "pretty:" + txtOutputFile.toString(),
+                                        "--plugin", "html:" + htmlOutput.toString(),
+                                        "--plugin", "junit:" + junitOutput.toString(),
+                                        featureFile.getFile().getAbsolutePath()},
+                                Thread.currentThread().getContextClassLoader());
+                        if (retValue == 0) {
+                            break;
+                        }
+                    }
+
+                    System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
+
+                    final String featureFilePath = featureFile.getFile().getAbsolutePath();
+                    final String htmlOutputDir = htmlOutput.getAbsolutePath();
+                    final boolean status = retValue == 0;
+                    final String outputTextFile = FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset());
+                    Arrays.stream(EVENT_HANDLERS).reduce(
+                            new HashMap<String, String>(),
+                            (results, handler) -> new HashMap<>(handler.finished(
+                                    input.getId(),
+                                    status,
+                                    featureFilePath,
+                                    outputTextFile,
+                                    htmlOutputDir,
+                                    input.getHeaders(),
+                                    results)),
+                            (a, b) -> a
+                    );
+
+                    return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
                 }
             }
-
-            System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
-
-            final String featureFilePath = featureFile.getAbsolutePath();
-            final boolean status = retValue == 0;
-            final String outputTextFile = FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset());
-            Arrays.stream(EVENT_HANDLERS).reduce(
-                    new HashMap<String, String>(),
-                    (results, handler) -> new HashMap<>(handler.finished(
-                            input.getId(),
-                            status,
-                            featureFilePath,
-                            outputTextFile,
-                            input.getHeaders(),
-                            results)),
-                    (a, b) -> a
-            );
-
-            return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
         } finally {
-            FileUtils.deleteQuietly(driverDirectory);
-            FileUtils.deleteQuietly(chromeDirectory);
             FileUtils.deleteQuietly(outputFile);
             FileUtils.deleteQuietly(txtOutputFile);
-            FileUtils.deleteQuietly(featureFile);
             FileUtils.deleteQuietly(htmlOutput);
             FileUtils.deleteQuietly(junitOutput);
             FileUtils.listFiles(new File("."), new String[]{"png"}, false)

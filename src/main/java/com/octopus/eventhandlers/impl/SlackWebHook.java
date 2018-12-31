@@ -20,7 +20,8 @@ public class SlackWebHook implements EventHandler {
     public Map<String, String> finished(final String id,
                                         final boolean status,
                                         final String featureFile,
-                                        final String content,
+                                        final String txtOutput,
+                                        final String htmlOutputDir,
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!headers.containsKey(HOOK_URL)) {

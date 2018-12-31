@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.utils.ZipUtils;
+import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
@@ -29,7 +30,8 @@ public class UploadToS3 implements EventHandler {
     public Map<String, String> finished(final String id,
                                         final boolean status,
                                         final String featureFile,
-                                        final String content,
+                                        final String txtOutput,
+                                        final String htmlOutputDir,
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!(headers.containsKey(BUCKET_NAME) && headers.containsKey(CLIENT_REGION))) {
@@ -44,15 +46,11 @@ public class UploadToS3 implements EventHandler {
                     StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), MAX_ID_LENGTH) + "-" +
                     UUID.randomUUID() + ".zip";
 
-            File report = null;
-
-            try {
-                FileUtils.copyFileToDirectory(new File(featureFile), new File(content));
+            try (final AutoDeletingTempFile report = new AutoDeletingTempFile("htmlreport", ".zip")) {
+                FileUtils.copyFileToDirectory(new File(featureFile), new File(htmlOutputDir));
                 FileUtils.listFiles(new File("."), new String[]{"png"}, false)
-                        .forEach(file -> Try.run(() -> FileUtils.copyFileToDirectory(file, new File(content))));
-
-                report = File.createTempFile("htmlreport", ".zip");
-                ZIP_UTILS.zipDirectory(report.getAbsolutePath(), content);
+                        .forEach(file -> Try.run(() -> FileUtils.copyFileToDirectory(file, new File(htmlOutputDir))));
+                ZIP_UTILS.zipDirectory(report.getFile().getAbsolutePath(), new File(htmlOutputDir).getAbsolutePath());
 
                 final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                         .withRegion(headers.get(CLIENT_REGION))
@@ -60,7 +58,7 @@ public class UploadToS3 implements EventHandler {
                         .build();
 
                 // Upload a file as a new object with ContentType and title specified.
-                final PutObjectRequest request = new PutObjectRequest(headers.get(BUCKET_NAME), fileObjKeyName, report);
+                final PutObjectRequest request = new PutObjectRequest(headers.get(BUCKET_NAME), fileObjKeyName, report.getFile());
                 final ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentType("application/zip");
                 metadata.addUserMetadata("x-amz-meta-title", "Cucumber Report");
@@ -75,9 +73,7 @@ public class UploadToS3 implements EventHandler {
                     this.put(S3_REPORT_URL, "s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
                 }};
             } catch (final Exception ex) {
-                System.out.println("The report file " + fileObjKeyName + " was not uploaded to S3. Error message: " + ex.getMessage());
-            } finally {
-                FileUtils.deleteQuietly(report);
+                System.out.println("The report file " + fileObjKeyName + " was not uploaded to S3. Error message: " + ex.toString());
             }
         }
 
