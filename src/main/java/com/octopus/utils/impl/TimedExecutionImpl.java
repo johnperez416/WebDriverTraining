@@ -12,7 +12,7 @@ public class TimedExecutionImpl<T> implements TimedExecution<T> {
             final long start = System.currentTimeMillis();
             final T result = callable.call();
             final long finish = System.currentTimeMillis();
-            return new TimedResultImpl(result, finish - start);
+            return new TimedResultImpl<>(result, finish - start);
         } catch (final Exception ex) {
             throw new RuntimeException(ex);
         }
