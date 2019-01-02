@@ -5,6 +5,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public interface AutomatedBrowser {
 
+    double getAverageWaitTime();
+
     void setDefaultExplicitWaitTime(int waitTime);
 
     WebDriver getWebDriver();

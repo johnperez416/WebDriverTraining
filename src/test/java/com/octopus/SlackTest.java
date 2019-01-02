@@ -16,6 +16,7 @@ public class SlackTest {
                 true,
                 "feature file",
                 "content",
+                "",
                 new HashMap<String, String>() {{
                     this.put("Hook-Url", System.getenv("HookUrl"));
                 }},

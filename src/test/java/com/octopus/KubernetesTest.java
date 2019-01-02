@@ -16,6 +16,7 @@ public class KubernetesTest {
                 true,
                 "feature file",
                 "content",
+                "",
                 new HashMap<String, String>() {{
                     this.put(SaveKubernetesConfigMap.KUBERNETES_CONFIGMAP, "kov-metadata");
                     this.put(SaveKubernetesConfigMap.KUBERNETES_NAMESPACE, System.getenv("k8snamespace"));
