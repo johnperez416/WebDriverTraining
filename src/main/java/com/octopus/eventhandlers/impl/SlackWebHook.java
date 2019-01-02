@@ -38,7 +38,7 @@ public class SlackWebHook implements EventHandler {
                         "\"text\":\"Cucumber test " +
                         (status ? "succeeded" : "failed") + ": " + id + ". " +
                         "Average wait time " +
-                        df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds" +
+                        df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) + " seconds" +
                         (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
                                 ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
                                 : "") +

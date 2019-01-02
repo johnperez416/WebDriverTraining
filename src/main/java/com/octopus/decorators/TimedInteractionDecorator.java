@@ -21,6 +21,10 @@ public class TimedInteractionDecorator extends AutomatedBrowserBase {
                 new TimedExecutionImpl<T>().timedExecution(timedExecution);
         ++numberWaitCount;
         totalWaitTime += result.getMillis();
+
+        // Make the value available outside of Cucumber
+        AutomatedBrowserBase.setStaticAverageWaitTime(getAverageWaitTime());
+
         return result.getResult();
     }
     

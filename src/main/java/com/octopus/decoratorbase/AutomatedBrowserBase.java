@@ -21,9 +21,18 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     static private Map<String, String> externalAliases = new HashMap<>();
     static private String outDir = "";
+    static private double averageWaitTime;
 
     private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
+
+    public static double getStaticAverageWaitTime() {
+        return AutomatedBrowserBase.averageWaitTime;
+    }
+
+    public static void setStaticAverageWaitTime(final double averageWaitTime) {
+        AutomatedBrowserBase.averageWaitTime = averageWaitTime;
+    }
 
     public AutomatedBrowserBase() {
 

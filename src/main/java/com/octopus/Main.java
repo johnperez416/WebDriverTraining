@@ -17,7 +17,7 @@ public class Main {
                 ArrayUtils.addAll(args, new String[]{"--glue", "com.octopus.decoratorbase"}),
                 Thread.currentThread().getContextClassLoader());
         System.out.println("Average wait time: " +
-                (AutomatedBrowserBase.getAverageWaitTime() / 1000) + " seconds");
+                (AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) + " seconds");
         System.exit(retCode);
     }
 }

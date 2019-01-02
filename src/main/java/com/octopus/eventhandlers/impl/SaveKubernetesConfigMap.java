@@ -56,7 +56,7 @@ public class SaveKubernetesConfigMap implements EventHandler {
                 false);
         Configuration.setDefaultApiClient(client);
 
-        final String result = status ? df.format(AutomatedBrowserBase.getAverageWaitTime() / 1000) : "";
+        final String result = status ? df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) : "";
         final String averageTime = "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
                 "\"value\":\"" + result + "\"}";
         applyPatch(averageTime, headers);
