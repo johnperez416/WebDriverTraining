@@ -21,6 +21,8 @@ public interface AutomatedBrowser {
 
     void goTo(String url);
 
+    void dumpAliases();
+
     void takeScreenshot();
 
     void clickElementWithId(String id);

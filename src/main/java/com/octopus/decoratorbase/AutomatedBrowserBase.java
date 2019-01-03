@@ -162,6 +162,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I dump the aliases$")
+    @Override
+    public void dumpAliases() {
+        getAliases().entrySet().forEach(entrySet -> System.out.println(entrySet.getKey() + ": " + entrySet.getValue()));
+    }
+
     @And("^I click the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\"$")
     @Override
     public void clickElementWithId(final String id) {
