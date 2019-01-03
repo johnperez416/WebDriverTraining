@@ -68,7 +68,9 @@ public class AutomatedBrowserFactory {
         return new ChromeDecorator(headless,
                 new ImplicitWaitDecorator(10,
                         new BrowserMobDecorator(
-                                new WebDriverDecorator()
+                                new NetworkDebuggingDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -79,7 +81,9 @@ public class AutomatedBrowserFactory {
                 new ImplicitWaitDecorator(10,
                         new BrowserMobDecorator(
                                 new TimedInteractionDecorator(
-                                    new WebDriverDecorator()
+                                        new NetworkDebuggingDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -90,7 +94,9 @@ public class AutomatedBrowserFactory {
         return new ChromeDecorator(headless,
                 new BrowserMobDecorator(
                         new TimedInteractionDecorator(
-                            new WebDriverDecorator()
+                                new NetworkDebuggingDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -100,7 +106,9 @@ public class AutomatedBrowserFactory {
         return new FirefoxDecorator(headless,
                 new BrowserMobDecorator(
                         new TimedInteractionDecorator(
-                            new WebDriverDecorator()
+                                new NetworkDebuggingDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -111,7 +119,9 @@ public class AutomatedBrowserFactory {
                 new BrowserStackEdgeDecorator(
                         new ImplicitWaitDecorator(10,
                                 new TimedInteractionDecorator(
-                                    new WebDriverDecorator()
+                                        new NetworkDebuggingDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -122,7 +132,9 @@ public class AutomatedBrowserFactory {
         return new BrowserStackDecorator(
                 new BrowserStackEdgeDecorator(
                         new TimedInteractionDecorator(
-                            new WebDriverDecorator()
+                                new NetworkDebuggingDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -133,7 +145,9 @@ public class AutomatedBrowserFactory {
                 new BrowserStackAndroidDecorator(
                         new ImplicitWaitDecorator(10,
                                 new TimedInteractionDecorator(
-                                    new WebDriverDecorator()
+                                        new NetworkDebuggingDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -144,7 +158,9 @@ public class AutomatedBrowserFactory {
         return new BrowserStackDecorator(
                 new BrowserStackAndroidDecorator(
                         new TimedInteractionDecorator(
-                            new WebDriverDecorator()
+                                new NetworkDebuggingDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -153,7 +169,9 @@ public class AutomatedBrowserFactory {
     private AutomatedBrowser getChromeBrowserNoImplicitWaitLambda() {
         return new ChromeHeadlessLambdaDecorator(
                 new TimedInteractionDecorator(
-                    new WebDriverDecorator()
+                        new NetworkDebuggingDecorator(
+                                new WebDriverDecorator()
+                        )
                 )
         );
     }

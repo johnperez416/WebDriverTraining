@@ -5,6 +5,7 @@ import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VerificationException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
+import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -15,10 +16,14 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static io.vavr.API.Try;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
