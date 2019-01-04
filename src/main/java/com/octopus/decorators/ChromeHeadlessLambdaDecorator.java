@@ -17,6 +17,7 @@ public class ChromeHeadlessLambdaDecorator extends AutomatedBrowserBase
     @Override
     public void init() {
         final ChromeOptions options = new ChromeOptions();
+        options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-gpu");
         options.addArguments("--disable-setuid-sandbox");
         options.addArguments("--no-first-run");
