@@ -67,9 +67,9 @@ public class LambdaEntry {
             new SaveKubernetesConfigMap()
     };
     private static final String CHROME_HEADLESS_PACKAGE =
-            "http://bamboo-support.s3.amazonaws.com/stable-headless-chromium-amazonlinux-2017-03.zip";
+            "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/stable-headless-chromium-amazonlinux-2017-03.zip";
     private static final String CHROME_DRIVER =
-            "http://bamboo-support.s3.amazonaws.com/chromedriver_linux64.zip";
+            "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/chromedriver_linux64.zip";
 
     public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
         System.out.println("STARTED Cucumber Test ID " + input.getId());

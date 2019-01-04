@@ -18,6 +18,9 @@ public class ChromeHeadlessLambdaDecorator extends AutomatedBrowserBase
     public void init() {
         final ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-gpu");
+        options.addArguments("--disable-setuid-sandbox");
+        options.addArguments("--no-first-run");
+        options.addArguments("--no-zygote");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--headless");
         options.addArguments("--window-size=1366,768");
