@@ -20,9 +20,9 @@ public class SaveKubernetesConfigMap implements EventHandler {
     public static final String KUBERNETES_TOKEN = "Kubernetes-Token";
     public static final String KUBERNETES_NAMESPACE = "Kubernetes-Namespace";
     public static final String KUBERNETES_CONFIGMAP = "Kubernetes-ConfigMap";
+    public static final String KUBERNETES_CONFIGMAP_AVG = "Kubernetes-ConfigMapAvgKey";
+    public static final String KUBERNETES_CONFIGMAP_EXE = "Kubernetes-ConfigMapExeKey";
     private static final DecimalFormat df = new DecimalFormat("#.##");
-    private static final String UI_AVERAGE_KEY = "ui-test-avg";
-    private static final String UI_EXE_TIME_KEY = "ui-test-exe-time";
 
     @Override
     public Map<String, String> finished(final String id,
@@ -35,10 +35,14 @@ public class SaveKubernetesConfigMap implements EventHandler {
         if (!headers.containsKey(KUBERNETES_URL) ||
                 !headers.containsKey(KUBERNETES_TOKEN) ||
                 !headers.containsKey(KUBERNETES_NAMESPACE) ||
+                !headers.containsKey(KUBERNETES_CONFIGMAP_AVG) ||
+                !headers.containsKey(KUBERNETES_CONFIGMAP_EXE) ||
                 !headers.containsKey(KUBERNETES_CONFIGMAP)) {
             System.out.println("The " +
                     KUBERNETES_URL + ", " +
                     KUBERNETES_TOKEN + ", " +
+                    KUBERNETES_CONFIGMAP_AVG + ", " +
+                    KUBERNETES_CONFIGMAP_EXE + ", " +
                     KUBERNETES_NAMESPACE + " and " +
                     KUBERNETES_CONFIGMAP +
                     " headers must be defined to save the results into a config map");
@@ -57,11 +61,11 @@ public class SaveKubernetesConfigMap implements EventHandler {
         Configuration.setDefaultApiClient(client);
 
         final String result = status ? df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) : "";
-        final String averageTime = "{\"op\":\"add\",\"path\":\"/data/" + UI_AVERAGE_KEY + "\"," +
+        final String averageTime = "{\"op\":\"add\",\"path\":\"/data/" + headers.get(KUBERNETES_CONFIGMAP_AVG) + "\"," +
                 "\"value\":\"" + result + "\"}";
         applyPatch(averageTime, headers);
 
-        final String testTime = "{\"op\":\"add\",\"path\":\"/data/" + UI_EXE_TIME_KEY + "\"," +
+        final String testTime = "{\"op\":\"add\",\"path\":\"/data/" + headers.get(KUBERNETES_CONFIGMAP_EXE) + "\"," +
                 "\"value\":\"" + Instant.now().getEpochSecond() + "\"}";
         applyPatch(testTime, headers);
 
