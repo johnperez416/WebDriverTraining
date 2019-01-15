@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.SaveKubernetesConfigMap;
+import com.octopus.eventhandlers.impl.SeqLogging;
 import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
 import com.octopus.utils.EnvironmentAliasesProcessor;
@@ -64,6 +65,7 @@ public class LambdaEntry {
     private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
             new UploadToS3(),
             new SlackWebHook(),
+            new SeqLogging(),
             new SaveKubernetesConfigMap()
     };
     private static final String CHROME_HEADLESS_PACKAGE =
