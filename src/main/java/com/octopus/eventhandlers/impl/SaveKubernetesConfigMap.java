@@ -21,7 +21,10 @@ public class SaveKubernetesConfigMap implements EventHandler {
     public static final String KUBERNETES_NAMESPACE = "Kubernetes-Namespace";
     public static final String KUBERNETES_CONFIGMAP = "Kubernetes-ConfigMap";
     public static final String KUBERNETES_CONFIGMAP_AVG = "Kubernetes-ConfigMapAvgKey";
+    public static final String KUBERNETES_CONFIGMAP_AVG_MAX = "Kubernetes-ConfigMapAvgMax";
+    public static final String KUBERNETES_CONFIGMAP_AVG_MIN = "Kubernetes-ConfigMapAvgMin";
     public static final String KUBERNETES_CONFIGMAP_EXE = "Kubernetes-ConfigMapExeKey";
+    public static final String KUBERNETES_CONFIGMAP_EXE_PERIOD = "Kubernetes-ConfigMapExePeriod";
     private static final DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
@@ -65,9 +68,24 @@ public class SaveKubernetesConfigMap implements EventHandler {
                 "\"value\":\"" + result + "\"}";
         applyPatch(averageTime, headers);
 
+        if (headers.get(KUBERNETES_CONFIGMAP_AVG_MAX) != null && headers.get(KUBERNETES_CONFIGMAP_AVG_MIN) != null) {
+            final String avgMeta = "{\"op\":\"add\",\"path\":\"/data/" + headers.get(KUBERNETES_CONFIGMAP_AVG) + ".meta\"," +
+                    "\"value\":\"{\\\"max\\\":" + headers.get(KUBERNETES_CONFIGMAP_AVG_MAX) +
+                    ",\\\"min\\\":" + headers.get(KUBERNETES_CONFIGMAP_AVG_MIN) +
+                    ",\\\"preference\\\":\\\"small\\\"}\"}";
+            applyPatch(avgMeta, headers);
+        }
+
         final String testTime = "{\"op\":\"add\",\"path\":\"/data/" + headers.get(KUBERNETES_CONFIGMAP_EXE) + "\"," +
                 "\"value\":\"" + Instant.now().getEpochSecond() + "\"}";
         applyPatch(testTime, headers);
+
+        if (headers.get(KUBERNETES_CONFIGMAP_EXE_PERIOD) != null) {
+            final String exeMeta = "{\"op\":\"add\",\"path\":\"/data/" + headers.get(KUBERNETES_CONFIGMAP_EXE) + ".meta\"," +
+                    "\"value\":\"{\\\"maxrel\\\":0,\\\"minrel\\\":-" + headers.get(KUBERNETES_CONFIGMAP_EXE_PERIOD) +
+                    ",\\\"preference\\\":\\\"large\\\"}\"}";
+            applyPatch(exeMeta, headers);
+        }
 
         return previousResults;
     }
