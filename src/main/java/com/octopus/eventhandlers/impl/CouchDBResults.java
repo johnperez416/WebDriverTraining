@@ -6,7 +6,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -56,13 +56,13 @@ public class CouchDBResults implements EventHandler {
             provider.setCredentials(AuthScope.ANY, credentials);
 
             try (final CloseableHttpClient client = HttpClients.custom().setDefaultCredentialsProvider(provider).build()) {
-                final HttpPost httpPost = new HttpPost(headers.get(COUCHDB_URL) + "/" +
+                final HttpPut httpPut = new HttpPut(headers.get(COUCHDB_URL) + "/" +
                         headers.get(COUCHDB_DATABASE) + "/" +
                         headers.get(COUCHDB_DOCUMENT));
-                httpPost.setHeader("Content-Type", "application/json");
+                httpPut.setHeader("Content-Type", "application/json");
                 final String body = "{\"Average\": " + result + "}";
-                httpPost.setEntity(new StringEntity(body));
-                try (final CloseableHttpResponse response = client.execute(httpPost)) {
+                httpPut.setEntity(new StringEntity(body));
+                try (final CloseableHttpResponse response = client.execute(httpPut)) {
                     if (!(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201)) {
                         throw new Exception("Failed to post to CouchDB");
                     }
