@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.Map;
 
 public class CouchDBResults implements EventHandler {
@@ -60,7 +61,7 @@ public class CouchDBResults implements EventHandler {
                         headers.get(COUCHDB_DATABASE) + "/" +
                         headers.get(COUCHDB_DOCUMENT));
                 httpPut.setHeader("Content-Type", "application/json");
-                final String body = "{\"Average\": " + result + "}";
+                final String body = "{\"Average\": " + result + ", \"Executed\":" + Instant.now().getEpochSecond() + "}";
                 httpPut.setEntity(new StringEntity(body));
                 try (final CloseableHttpResponse response = client.execute(httpPut)) {
                     if (!(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201)) {
