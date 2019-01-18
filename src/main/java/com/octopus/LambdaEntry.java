@@ -3,7 +3,7 @@ package com.octopus;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
-import com.octopus.eventhandlers.impl.SaveKubernetesConfigMap;
+import com.octopus.eventhandlers.impl.CouchDBResults;
 import com.octopus.eventhandlers.impl.SeqLogging;
 import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
@@ -66,7 +66,7 @@ public class LambdaEntry {
             new UploadToS3(),
             new SlackWebHook(),
             new SeqLogging(),
-            new SaveKubernetesConfigMap()
+            new CouchDBResults()
     };
     private static final String CHROME_HEADLESS_PACKAGE =
             "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/stable-headless-chromium-amazonlinux-2017-03.zip";
