@@ -73,21 +73,12 @@ public class CouchDBResults implements EventHandler {
         final String result = status ? df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) : "";
 
         try (final CloseableHttpClient client = HttpClients.custom().setDefaultCredentialsProvider(provider).build()) {
-            final HttpGet httpGet = new HttpGet(headers.get(COUCHDB_URL) + "/" +
-                    headers.get(COUCHDB_DATABASE) + "/" +
-                    headers.get(COUCHDB_DOCUMENT));
-
-            try (final CloseableHttpResponse response = client.execute(httpGet)) {
-                if (!(response.getStatusLine().getStatusCode() == 200)) {
-                    throw new Exception("Failed to post to CouchDB");
-                }
-            }
-
             final HttpPut httpPut = new HttpPut(headers.get(COUCHDB_URL) + "/" +
                     headers.get(COUCHDB_DATABASE) + "/" +
                     headers.get(COUCHDB_DOCUMENT));
             httpPut.setHeader("Content-Type", "application/json");
-            final String body = "{\"_rev\": \"" + currentRevision + "\", \"Average\": " + result + ", \"Executed\":" + Instant.now().getEpochSecond() + "}";
+            final String body = "{" + (currentRevision == null ? "" : "\"_rev\": \"" + currentRevision + "\", ") +
+                    "\"Average\": " + result + ", \"Executed\":" + Instant.now().getEpochSecond() + "}";
             httpPut.setEntity(new StringEntity(body));
             try (final CloseableHttpResponse response = client.execute(httpPut)) {
                 if (!(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201)) {
@@ -99,6 +90,13 @@ public class CouchDBResults implements EventHandler {
         }
     }
 
+    /**
+     * Get the current revision of the document, so we can update it.
+     *
+     * @param headers  The headers passed in by the HTTP call
+     * @param provider The credentials provider
+     * @return The current revision of the document, or null if it does
+     */
     private String getCurrentRevision(final Map<String, String> headers, final CredentialsProvider provider) {
         try (final CloseableHttpClient client = HttpClients.custom().setDefaultCredentialsProvider(provider).build()) {
             final HttpGet httpGet = new HttpGet(headers.get(COUCHDB_URL) + "/" +
