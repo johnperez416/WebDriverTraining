@@ -13,6 +13,7 @@ import com.octopus.utils.impl.AutoDeletingTempDir;
 import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.ZipUtilsImpl;
+import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -61,6 +62,7 @@ public class LambdaEntry {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
             new EnvironmentAliasesProcessorImpl();
     private static final String RETRY_HEADER = "Test-Retry";
+    private static final String RETRY_SLEEP_HEADER = "Test-Retry-Sleep";
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
             new UploadToS3(),
@@ -93,6 +95,10 @@ public class LambdaEntry {
                             input.getHeaders().getOrDefault(RETRY_HEADER, "1"),
                             1);
 
+                    final int retrySleep = NumberUtils.toInt(
+                            input.getHeaders().getOrDefault(RETRY_SLEEP_HEADER, "60"),
+                            60);
+
                     int retValue = 0;
 
                     for (int x = 0; x < retryCount; ++x) {
@@ -116,6 +122,8 @@ public class LambdaEntry {
                         if (retValue == 0) {
                             break;
                         }
+
+                        Try.run(() -> Thread.sleep(retrySleep));
                     }
 
                     System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
