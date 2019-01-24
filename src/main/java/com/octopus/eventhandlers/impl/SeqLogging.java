@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class SeqLogging implements EventHandler {
     public static final String SEQ_API_KEY = "Seq-Api-Key";
+    public static final String SEQ_MESSAGE = "Seq-Message";
     public static final String SEQ_URL = "Seq-Url";
     public static final String SEQ_LEVEL = "Seq-Level";
     public static final String SEQ_FAILURE_ONLY = "Seq-Failure-Only";
@@ -33,11 +34,14 @@ public class SeqLogging implements EventHandler {
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!headers.containsKey(SEQ_API_KEY) ||
+                !headers.containsKey(SEQ_MESSAGE) ||
                 !headers.containsKey(SEQ_URL)) {
-            System.out.println("The " + SEQ_API_KEY + " and " + SEQ_URL +
+            System.out.println("The " + SEQ_API_KEY + ", " + SEQ_MESSAGE + " and " + SEQ_URL +
                     " headers must be defined to return the results via Seq");
             return previousResults;
         }
+
+        final String averageWaitTime = df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000);
 
         if (proceed(status, headers, SEQ_FAILURE_ONLY)) {
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
@@ -47,10 +51,11 @@ public class SeqLogging implements EventHandler {
                 final String body = "{\"Events\": [{" +
                         "\"Timestamp\": \"" + DATE_FORMAT.format(LocalDateTime.now()) + "\", " +
                         "\"Level\": \"" + getLevel(headers) + "\", " +
-                        "\"MessageTemplate\":\"Cucumber test " +
+                        "\"Properties\": {\"seconds\":" + averageWaitTime + ", \"success\":\"" + status + "\", \"test\": \"UI Test\"}, " +
+                        "\"MessageTemplate\":\"" + headers.get(SEQ_MESSAGE) + " " +
                         (status ? "succeeded" : "failed") + ": " + id + ". " +
                         "Average wait time " +
-                        df.format(AutomatedBrowserBase.getStaticAverageWaitTime() / 1000) + " seconds" +
+                        averageWaitTime + " seconds" +
                         (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
                                 ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
                                 : "") +

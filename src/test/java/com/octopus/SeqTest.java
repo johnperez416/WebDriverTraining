@@ -21,6 +21,7 @@ public class SeqTest {
                     this.put(SeqLogging.SEQ_LEVEL, System.getenv(SeqLogging.SEQ_LEVEL));
                     this.put(SeqLogging.SEQ_API_KEY, System.getenv(SeqLogging.SEQ_API_KEY));
                     this.put(SeqLogging.SEQ_URL, System.getenv(SeqLogging.SEQ_URL));
+                    this.put(SeqLogging.SEQ_MESSAGE, "This is a test");
                 }},
                 new HashMap<>());
     }
