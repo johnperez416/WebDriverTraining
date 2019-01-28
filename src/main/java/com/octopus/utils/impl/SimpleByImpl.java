@@ -7,7 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import java.util.concurrent.TimeUnit;
+
+import java.time.Duration;
 
 public class SimpleByImpl implements SimpleBy {
 
@@ -37,8 +38,7 @@ public class SimpleByImpl implements SimpleBy {
                 try {
                     final WebDriverWaitEx wait = new WebDriverWaitEx(
                             webDriver,
-                            TIME_SLICE,
-                            TimeUnit.MILLISECONDS);
+                            Duration.ofMillis(TIME_SLICE));
                     final ExpectedCondition<WebElement> condition =
                             expectedConditionCallback.getExpectedCondition(by);
                     return wait.until(condition);
