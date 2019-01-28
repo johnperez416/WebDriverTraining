@@ -3,7 +3,6 @@ package com.octopus;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
-import com.octopus.eventhandlers.impl.CouchDBResults;
 import com.octopus.eventhandlers.impl.SeqLogging;
 import com.octopus.eventhandlers.impl.SlackWebHook;
 import com.octopus.eventhandlers.impl.UploadToS3;
@@ -26,37 +25,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-
-class LambdaInput {
-    private String id;
-    private String feature;
-    private Map<String, String> headers;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getFeature() {
-        return feature;
-    }
-
-    public void setFeature(final String feature) {
-        this.feature = feature;
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(final Map<String, String> headers) {
-        this.headers = headers;
-    }
-}
 
 public class LambdaEntry {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
@@ -67,8 +35,7 @@ public class LambdaEntry {
     private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
             new UploadToS3(),
             new SlackWebHook(),
-            new SeqLogging(),
-            new CouchDBResults()
+            new SeqLogging()
     };
     private static final String CHROME_HEADLESS_PACKAGE =
             "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/stable-headless-chromium-amazonlinux-2017-03.zip";

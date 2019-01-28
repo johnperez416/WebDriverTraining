@@ -10,7 +10,7 @@ import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;

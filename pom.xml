@@ -18,7 +18,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <aws.lambda.version>1.2.0</aws.lambda.version>
     <aws.sdk.version>1.11.475</aws.sdk.version>
     <commons.io.version>2.6</commons.io.version>
-    <kubernetes.client.version>3.0.0</kubernetes.client.version>
     <vavr.version>0.9.2</vavr.version>
   </properties>
   <build>
@@ -118,12 +117,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <artifactId>cucumber-junit</artifactId>
       <version>${cucumber.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.kubernetes</groupId>
-      <artifactId>client-java</artifactId>
-      <version>${kubernetes.client.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.vavr</groupId>
