@@ -26,6 +26,8 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class LambdaEntry {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
             new EnvironmentAliasesProcessorImpl();
@@ -43,6 +45,8 @@ public class LambdaEntry {
             "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/chromedriver_linux64.zip";
 
     public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
+        checkNotNull(input);
+
         System.out.println("STARTED Cucumber Test ID " + input.getId());
 
         cleanTmpFolder();
