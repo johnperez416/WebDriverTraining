@@ -101,6 +101,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I save a screenshot to \"([^\"]*)\"$")
+    @Override
+    public void takeScreenshot(String filename) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().takeScreenshot(aliases.getOrDefault(filename, filename));
+        }
+    }
+
     @And("^I click the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\"$")
     @Override
     public void clickElementWithId(final String id) {

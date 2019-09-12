@@ -1,13 +1,20 @@
 package com.octopus.decorators;
 
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.SaveException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.IOException;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
@@ -43,6 +50,17 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void goTo(final String url) {
         webDriver.get(url);
+    }
+
+    @Override
+    public void takeScreenshot(final String file)
+    {
+        try {
+            final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenshot, new File(file));
+        } catch (final IOException ex) {
+            throw new SaveException("Failed to copy the screenshot to " + file, ex);
+        }
     }
 
     @Override

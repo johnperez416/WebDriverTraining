@@ -19,6 +19,8 @@ public interface AutomatedBrowser {
 
     void goTo(String url);
 
+    void takeScreenshot(String filename);
+
     void clickElementWithId(String id);
 
     void clickElementWithId(String id, int waitTime);
