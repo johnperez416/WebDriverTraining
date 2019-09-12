@@ -27,7 +27,7 @@ public class ProxyTest {
             automatedBrowser.init();
 
             automatedBrowser.alterResponseFrom(
-                    ".*?query\\.yahooapis\\.com.*",
+                    ".*?raw\\.githubusercontent\\.com.*",
                     200,
                     "{\"query\":{\"count\":1,\"created\":\"2018-04-28T05:20:30Z\",\"lang\":\"en-US\",\"results\":{\"channel\":{\"astronomy\":{\"sunset\":\"7:00 pm\"}}}}}");
 
@@ -48,7 +48,7 @@ public class ProxyTest {
             automatedBrowser.init();
 
             automatedBrowser.alterResponseFrom(
-                    ".*?query\\.yahooapis\\.com.*",
+                    ".*?raw\\.githubusercontent\\.com.*",
                     200,
                     "{\"query\":{\"count\":1,\"created\":\"2018-04-28T05:20:30Z\",\"lang\":\"en-US\",\"results\":{\"channel\":{\"astronomy\":{\"sunset\":\"7:4 pm\"}}}}}");
 
