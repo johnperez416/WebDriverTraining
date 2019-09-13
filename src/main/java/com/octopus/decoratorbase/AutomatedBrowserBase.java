@@ -2,6 +2,7 @@ package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
+import com.octopus.exceptions.BrowserException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +15,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private Map<String, String> aliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
+    private static AutomatedBrowser sharedAutomatedBrowser;
 
     public AutomatedBrowserBase() {
 
@@ -24,6 +26,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     public AutomatedBrowser getAutomatedBrowser() {
+        if (sharedAutomatedBrowser != null)
+            return sharedAutomatedBrowser;
+
         return automatedBrowser;
     }
 
@@ -32,10 +37,19 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         this.aliases.putAll(aliases);
     }
 
-    @Given("^I open the browser \"([^\"]*)\"$")
-    public void openBrowser(String browser) {
-        automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
-        automatedBrowser.init();
+    @Given("^I open the( shared ) browser \"([^\"]*)\"$")
+    public void openBrowser(String shared, String browser) {
+        if (shared != null) {
+            sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            sharedAutomatedBrowser.init();
+        } else {
+            if (sharedAutomatedBrowser != null) {
+                throw new BrowserException("Can not open a browser with an existing shared browser.");
+            }
+
+            automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser.init();
+        }
     }
 
     @Given("^I close the browser$")
@@ -43,6 +57,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (automatedBrowser != null) {
             automatedBrowser.destroy();
             automatedBrowser = null;
+        }
+
+        if (sharedAutomatedBrowser != null) {
+            sharedAutomatedBrowser.destroy();
+            sharedAutomatedBrowser = null;
         }
     }
 
