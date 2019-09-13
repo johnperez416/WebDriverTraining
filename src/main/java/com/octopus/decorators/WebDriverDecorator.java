@@ -5,10 +5,7 @@ import com.octopus.exceptions.SaveException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -61,6 +58,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         } catch (final IOException ex) {
             throw new SaveException("Failed to copy the screenshot to " + file, ex);
         }
+    }
+
+    @Override
+    public void setWindowSize(final String width, final String height) {
+        webDriver.manage().window().setSize(new Dimension(Integer.parseInt(width), Integer.parseInt(height)));
     }
 
     @Override

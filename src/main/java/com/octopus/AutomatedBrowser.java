@@ -21,6 +21,8 @@ public interface AutomatedBrowser {
 
     void takeScreenshot(String filename);
 
+    void setWindowSize(String width, String height);
+
     void clickElementWithId(String id);
 
     void clickElementWithId(String id, int waitTime);

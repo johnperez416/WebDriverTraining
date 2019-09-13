@@ -109,6 +109,16 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I set the window size to \"([^\"]*)\" x \"([^\"]*)\"$")
+    @Override
+    public void setWindowSize(final String width, final String height) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setWindowSize(
+                    aliases.getOrDefault(width, width),
+                    aliases.getOrDefault(height, height));
+        }
+    }
+
     @And("^I click the \\w+(?:\\s+\\w+)* with the id \"([^\"]*)\"$")
     @Override
     public void clickElementWithId(final String id) {
