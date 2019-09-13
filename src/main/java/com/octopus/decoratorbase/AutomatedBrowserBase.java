@@ -646,7 +646,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view( offset by \"([^\"]*)\")?$")
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")?$")
     public void scrollElementIntoView(final String locator, final String offset) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().scrollElementIntoView(
@@ -656,7 +656,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view( offset by \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?$")
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?$")
     public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().scrollElementIntoView(
