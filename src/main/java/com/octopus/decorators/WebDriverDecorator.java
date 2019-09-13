@@ -52,6 +52,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void startScreenRecording(final String file) {
         try {
+            System.out.println("Starting video recording");
+
             // set the graphics configuration
             final GraphicsConfiguration gc = GraphicsEnvironment
                     .getLocalGraphicsEnvironment()
@@ -88,8 +90,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void stopScreenRecording() {
         try {
             if (screenRecorder != null) {
+                System.out.println("Stopping video recording");
                 screenRecorder.stop();
             }
+            screenRecorder = null;
         } catch (final IOException ex) {
             throw new VideoException("Failed to stop screen recording", ex);
         }
