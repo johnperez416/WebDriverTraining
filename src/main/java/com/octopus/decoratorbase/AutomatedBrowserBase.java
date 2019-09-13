@@ -649,7 +649,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view$")
     public void scrollElementIntoView(final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().scrollElementIntoView(locator);
+            getAutomatedBrowser().scrollElementIntoView(
+                    getAliases().getOrDefault(locator, locator));
         }
     }
 
@@ -657,7 +658,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view waiting up to \"(\\d+)\" seconds?$")
     public void scrollElementIntoView(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().scrollElementIntoView(locator, waitTime);
+            getAutomatedBrowser().scrollElementIntoView(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
         }
     }
 
