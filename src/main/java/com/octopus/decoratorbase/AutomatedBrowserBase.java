@@ -59,13 +59,10 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void closeBrowser() {
         if (automatedBrowser != null) {
             automatedBrowser.destroy();
-            automatedBrowser = null;
         }
 
-        if (sharedAutomatedBrowser != null) {
-            sharedAutomatedBrowser.destroy();
-            sharedAutomatedBrowser = null;
-        }
+        automatedBrowser = null;
+        sharedAutomatedBrowser = null;
     }
 
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
