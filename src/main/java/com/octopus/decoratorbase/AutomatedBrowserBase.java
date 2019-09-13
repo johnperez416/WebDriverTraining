@@ -40,6 +40,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void afterScenario(final Scenario scenario) {
         if (scenario.isFailed()) {
             closeBrowser();
+            stopScreenRecording();
         }
     }
 
@@ -144,6 +145,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void goTo(String url) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().goTo(getAliases().getOrDefault(url, url));
+        }
+    }
+
+    @And("^I start recoding the screen to the file \"([^\"]*)\"$")
+    @Override
+    public void startScreenRecording(final String file) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().startScreenRecording(getAliases().getOrDefault(file, file));
+        }
+    }
+
+    @And("^I stop recoding the screen$")
+    @Override
+    public void stopScreenRecording() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().stopScreenRecording();
         }
     }
 

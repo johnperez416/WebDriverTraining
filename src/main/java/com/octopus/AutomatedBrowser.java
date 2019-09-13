@@ -19,6 +19,10 @@ public interface AutomatedBrowser {
 
     void goTo(String url);
 
+    void startScreenRecording(final String file);
+
+    void stopScreenRecording();
+
     void dumpAliases();
 
     void takeScreenshot(String filename);
