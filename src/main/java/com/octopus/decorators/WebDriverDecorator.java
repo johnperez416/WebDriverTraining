@@ -504,17 +504,19 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void scrollElementIntoView(String locator) {
-        scrollElementIntoView(locator, defaultExplicitWaitTime);
+    public void scrollElementIntoView(final String locator, final String offset) {
+        scrollElementIntoView(locator, offset, defaultExplicitWaitTime);
     }
 
     @Override
-    public void scrollElementIntoView(String locator, final int waitTime) {
+    public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by));
-        ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) getWebDriver()).executeScript(
+                "arguments[0].scrollIntoView(true); window.scrollBy(0, " + Integer.parseInt(offset == null ? "0" : offset) + ");",
+                element);
     }
 }

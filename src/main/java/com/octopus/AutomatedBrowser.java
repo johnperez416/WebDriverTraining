@@ -119,9 +119,9 @@ public interface AutomatedBrowser {
 
     void verifyTextFromElement(String locator, String regex, int waitTime);
 
-    void scrollElementIntoView(String locator);
+    void scrollElementIntoView(String locator, String offset);
 
-    void scrollElementIntoView(String locator, final int waitTime);
+    void scrollElementIntoView(String locator, String offset, int waitTime);
 
     void captureHarFile();
 
