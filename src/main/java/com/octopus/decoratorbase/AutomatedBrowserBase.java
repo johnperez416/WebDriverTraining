@@ -148,7 +148,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I start recoding the screen to the directory \"([^\"]*)\"$")
+    @And("^I start recording the screen to the directory \"([^\"]*)\"$")
     @Override
     public void startScreenRecording(final String file) {
         if (getAutomatedBrowser() != null) {
@@ -156,7 +156,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I stop recoding the screen$")
+    @And("^I stop recording the screen$")
     @Override
     public void stopScreenRecording() {
         if (getAutomatedBrowser() != null) {
