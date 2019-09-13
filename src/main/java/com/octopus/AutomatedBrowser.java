@@ -25,6 +25,8 @@ public interface AutomatedBrowser {
 
     void setWindowSize(String width, String height);
 
+    void sleep(String seconds);
+
     void clickElementWithId(String id);
 
     void clickElementWithId(String id, int waitTime);

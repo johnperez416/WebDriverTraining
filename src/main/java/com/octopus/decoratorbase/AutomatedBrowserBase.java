@@ -59,6 +59,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         this.aliases.putAll(aliases);
     }
 
+    @Override
+    @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds$")
+    public void sleep(String seconds) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().sleep(getAliases().getOrDefault(seconds, seconds));
+        }
+    }
+
     @Given("^I open the( shared)? browser \"([^\"]*)\"$")
     public void openBrowser(String shared, String browser) {
         if (sharedAutomatedBrowser != null) {

@@ -4,6 +4,7 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
+import cucumber.api.java.en.And;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -53,6 +54,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             FileUtils.copyFile(screenshot, new File(file));
         } catch (final IOException ex) {
             throw new SaveException("Failed to copy the screenshot to " + file, ex);
+        }
+    }
+
+    @Override
+    public void sleep(String seconds) {
+        try {
+            Thread.sleep(Integer.parseInt(seconds) * 1000);
+        } catch (final InterruptedException e) {
+            // ignore
         }
     }
 
