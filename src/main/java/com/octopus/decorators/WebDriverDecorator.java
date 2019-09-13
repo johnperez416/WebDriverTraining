@@ -494,4 +494,19 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void maximizeWindow() {
         webDriver.manage().window().maximize();
     }
+
+    @Override
+    public void scrollElementIntoView(String locator) {
+        scrollElementIntoView(locator, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public void scrollElementIntoView(String locator, final int waitTime) {
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+        ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
 }

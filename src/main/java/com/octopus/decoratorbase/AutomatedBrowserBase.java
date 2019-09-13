@@ -645,6 +645,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @Override
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view$")
+    public void scrollElementIntoView(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().scrollElementIntoView(locator);
+        }
+    }
+
+    @Override
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view waiting up to \"(\\d+)\" seconds?$")
+    public void scrollElementIntoView(final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().scrollElementIntoView(locator, waitTime);
+        }
+    }
+
     @And("^I capture the HAR file$")
     @Override
     public void captureHarFile() {
