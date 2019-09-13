@@ -148,7 +148,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I start recoding the screen to the file \"([^\"]*)\"$")
+    @And("^I start recoding the screen to the directory \"([^\"]*)\"$")
     @Override
     public void startScreenRecording(final String file) {
         if (getAutomatedBrowser() != null) {
