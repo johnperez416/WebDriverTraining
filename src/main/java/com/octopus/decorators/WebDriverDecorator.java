@@ -25,7 +25,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
-    private ScreenRecorder screenRecorder;
+    private static ScreenRecorder screenRecorder;
 
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
@@ -51,6 +51,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void startScreenRecording(final String file) {
+        if (screenRecorder != null) {
+            throw new VideoException("The screen is already recording!");
+        }
+
         try {
             System.out.println("Starting video recording");
 
@@ -86,8 +90,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         }
     }
 
-    @Override
-    public void stopScreenRecording() {
+    public static void staticStopScreenRecording() {
         try {
             if (screenRecorder != null) {
                 System.out.println("Stopping video recording");
@@ -97,6 +100,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         } catch (final IOException ex) {
             throw new VideoException("Failed to stop screen recording", ex);
         }
+    }
+
+    @Override
+    public void stopScreenRecording() {
+        staticStopScreenRecording();
     }
 
     @Override

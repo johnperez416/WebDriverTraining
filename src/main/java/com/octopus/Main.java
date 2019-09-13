@@ -1,5 +1,7 @@
 package com.octopus;
 
+import com.octopus.decorators.WebDriverDecorator;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +21,8 @@ public class Main {
                     Thread.currentThread().getContextClassLoader());
         } catch (IOException ex) {
             System.exit(1);
+        } finally {
+            WebDriverDecorator.staticStopScreenRecording();
         }
     }
 }
