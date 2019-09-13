@@ -18,10 +18,6 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
-    public WebDriverDecorator() {
-
-    }
-
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
         defaultExplicitWaitTime = waitTime;

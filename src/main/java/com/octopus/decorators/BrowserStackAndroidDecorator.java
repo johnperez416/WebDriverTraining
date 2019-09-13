@@ -6,9 +6,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class BrowserStackAndroidDecorator extends AutomatedBrowserBase {
     public BrowserStackAndroidDecorator(final AutomatedBrowser automatedBrowser) {
-
         super(automatedBrowser);
-
     }
 
     @Override

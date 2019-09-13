@@ -3,6 +3,7 @@ package com.octopus.decoratorbase;
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.exceptions.BrowserException;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import org.openqa.selenium.WebDriver;
@@ -25,10 +26,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         this.automatedBrowser = automatedBrowser;
     }
 
-    public AutomatedBrowser getAutomatedBrowser() {
-        if (sharedAutomatedBrowser != null)
-            return sharedAutomatedBrowser;
+    @Before
+    public void reuseSharedBrowser() {
+        automatedBrowser = sharedAutomatedBrowser;
+    }
 
+    public AutomatedBrowser getAutomatedBrowser() {
         return automatedBrowser;
     }
 
@@ -37,16 +40,16 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         this.aliases.putAll(aliases);
     }
 
-    @Given("^I open the( shared ) browser \"([^\"]*)\"$")
+    @Given("^I open the( shared)? browser \"([^\"]*)\"$")
     public void openBrowser(String shared, String browser) {
-        if (shared != null) {
-            sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
-            sharedAutomatedBrowser.init();
-        } else {
-            if (sharedAutomatedBrowser != null) {
-                throw new BrowserException("Can not open a browser with an existing shared browser.");
-            }
+        if (sharedAutomatedBrowser != null) {
+            throw new BrowserException("Can not open a browser with an existing shared browser.");
+        }
 
+        if (shared != null) {
+            automatedBrowser = sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser.init();
+        } else {
             automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
             automatedBrowser.init();
         }
