@@ -42,7 +42,7 @@ public class WaitTest {
     public void clickHiddenElement() throws URISyntaxException {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         try {
             automatedBrowser.init();
