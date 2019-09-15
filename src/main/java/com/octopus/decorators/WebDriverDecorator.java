@@ -5,6 +5,7 @@ import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VideoException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
+import cucumber.api.java.en.And;
 import org.apache.commons.io.FileUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
@@ -20,12 +21,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    private static ScreenRecorder screenRecorder;
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
-    private static ScreenRecorder screenRecorder;
+    private Map<String, String> originalStyles = new HashMap<>();
 
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
@@ -518,5 +522,47 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         ((JavascriptExecutor) getWebDriver()).executeScript(
                 "arguments[0].scrollIntoView(true); window.scrollBy(0, " + Integer.parseInt(offset == null ? "0" : offset) + ");",
                 element);
+    }
+
+    @Override
+    public void elementHighlight(final String locator) {
+        this.elementHighlight(locator, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public void elementHighlight(String locator, int waitTime) {
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+
+        originalStyles.put(locator, element.getAttribute("style"));
+
+        ((JavascriptExecutor) getWebDriver()).executeScript(
+                "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '10px';",
+                element);
+    }
+
+    @Override
+    public void removeElementHighlight(final String locator) {
+        removeElementHighlight(locator, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public void removeElementHighlight(final String locator, final int waitTime) {
+        if (originalStyles.containsKey(locator)) {
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+
+            ((JavascriptExecutor) getWebDriver()).executeScript(
+                    "arguments[0].setAttribute('style', '" + originalStyles.get(locator) + "');",
+                    element);
+
+            originalStyles.remove(locator);
+        }
     }
 }

@@ -134,4 +134,12 @@ public interface AutomatedBrowser {
     void alterResponseFrom(String url, int responseCode, String responseBody);
 
     void maximizeWindow();
+
+    void elementHighlight(String locator);
+
+    void elementHighlight(String locator, int waitTime);
+
+    void removeElementHighlight(String locator);
+
+    void removeElementHighlight(String locator, int waitTime);
 }

@@ -19,8 +19,6 @@ public class Main {
             cucumber.api.cli.Main.run(
                     options.toArray(new String[0]),
                     Thread.currentThread().getContextClassLoader());
-        } catch (IOException ex) {
-            System.exit(1);
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
         }
