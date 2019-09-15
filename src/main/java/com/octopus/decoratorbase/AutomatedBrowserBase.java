@@ -700,7 +700,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I alter the response fron \"([^\"]*)\" returning the HTTP code \"\\d+\" and the response body:$")
+    @And("^I alter the response from \"([^\"]*)\" returning the HTTP code \"\\d+\" and the response body:$")
     @Override
     public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
         if (getAutomatedBrowser() != null) {
@@ -719,19 +719,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
-    public void elementHighlight(final String locator) {
+    public void elementHighlight(final String position, final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(getAliases().getOrDefault(locator, locator));
+            getAutomatedBrowser().elementHighlight(
+                    getAliases().getOrDefault(position, position),
+                    getAliases().getOrDefault(locator, locator));
         }
     }
 
-    @And("^I highlight the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
-    public void elementHighlight(final String locator, final int waitTime) {
+    public void elementHighlight(final String position, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(getAliases().getOrDefault(locator, locator), waitTime);
+            getAutomatedBrowser().elementHighlight(
+                    getAliases().getOrDefault(position, position),
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
         }
     }
 

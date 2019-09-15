@@ -135,9 +135,9 @@ public interface AutomatedBrowser {
 
     void maximizeWindow();
 
-    void elementHighlight(String locator);
+    void elementHighlight(String location, String locator);
 
-    void elementHighlight(String locator, int waitTime);
+    void elementHighlight(String location, String locator, int waitTime);
 
     void removeElementHighlight(String locator);
 

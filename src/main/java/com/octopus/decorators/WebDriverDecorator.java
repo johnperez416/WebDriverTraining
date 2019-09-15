@@ -525,12 +525,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlight(final String locator) {
-        this.elementHighlight(locator, defaultExplicitWaitTime);
+    public void elementHighlight(final String location, final String locator) {
+        this.elementHighlight(location, locator, defaultExplicitWaitTime);
     }
 
     @Override
-    public void elementHighlight(final String locator, final int waitTime) {
+    public void elementHighlight(final String location, final String locator, final int waitTime) {
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
@@ -539,9 +539,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         originalStyles.put(locator, element.getAttribute("style"));
 
-        ((JavascriptExecutor) getWebDriver()).executeScript(
-                "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '10px';",
-                element);
+        if (location == "outside") {
+            ((JavascriptExecutor) getWebDriver()).executeScript(
+                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '10px';",
+                    element);
+        } else {
+            ((JavascriptExecutor) getWebDriver()).executeScript(
+                    "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
+                    element);
+        }
     }
 
     @Override
