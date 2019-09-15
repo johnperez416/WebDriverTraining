@@ -34,7 +34,7 @@ public class LambdaEntry {
             txtOutputFile = Files.createTempFile("output", ".txt").toFile();
             featureFile = writeFeatureToFile(feature);
 
-            cucumber.api.cli.Main.run(
+            io.cucumber.core.cli.Main.run(
                     new String[]{
                             "--monochrome",
                             "--glue", "com.octopus.decoratorbase",

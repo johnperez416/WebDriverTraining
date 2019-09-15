@@ -16,7 +16,7 @@ public class Main {
 
             Collections.addAll(options, args);
 
-            cucumber.api.cli.Main.run(
+            io.cucumber.core.cli.Main.run(
                     options.toArray(new String[0]),
                     Thread.currentThread().getContextClassLoader());
         } finally {
