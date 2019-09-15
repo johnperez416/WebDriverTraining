@@ -18,8 +18,12 @@ jobs:
       with:
         args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\""
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+      run: |
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+        docker tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt) ${{ secrets.DOCKER_USERNAME }}/webdriver:latest
     - name: Docker login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
     - name: Push the Docker image
-      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+      run: |
+        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:latest
