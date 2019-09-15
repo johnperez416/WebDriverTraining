@@ -539,7 +539,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         originalStyles.put(locator, element.getAttribute("style"));
 
-        if (location == "outside") {
+        if (location.equals("outside")) {
             ((JavascriptExecutor) getWebDriver()).executeScript(
                     "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '10px';",
                     element);
