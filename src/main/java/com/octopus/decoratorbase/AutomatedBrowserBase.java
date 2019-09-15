@@ -723,7 +723,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void elementHighlight(final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(locator);
+            getAutomatedBrowser().elementHighlight(getAliases().getOrDefault(locator, locator));
         }
     }
 
@@ -731,7 +731,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void elementHighlight(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(locator, waitTime);
+            getAutomatedBrowser().elementHighlight(getAliases().getOrDefault(locator, locator), waitTime);
         }
     }
 
@@ -739,7 +739,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void removeElementHighlight(final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().removeElementHighlight(locator);
+            getAutomatedBrowser().removeElementHighlight(getAliases().getOrDefault(locator, locator));
         }
     }
 
@@ -747,7 +747,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void removeElementHighlight(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().removeElementHighlight(locator, waitTime);
+            getAutomatedBrowser().removeElementHighlight(getAliases().getOrDefault(locator, locator), waitTime);
         }
     }
 }

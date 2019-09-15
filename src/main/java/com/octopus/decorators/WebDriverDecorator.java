@@ -530,7 +530,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlight(String locator, int waitTime) {
+    public void elementHighlight(final String locator, final int waitTime) {
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
