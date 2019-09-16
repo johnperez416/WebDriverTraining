@@ -37,6 +37,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public int getDefaultExplicitWaitTime() {
+        return defaultExplicitWaitTime;
+    }
+
+    @Override
     public WebDriver getWebDriver() {
         return webDriver;
     }

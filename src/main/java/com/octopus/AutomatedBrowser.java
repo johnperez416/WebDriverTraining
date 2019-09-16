@@ -7,6 +7,8 @@ public interface AutomatedBrowser {
 
     void setDefaultExplicitWaitTime(int waitTime);
 
+    int getDefaultExplicitWaitTime();
+
     WebDriver getWebDriver();
 
     void setWebDriver(WebDriver webDriver);

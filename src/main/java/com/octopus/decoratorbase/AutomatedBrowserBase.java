@@ -102,6 +102,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
+    public int getDefaultExplicitWaitTime() {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getDefaultExplicitWaitTime();
+        }
+
+        return 0;
+    }
+
+    @Override
     public WebDriver getWebDriver() {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getWebDriver();
