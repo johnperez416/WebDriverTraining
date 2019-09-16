@@ -67,14 +67,17 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
 			final float zoom = systemPropertyUtils.getPropertyAsFloat(
 				Constants.SCREEN_ZOOM_FACTOR, 1.0f);
 
-			final org.openqa.selenium.Point viewPoint = element.getLocation();
+			final Long top = (Long) javascriptExecutor.executeScript(
+					"return Math.floor(arguments[0].getBoundingClientRect().top);", element);
+			final Long left = (Long) javascriptExecutor.executeScript(
+					"return Math.floor(arguments[0].getBoundingClientRect().left);", element);
 			final Long height = (Long) javascriptExecutor.executeScript(
 				"return arguments[0].clientHeight;", element);
 			final Long width = (Long) javascriptExecutor.executeScript(
 				"return arguments[0].clientWidth;", element);
 			mouseGlide(
-				(int) ((viewPoint.x + width / 2) * zoom),
-				(int) ((viewPoint.y + verticalOffset + height / 2) * zoom),
+				(int) ((left + width / 2) * zoom),
+				(int) ((top + verticalOffset + height / 2) * zoom),
 				Constants.MOUSE_MOVE_TIME,
 				Constants.MOUSE_MOVE_STEPS);
 
