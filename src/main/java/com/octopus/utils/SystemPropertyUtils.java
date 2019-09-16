@@ -63,4 +63,11 @@ public interface SystemPropertyUtils {
 	 * @return The value of the system property
 	 */
 	Optional<String> getPropertyAsOptional(String name);
+
+	/**
+	 * Return the command line arguments that are used to define the list of system properties
+	 * @param propertyNames The system properties that are to be included in the command line args
+	 * @return The command line args to be passed to the java executable
+	 */
+	String getPropertiesAsCommandLineRags(List<String> propertyNames);
 }

@@ -2,22 +2,32 @@ package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
+import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
+import com.octopus.exceptions.ScriptException;
+import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
+    static private final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -58,6 +68,46 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     public AutomatedBrowser getAutomatedBrowser() {
         return automatedBrowser;
+    }
+
+    @And("^I run the feature \"([^\"]*)\"$")
+    public void executeFeature(final String featureFile) {
+        try {
+            // java binary
+            final String java = System.getProperty("java.home") + "/bin/java";
+            // vm arguments
+            final List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+            final StringBuffer vmArgsOneLine = new StringBuffer();
+            for (final String arg : vmArguments) {
+                // if it's the agent argument : we ignore it otherwise the
+                // address of the old application and the new one will be in conflict
+                if (!arg.contains("-agentlib")) {
+                    vmArgsOneLine.append(arg);
+                    vmArgsOneLine.append(" ");
+                }
+            }
+            // init the command to execute, add the vm args
+            final StringBuffer cmd = new StringBuffer("\"" + java + "\" " + vmArgsOneLine);
+            // program main and program arguments (be careful a sun property. might not be supported by all JVM)
+            final String[] mainCommand = System.getProperty("sun.java.command").split(" ");
+            // program main is a jar
+            if (mainCommand[0].endsWith(".jar")) {
+                // if it's a jar, add -jar mainJar
+                cmd.append("-jar " + new File(mainCommand[0]).getPath());
+            } else {
+                // else it's a .class, add the classpath and mainClass
+                cmd.append("-cp \"" + System.getProperty("java.class.path") + "\" " + mainCommand[0]);
+            }
+            cmd.append(" ");
+            cmd.append(featureFile);
+
+            final int result = Runtime.getRuntime().exec(cmd.toString()).waitFor();
+            if (result != 0) {
+                throw new ScriptException("Nested feature fiule did not return 0");
+            }
+        } catch (final IOException | InterruptedException ex) {
+            throw new ScriptException("Failed to run nested feature file.", ex);
+        }
     }
 
     @Given("^I set the following aliases:$")
@@ -587,11 +637,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public String getTextFromElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-                final String text = getAutomatedBrowser().getTextFromElement(
-                        getAliases().getOrDefault(locator, locator),
-                        waitTime);
-                aliases.put(LastReturn, text);
-                return text;
+            final String text = getAutomatedBrowser().getTextFromElement(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
+            aliases.put(LastReturn, text);
+            return text;
         }
 
         aliases.put(LastReturn, null);
@@ -605,12 +655,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             final String regex,
             final String locator) {
         if (getAutomatedBrowser() != null) {
-                final String text = getAutomatedBrowser().getRegexGroupFromElement(
-                        getAliases().getOrDefault(group, group),
-                        getAliases().getOrDefault(regex, regex),
-                        getAliases().getOrDefault(locator, locator));
-                aliases.put(LastReturn, text);
-                return text;
+            final String text = getAutomatedBrowser().getRegexGroupFromElement(
+                    getAliases().getOrDefault(group, group),
+                    getAliases().getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator));
+            aliases.put(LastReturn, text);
+            return text;
         }
 
         aliases.put(LastReturn, null);
@@ -625,13 +675,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             final String locator,
             final int waitTime) {
         if (getAutomatedBrowser() != null) {
-                final String text = getAutomatedBrowser().getRegexGroupFromElement(
-                        getAliases().getOrDefault(group, group),
-                        getAliases().getOrDefault(regex, regex),
-                        getAliases().getOrDefault(locator, locator),
-                        waitTime);
-                aliases.put(LastReturn, text);
-                return text;
+            final String text = getAutomatedBrowser().getRegexGroupFromElement(
+                    getAliases().getOrDefault(group, group),
+                    getAliases().getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
+            aliases.put(LastReturn, text);
+            return text;
         }
 
         aliases.put(LastReturn, null);
@@ -642,9 +692,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void verifyTextFromElement(final String locator, final String regex) {
         if (getAutomatedBrowser() != null) {
-                getAutomatedBrowser().verifyTextFromElement(
-                        getAliases().getOrDefault(locator, locator),
-                        getAliases().getOrDefault(regex, regex));
+            getAutomatedBrowser().verifyTextFromElement(
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(regex, regex));
         }
     }
 

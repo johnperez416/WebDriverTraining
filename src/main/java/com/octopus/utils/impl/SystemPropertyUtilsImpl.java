@@ -18,88 +18,97 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class SystemPropertyUtilsImpl implements SystemPropertyUtils {
 
-	/**
-	 * These are the prefixes that can be applied to any system property. This is mostly to
-	 * facilitate web start, which has restrictions on system properties. See
-	 * http://stackoverflow.com/questions/19400725/with-java-7-update-45-the-system-properties-no-longer-set-from-jnlp-tag-proper
-	 * for details.
-	 */
-	private static final List<String> SYSTEM_PROPERTY_PREFIXES = Arrays.asList("", "jnlp.", "javaws.");
+    /**
+     * These are the prefixes that can be applied to any system property. This is mostly to
+     * facilitate web start, which has restrictions on system properties. See
+     * http://stackoverflow.com/questions/19400725/with-java-7-update-45-the-system-properties-no-longer-set-from-jnlp-tag-proper
+     * for details.
+     */
+    private static final List<String> SYSTEM_PROPERTY_PREFIXES = Arrays.asList("", "jnlp.", "javaws.");
 
-	private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
-	@Override
-	public List<String> getNormalisedProperties() {
-		return System.getProperties().keySet().stream()
-			.map(Object::toString)
-			.map(x -> SYSTEM_PROPERTY_PREFIXES.stream()
-				.reduce(x, (memo, prefix) ->
-					memo.replaceFirst("^" + Pattern.quote(prefix), "")))
-			.collect(Collectors.toList());
-	}
+    @Override
+    public List<String> getNormalisedProperties() {
+        return System.getProperties().keySet().stream()
+                .map(Object::toString)
+                .map(x -> SYSTEM_PROPERTY_PREFIXES.stream()
+                        .reduce(x, (memo, prefix) ->
+                                memo.replaceFirst("^" + Pattern.quote(prefix), "")))
+                .collect(Collectors.toList());
+    }
 
-	@Override
-	public String getProperty(final String name) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public String getProperty(final String name) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return SYSTEM_PROPERTY_PREFIXES.stream()
-			.map(e -> System.getProperty(e + name))
-			.filter(Objects::nonNull)
-			.findFirst()
-			.orElse(null);
-	}
+        return SYSTEM_PROPERTY_PREFIXES.stream()
+                .map(e -> System.getProperty(e + name))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
 
-	@Override
-	public boolean getPropertyAsBoolean(final String name, final boolean defaultValue) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public boolean getPropertyAsBoolean(final String name, final boolean defaultValue) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
-			.map(String::toLowerCase)
-			.map(String::trim)
-			.map(Boolean::parseBoolean)
-			.orElse(defaultValue);
-	}
+        return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
+                .map(String::toLowerCase)
+                .map(String::trim)
+                .map(Boolean::parseBoolean)
+                .orElse(defaultValue);
+    }
 
-	@Override
-	public float getPropertyAsFloat(final String name, final float defaultValue) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public float getPropertyAsFloat(final String name, final float defaultValue) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
-			.map(String::toLowerCase)
-			.map(String::trim)
-			.map(NumberUtils::toFloat)
-			.orElse(defaultValue);
-	}
+        return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
+                .map(String::toLowerCase)
+                .map(String::trim)
+                .map(NumberUtils::toFloat)
+                .orElse(defaultValue);
+    }
 
-	@Override
-	public int getPropertyAsInt(final String name, final int defaultValue) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public int getPropertyAsInt(final String name, final int defaultValue) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
-			.map(String::toLowerCase)
-			.map(String::trim)
-			.map(NumberUtils::toInt)
-			.orElse(defaultValue);
-	}
+        return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
+                .map(String::toLowerCase)
+                .map(String::trim)
+                .map(NumberUtils::toInt)
+                .orElse(defaultValue);
+    }
 
-	@Override
-	public String getPropertyEmptyAsNull(final String name) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public String getPropertyEmptyAsNull(final String name) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return SYSTEM_PROPERTY_PREFIXES.stream()
-			.map(e -> System.getProperty(e + name))
-			.filter(StringUtils::isNotBlank)
-			.findFirst()
-			.orElse(null);
-	}
+        return SYSTEM_PROPERTY_PREFIXES.stream()
+                .map(e -> System.getProperty(e + name))
+                .filter(StringUtils::isNotBlank)
+                .findFirst()
+                .orElse(null);
+    }
 
-	@Override
-	public Optional<String> getPropertyAsOptional(final String name) {
-		checkArgument(StringUtils.isNotBlank(name));
+    @Override
+    public Optional<String> getPropertyAsOptional(final String name) {
+        checkArgument(StringUtils.isNotBlank(name));
 
-		return SYSTEM_PROPERTY_PREFIXES.stream()
-			.map(e -> System.getProperty(e + name))
-			.filter(StringUtils::isNotBlank)
-			.findFirst();
-	}
+        return SYSTEM_PROPERTY_PREFIXES.stream()
+                .map(e -> System.getProperty(e + name))
+                .filter(StringUtils::isNotBlank)
+                .findFirst();
+    }
+
+    public String getPropertiesAsCommandLineRags(final List<String> propertyNames) {
+        return String.join(
+                " ",
+                propertyNames.stream()
+                        .map(e -> "-D" + e + "=" + System.getProperty(e))
+                        .collect(Collectors.toList())
+        );
+    }
 }
