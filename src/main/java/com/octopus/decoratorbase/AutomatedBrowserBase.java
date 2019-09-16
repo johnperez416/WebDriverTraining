@@ -98,8 +98,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                 // else it's a .class, add the classpath and mainClass
                 cmd.append("-cp \"" + System.getProperty("java.class.path") + "\" " + mainCommand[0]);
             }
+
+            // First see if the supplied file is an absolute path, otherwise assume it is in the same directory as the current feature file
             cmd.append(" ");
-            cmd.append(featureFile);
+            if (new File(featureFile).exists()) {
+                cmd.append(featureFile);
+            } else {
+                final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
+                cmd.append(new File(featurePath, featureFile).getAbsolutePath());
+            }
 
             final int result = Runtime.getRuntime().exec(cmd.toString()).waitFor();
             if (result != 0) {
