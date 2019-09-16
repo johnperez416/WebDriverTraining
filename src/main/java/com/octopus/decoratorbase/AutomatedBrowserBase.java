@@ -728,7 +728,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?$")
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?$")
     @Override
     public void elementHighlight(final String position, final String locator, final String offset) {
         if (getAutomatedBrowser() != null) {
@@ -739,7 +739,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds$")
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds$")
     @Override
     public void elementHighlight(final String position, final String locator, final String offset, final int waitTime) {
         if (getAutomatedBrowser() != null) {

@@ -547,13 +547,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         originalStyles.put(locator, element.getAttribute("style"));
 
-        if (location.equals("outside")) {
+        if (location.equals("inside")) {
             ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
+                    "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
                     element);
         } else {
             ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
+                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
                     element);
         }
     }
