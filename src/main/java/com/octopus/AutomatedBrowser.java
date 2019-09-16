@@ -109,6 +109,10 @@ public interface AutomatedBrowser {
 
     void populateElement(String locator, String text, int waitTime);
 
+    void mouseOver(String locator);
+
+    void mouseOver(String locator, int waitTime);
+
     String getTextFromElement(String locator);
 
     String getTextFromElement(String locator, int waitTime);

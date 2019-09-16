@@ -15,6 +15,7 @@ import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -492,6 +493,20 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 locator,
                 waitTime,
                 by -> ExpectedConditions.elementToBeClickable(by)).sendKeys(text);
+    }
+
+    public void mouseOver(final String locator) {
+        mouseOver(locator, getDefaultExplicitWaitTime());
+    }
+
+    public void mouseOver(final String locator, final int waitTime) {
+        final Actions action = new Actions(getWebDriver());
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+        action.moveToElement(element).perform();
     }
 
     @Override

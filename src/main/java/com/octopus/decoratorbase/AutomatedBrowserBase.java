@@ -14,6 +14,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -624,6 +626,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(text, text),
                     waitTime);
+        }
+    }
+
+    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*")
+    @Override
+    public void mouseOver(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().mouseOver(getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?")
+    @Override
+    public void mouseOver(final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().mouseOver(getAliases().getOrDefault(locator, locator), waitTime);
         }
     }
 
