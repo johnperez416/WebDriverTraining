@@ -1,6 +1,5 @@
 package com.octopus.eventhandlers.impl;
 
-import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;

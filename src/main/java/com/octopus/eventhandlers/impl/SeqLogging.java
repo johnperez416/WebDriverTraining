@@ -1,6 +1,5 @@
 package com.octopus.eventhandlers.impl;
 
-import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -18,11 +17,9 @@ import java.util.Map;
 public class SeqLogging implements EventHandler {
     public static final String SEQ_API_KEY = "Seq-Api-Key";
     public static final String SEQ_MESSAGE = "Seq-Message";
-    public static final String SEQ_HOSTED_REGION = "Seq-Hosted-Region";
     public static final String SEQ_URL = "Seq-Url";
     public static final String SEQ_LEVEL = "Seq-Level";
     public static final String SEQ_FAILURE_ONLY = "Seq-Failure-Only";
-    private static final String AWS_REGION = "AWS_REGION";
     private static final DecimalFormat df = new DecimalFormat("#.##");
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final List<String> LEVELS = Arrays.asList("Verbose", "Debug", "Information", "Warning", "Error", "Fatal");
@@ -53,9 +50,6 @@ public class SeqLogging implements EventHandler {
                         "\"Level\": \"" + getLevel(headers) + "\", " +
                         "\"Properties\": {" +
                         "\"success\":\"" + status + "\", " +
-                        "\"hostedregion\":\"" + (headers.get(SEQ_HOSTED_REGION) == null ? "" : headers.get(SEQ_HOSTED_REGION)) + "\", " +
-                        "\"awsregion\":\"" + System.getenv(AWS_REGION) + "\", " +
-                        "\"test\": \"UI Test\"}, " +
                         "\"MessageTemplate\":\"" + headers.get(SEQ_MESSAGE) + " " +
                         (status ? "succeeded" : "failed") + ": " + id + ". " +
                         (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
