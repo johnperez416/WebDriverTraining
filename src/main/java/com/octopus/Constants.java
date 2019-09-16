@@ -1,6 +1,8 @@
 package com.octopus;
 
 public class Constants {
+    public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
+
     /**
      * The system property that can be used to enable the mouse cursor to be moved
      * to the element being interacted with

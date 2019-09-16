@@ -1,12 +1,17 @@
 package com.octopus;
 
 import com.octopus.decorators.WebDriverDecorator;
+import com.octopus.utils.EnvironmentAliasesProcessor;
+import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Main {
+    private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
+            new EnvironmentAliasesProcessorImpl();
+
     public static void main(String[] args) {
         try {
             final ArrayList<String> options = new ArrayList<String>() {{
@@ -15,6 +20,8 @@ public class Main {
             }};
 
             Collections.addAll(options, args);
+
+            ENVIRONMENT_ALIASES_PROCESSOR.addSystemPropVarsAsAliases();
 
             io.cucumber.core.cli.Main.run(
                     options.toArray(new String[0]),

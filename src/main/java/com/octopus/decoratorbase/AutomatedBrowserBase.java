@@ -31,6 +31,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         this.automatedBrowser = automatedBrowser;
     }
 
+    public static void setExternalAliases(final Map<String, String> externalAliases) {
+        if (externalAliases == null) return;
+        AutomatedBrowserBase.externalAliases.putAll(externalAliases);
+    }
+
     @Before
     public void reuseSharedBrowser() {
         automatedBrowser = sharedAutomatedBrowser;

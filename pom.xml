@@ -21,6 +21,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <commons.io.version>2.6</commons.io.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
         <slf4jjdk14.version>1.7.28</slf4jjdk14.version>
+        <vavr.version>0.9.2</vavr.version>
     </properties>
     <build>
         <plugins>
@@ -138,6 +139,16 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache.commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws.sdk.version}</version>
         </dependency>
     </dependencies>
     <repositories>

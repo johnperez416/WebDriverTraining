@@ -1,59 +1,139 @@
 package com.octopus;
 
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
-import com.amazonaws.services.simpleemail.model.*;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.octopus.eventhandlers.EventHandler;
+import com.octopus.eventhandlers.impl.SeqLogging;
+import com.octopus.eventhandlers.impl.SlackWebHook;
+import com.octopus.eventhandlers.impl.UploadToS3;
+import com.octopus.utils.EnvironmentAliasesProcessor;
+import com.octopus.utils.ZipUtils;
+import com.octopus.utils.impl.AutoDeletingTempDir;
+import com.octopus.utils.impl.AutoDeletingTempFile;
+import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
+import com.octopus.utils.impl.ZipUtilsImpl;
+import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
-import java.io.*;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LambdaEntry {
+    private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
+            new EnvironmentAliasesProcessorImpl();
+    private static final String RETRY_HEADER = "Test-Retry";
+    private static final String RETRY_SLEEP_HEADER = "Test-Retry-Sleep";
+    private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
+    private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
+            new UploadToS3(),
+            new SlackWebHook(),
+            new SeqLogging()
+    };
     private static final String CHROME_HEADLESS_PACKAGE =
-            "https://s3.amazonaws.com/webdriver-testing-resources/stable-headless-chromium-amazonlinux-2017-03.zip";
+            "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/stable-headless-chromium-amazonlinux-2017-03.zip";
     private static final String CHROME_DRIVER =
-            "https://s3.amazonaws.com/webdriver-testing-resources/chromedriver_linux64.zip";
+            "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/chromedriver_linux64.zip";
 
-    public String runCucumber(String feature) throws Throwable {
+    public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
+        checkNotNull(input);
 
-        File driverDirectory = null;
-        File chromeDirectory = null;
+        System.out.println("STARTED Cucumber Test ID " + input.getId());
+
+        cleanTmpFolder();
+
         File outputFile = null;
         File txtOutputFile = null;
-        File featureFile = null;
+        File htmlOutput = null;
+        File junitOutput = null;
 
-        try {
-            driverDirectory = downloadChromeDriver();
-            chromeDirectory = downloadChromeHeadless();
-            outputFile = Files.createTempFile("output", ".json").toFile();
-            txtOutputFile = Files.createTempFile("output", ".txt").toFile();
-            featureFile = writeFeatureToFile(feature);
+        try (final AutoDeletingTempDir driverDirectory = new AutoDeletingTempDir(downloadChromeDriver())) {
+            try (final AutoDeletingTempDir chromeDirectory = new AutoDeletingTempDir(downloadChromeHeadless())) {
+                try (final AutoDeletingTempFile featureFile = new AutoDeletingTempFile(writeFeatureToFile(input.getFeature()))) {
 
-            io.cucumber.core.cli.Main.run(
-                    new String[]{
-                            "--monochrome",
-                            "--glue", "com.octopus.decoratorbase",
-                            "--format", "json:" + outputFile.toString(),
-                            "--format", "pretty:" + txtOutputFile.toString(),
-                            featureFile.getAbsolutePath()},
-                    Thread.currentThread().getContextClassLoader());
+                    ENVIRONMENT_ALIASES_PROCESSOR.addHeaderVarsAsAliases(input.getHeaders());
 
-            sendEmail("admin@matthewcasperson.com", FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset()));
+                    final int retryCount = NumberUtils.toInt(
+                            input.getHeaders().getOrDefault(RETRY_HEADER, "1"),
+                            1);
 
-            return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
+                    final int retrySleep = NumberUtils.toInt(
+                            input.getHeaders().getOrDefault(RETRY_SLEEP_HEADER, "60"),
+                            60);
 
+                    int retValue = 0;
+
+                    for (int x = 0; x < retryCount; ++x) {
+                        outputFile = createCleanFile(outputFile, "output", ".json");
+                        txtOutputFile = createCleanFile(txtOutputFile, "output", ".txt");
+                        junitOutput = createCleanFile(junitOutput, "junit", ".xml");
+                        htmlOutput = createCleanDirectory(htmlOutput, "htmloutput");
+
+                        retValue = cucumber.api.cli.Main.run(
+                                new String[]{
+                                        "--monochrome",
+                                        "--glue", "com.octopus.decoratorbase",
+                                        "--plugin", "json:" + outputFile.toString(),
+                                        "--plugin", "pretty:" + txtOutputFile.toString(),
+                                        "--plugin", "html:" + htmlOutput.toString(),
+                                        "--plugin", "junit:" + junitOutput.toString(),
+                                        featureFile.getFile().getAbsolutePath()},
+                                Thread.currentThread().getContextClassLoader());
+                        if (retValue == 0) {
+                            break;
+                        }
+
+                        Try.run(() -> Thread.sleep(retrySleep));
+                    }
+
+                    System.out.println((retValue == 0 ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + input.getId());
+
+                    final String featureFilePath = featureFile.getFile().getAbsolutePath();
+                    final String htmlOutputDir = htmlOutput.getAbsolutePath();
+                    final boolean status = retValue == 0;
+                    final String outputTextFile = FileUtils.readFileToString(txtOutputFile, Charset.defaultCharset());
+                    Arrays.stream(EVENT_HANDLERS).reduce(
+                            new HashMap<String, String>(),
+                            (results, handler) -> new HashMap<>(handler.finished(
+                                    input.getId(),
+                                    status,
+                                    featureFilePath,
+                                    outputTextFile,
+                                    htmlOutputDir,
+                                    input.getHeaders(),
+                                    results)),
+                            (a, b) -> a
+                    );
+
+                    return FileUtils.readFileToString(outputFile, Charset.defaultCharset());
+                }
+            }
         } finally {
-            FileUtils.deleteQuietly(driverDirectory);
-            FileUtils.deleteQuietly(chromeDirectory);
             FileUtils.deleteQuietly(outputFile);
             FileUtils.deleteQuietly(txtOutputFile);
-            FileUtils.deleteQuietly(featureFile);
+            FileUtils.deleteQuietly(htmlOutput);
+            FileUtils.deleteQuietly(junitOutput);
+
+            System.out.println("FINISHED Cucumber Test ID " + input.getId());
         }
+    }
+
+    private File createCleanFile(final File last, final String prefix, final String suffix) throws IOException {
+        FileUtils.deleteQuietly(last);
+        return Files.createTempFile(prefix, suffix).toFile();
+    }
+
+    private File createCleanDirectory(final File last, final String name) throws IOException {
+        FileUtils.deleteQuietly(last);
+        return Files.createTempDirectory(name).toFile();
     }
 
     private File downloadChromeDriver() throws IOException {
@@ -78,33 +158,12 @@ public class LambdaEntry {
             downloadedFile = File.createTempFile("download", ".zip");
             FileUtils.copyURLToFile(new URL(download), downloadedFile);
             final File extractedDir = Files.createTempDirectory(tempDirPrefix).toFile();
-            unzipFile(downloadedFile.getAbsolutePath(), extractedDir.getAbsolutePath());
+            ZIP_UTILS.unzipFile(downloadedFile.getAbsolutePath(), extractedDir.getAbsolutePath());
             return extractedDir;
         } finally {
             FileUtils.deleteQuietly(downloadedFile);
         }
 
-    }
-
-    private void unzipFile(final String fileZip, final String outputDirectory) throws IOException {
-
-        final byte[] buffer = new byte[1024];
-
-        try (final ZipInputStream zis = new ZipInputStream(new FileInputStream(fileZip))) {
-            ZipEntry zipEntry = zis.getNextEntry();
-            while (zipEntry != null) {
-                final String fileName = zipEntry.getName();
-                final File newFile = new File(outputDirectory + "/" + fileName);
-                try (final FileOutputStream fos = new FileOutputStream(newFile)) {
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, len);
-                    }
-                }
-                zipEntry = zis.getNextEntry();
-            }
-            zis.closeEntry();
-        }
     }
 
     private File writeFeatureToFile(final String feature) throws IOException {
@@ -120,24 +179,15 @@ public class LambdaEntry {
         return featureFile;
     }
 
-    private void sendEmail(final String to, final String results) {
+    /**
+     * Before we start, try cleaning the tmp directory to remove
+     * any left over files.
+     */
+    private void cleanTmpFolder() {
         try {
-            final AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-                    .withRegion(Regions.US_EAST_1).build();
-
-            final SendEmailRequest request = new SendEmailRequest()
-                    .withDestination(new Destination()
-                            .withToAddresses(to))
-                    .withMessage(new Message()
-                            .withBody(new Body()
-                                    .withText(new Content()
-                                            .withCharset("UTF-8").withData(results)))
-                            .withSubject(new Content()
-                                    .withCharset("UTF-8").withData("WebDriver Test Results")))
-                    .withSource("admin@matthewcasperson.com");
-            client.sendEmail(request);
-        } catch (final Exception ex) {
-            System.out.println("The email was not sent. Error message: " + ex.getMessage());
+            FileUtils.cleanDirectory(new File("/tmp"));
+        } catch (IOException e) {
+            // silent failure
         }
     }
 }
