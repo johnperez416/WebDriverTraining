@@ -7,6 +7,7 @@ import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
 import cucumber.api.java.en.And;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.VideoFormatKeys;
@@ -530,12 +531,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlight(final String location, final String locator) {
-        this.elementHighlight(location, locator, defaultExplicitWaitTime);
+    public void elementHighlight(final String location, final String locator,final String offset) {
+        this.elementHighlight(location, locator, offset, defaultExplicitWaitTime);
     }
 
     @Override
-    public void elementHighlight(final String location, final String locator, final int waitTime) {
+    public void elementHighlight(final String location, final String locator, final String offset, final int waitTime) {
+        final int offsetValue = NumberUtils.toInt(offset, 10);
+
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
@@ -546,7 +549,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         if (location.equals("outside")) {
             ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '10px';",
+                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
                     element);
         } else {
             ((JavascriptExecutor) getWebDriver()).executeScript(

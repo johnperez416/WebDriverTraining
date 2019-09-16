@@ -728,23 +728,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?$")
     @Override
-    public void elementHighlight(final String position, final String locator) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(
-                    getAliases().getOrDefault(position, position),
-                    getAliases().getOrDefault(locator, locator));
-        }
-    }
-
-    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
-    @Override
-    public void elementHighlight(final String position, final String locator, final int waitTime) {
+    public void elementHighlight(final String position, final String locator, final String offset) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().elementHighlight(
                     getAliases().getOrDefault(position, position),
                     getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(offset, offset));
+        }
+    }
+
+    @And("^I highlight (outside|inside) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void elementHighlight(final String position, final String locator, final String offset, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().elementHighlight(
+                    getAliases().getOrDefault(position, position),
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(offset, offset),
                     waitTime);
         }
     }
