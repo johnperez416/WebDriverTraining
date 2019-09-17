@@ -567,7 +567,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
+    public void clickElement(final String force, final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElement(force, getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void clickElement(final String force, final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElement(force, getAliases().getOrDefault(locator, locator), waitTime);
+        }
+    }
+
     @Override
     public void clickElement(final String locator) {
         if (getAutomatedBrowser() != null) {
@@ -575,7 +590,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void clickElement(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {

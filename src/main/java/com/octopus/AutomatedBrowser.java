@@ -97,6 +97,10 @@ public interface AutomatedBrowser {
 
     String getTextFromElementWithName(String name, int waitTime);
 
+    void clickElement(String force, String locator);
+
+    void clickElement(String force, String locator, int waitTime);
+
     void clickElement(String locator);
 
     void clickElement(String locator, int waitTime);

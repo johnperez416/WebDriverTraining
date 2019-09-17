@@ -398,7 +398,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElement(final String locator) {
+    public void clickElement(final String force, final String locator) {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -406,17 +406,19 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
-                        by -> ExpectedConditions.elementToBeClickable(by)),
+                        by -> force == null
+                                ? ExpectedConditions.elementToBeClickable(by)
+                                : ExpectedConditions.presenceOfElementLocated(by)),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(locator, 0);
+            getAutomatedBrowser().clickElement(force, locator, 0);
         }
     }
 
     @Override
-    public void clickElement(final String locator, final int waitTime) {
+    public void clickElement(final String force, final String locator, final int waitTime) {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -424,12 +426,14 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        by -> ExpectedConditions.elementToBeClickable(by)),
+                        by -> force == null
+                                ? ExpectedConditions.elementToBeClickable(by)
+                                : ExpectedConditions.presenceOfElementLocated(by)),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(locator, 0);
+            getAutomatedBrowser().clickElement(force, locator, 0);
         }
     }
 

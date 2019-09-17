@@ -454,17 +454,36 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void clickElement(final String force, final String locator) {
+        clickElement(force, locator, defaultExplicitWaitTime);
+    }
+
+    @Override
+    public void clickElement(final String force, final String locator, final int waitTime) {
+        if (force != null) {
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            ((JavascriptExecutor)getWebDriver()).executeScript("arguments[0].click();", element);
+        } else {
+            SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.elementToBeClickable(by)).click();
+        }
+    }
+
+    @Override
     public void clickElement(final String locator) {
-        clickElement(locator, defaultExplicitWaitTime);
+        clickElement(null, locator);
     }
 
     @Override
     public void clickElement(final String locator, final int waitTime) {
-        SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by)).click();
+        clickElement(null, locator, waitTime);
     }
 
     @Override
