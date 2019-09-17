@@ -5,7 +5,7 @@ import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VideoException;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
-import cucumber.api.java.en.And;
+import io.cucumber.java.en.And;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.monte.media.Format;
@@ -526,6 +526,16 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
+    }
+
+    @Override
+    public void scrollDown(final String distance) {
+        ((JavascriptExecutor)getWebDriver()).executeScript("window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0));
+    }
+
+    @Override
+    public void scrollUp(final String distance) {
+        ((JavascriptExecutor)getWebDriver()).executeScript("window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0) * -1);
     }
 
     @Override

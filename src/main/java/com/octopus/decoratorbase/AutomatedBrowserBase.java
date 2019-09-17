@@ -658,6 +658,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I scroll down \"([^\"]*)\" px$")
+    @Override
+    public void scrollDown(final String distance) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().scrollDown(
+                    getAliases().getOrDefault(distance, distance));
+        }
+    }
+
+    @And("^I scroll up \"([^\"]*)\" px$")
+    @Override
+    public void scrollUp(String distance) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().scrollUp(
+                    getAliases().getOrDefault(distance, distance));
+        }
+    }
+
     @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*")
     @Override
     public void mouseOver(final String locator) {

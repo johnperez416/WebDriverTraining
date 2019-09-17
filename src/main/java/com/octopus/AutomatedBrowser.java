@@ -117,6 +117,10 @@ public interface AutomatedBrowser {
 
     void clear(String locator, int waitTime);
 
+    void scrollDown(String distance);
+
+    void scrollUp(String distance);
+
     void mouseOver(String locator);
 
     void mouseOver(String locator, int waitTime);
