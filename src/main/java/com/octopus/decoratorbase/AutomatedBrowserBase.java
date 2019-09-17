@@ -2,7 +2,6 @@ package com.octopus.decoratorbase;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
-import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.ScriptException;
 import com.octopus.utils.SystemPropertyUtils;
@@ -14,14 +13,11 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -625,6 +621,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().populateElement(
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(text, text),
+                    waitTime);
+        }
+    }
+
+    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
+    public void clear(String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clear(
+                    getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void clear(String locator, int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clear(
+                    getAliases().getOrDefault(locator, locator),
                     waitTime);
         }
     }
