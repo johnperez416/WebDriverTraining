@@ -7,6 +7,7 @@ import com.octopus.utils.SimpleBy;
 import com.octopus.utils.impl.SimpleByImpl;
 import io.cucumber.java.en.And;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
@@ -607,7 +608,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         originalStyles.put(locator, element.getAttribute("style"));
 
-        if (location.equals("inside")) {
+        if (StringUtils.equals(location.trim(), "inside")) {
             ((JavascriptExecutor) getWebDriver()).executeScript(
                     "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
                     element);
