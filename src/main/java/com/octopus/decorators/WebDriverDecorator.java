@@ -640,4 +640,18 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             originalStyles.remove(locator);
         }
     }
+
+    @Override
+    public void pressEscape(final String locator) {
+        pressEscape(locator, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void pressEscape(final String locator, final int waitTime) {
+        SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(Keys.ESCAPE);
+    }
 }

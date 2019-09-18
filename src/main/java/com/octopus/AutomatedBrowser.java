@@ -160,4 +160,8 @@ public interface AutomatedBrowser {
     void removeElementHighlight(String locator);
 
     void removeElementHighlight(String locator, int waitTime);
+
+    void pressEscape(String locator);
+
+    void pressEscape(String locator, int waitTime);
 }

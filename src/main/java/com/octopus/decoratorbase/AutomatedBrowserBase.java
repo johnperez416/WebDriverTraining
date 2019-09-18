@@ -121,7 +121,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds$")
+    @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds?$")
     public void sleep(String seconds) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().sleep(getAliases().getOrDefault(seconds, seconds));
@@ -891,6 +891,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void removeElementHighlight(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().removeElementHighlight(getAliases().getOrDefault(locator, locator), waitTime);
+        }
+    }
+
+    @And("^I press the escape key on the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
+    public void pressEscape(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressEscape(getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @And("^I press the escape key on the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void pressEscape(final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressEscape(getAliases().getOrDefault(locator, locator), waitTime);
         }
     }
 }
