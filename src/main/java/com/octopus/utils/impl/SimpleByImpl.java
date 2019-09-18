@@ -44,7 +44,7 @@ public class SimpleByImpl implements SimpleBy {
                     final WebElement element =  wait.until(condition);
 
                     if (webDriver.findElements(by).size() > 1) {
-                        System.out.println("Matched " + webDriver.findElements(by).size() + " elements with the locator:");
+                        System.out.println("\nMatched " + webDriver.findElements(by).size() + " elements with the locator:");
                         System.out.println(locator);
                         System.out.println("Consider fixing the locator to be specific to a single element.");
                     }
