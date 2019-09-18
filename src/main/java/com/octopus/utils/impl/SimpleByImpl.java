@@ -41,7 +41,15 @@ public class SimpleByImpl implements SimpleBy {
                             TimeUnit.MILLISECONDS);
                     final ExpectedCondition<WebElement> condition =
                             expectedConditionCallback.getExpectedCondition(by);
-                    return wait.until(condition);
+                    final WebElement element =  wait.until(condition);
+
+                    if (webDriver.findElements(by).size() > 1) {
+                        System.out.println("Matched " + webDriver.findElements(by).size() + " elements with the locator:");
+                        System.out.println(locator);
+                        System.out.println("Consider fixing the locator to be specific to a single element.");
+                    }
+
+                    return element;
                 } catch (final Exception ignored) {
                   /*
                     Do nothing
