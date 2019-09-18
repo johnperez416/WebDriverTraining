@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.awt.*;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -40,8 +41,9 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
 
 	@Override
 	public void mouseGlide(final int x2, final int y2, final int time, final int steps) {
-		final Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-		mouseGlide(mouseLocation.x, mouseLocation.y, x2, y2, time, steps);
+		Optional.ofNullable(MouseInfo.getPointerInfo())
+				.map(x -> x.getLocation())
+				.ifPresent(l -> mouseGlide(l.x, l.y, x2, y2, time, steps));
 	}
 
 	@Override
