@@ -3,9 +3,10 @@ package com.octopus.decorators;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VideoException;
+import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
+import com.octopus.utils.impl.ScreenTransitionsImpl;
 import com.octopus.utils.impl.SimpleByImpl;
-import io.cucumber.java.en.And;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static ScreenRecorder screenRecorder;
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
@@ -653,5 +655,19 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(Keys.ESCAPE);
+    }
+
+    @Override
+    public void clearTransition() {
+        SCREEN_TRANSITIONS.clear();
+    }
+
+    @Override
+    public void fadeScreen(final String red, final String green, final String blue, final String duration) {
+        SCREEN_TRANSITIONS.fadeScreen(
+                NumberUtils.toFloat(red, 1),
+                NumberUtils.toFloat(green, 1),
+                NumberUtils.toFloat(blue, 1),
+                NumberUtils.toLong(duration, 2000));
     }
 }

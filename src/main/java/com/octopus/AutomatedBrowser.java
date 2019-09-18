@@ -164,4 +164,8 @@ public interface AutomatedBrowser {
     void pressEscape(String locator);
 
     void pressEscape(String locator, int waitTime);
+
+    void clearTransition();
+
+    void fadeScreen(String red, String green, String blue, String duration);
 }

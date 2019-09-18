@@ -4,8 +4,6 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.ScriptException;
-import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import cucumber.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -25,7 +23,6 @@ import java.util.Map;
 public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
-    static private final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -46,6 +43,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @Before
     public void reuseSharedBrowser() {
+        clearTransition();
         automatedBrowser = sharedAutomatedBrowser;
     }
 
@@ -907,6 +905,26 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void pressEscape(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().pressEscape(getAliases().getOrDefault(locator, locator), waitTime);
+        }
+    }
+
+    @Then("^I clear the transition$")
+    @Override
+    public void clearTransition() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clearTransition();
+        }
+    }
+
+    @Then("^I fade the screen to \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" over \"([^\"]*)\" milliseconds$")
+    @Override
+    public void fadeScreen(String red, String green, String blue, String duration) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().fadeScreen(
+                    getAliases().getOrDefault(red, red),
+                    getAliases().getOrDefault(green, green),
+                    getAliases().getOrDefault(blue, blue),
+                    getAliases().getOrDefault(duration, duration));
         }
     }
 }

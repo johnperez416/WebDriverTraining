@@ -23,9 +23,11 @@ public class Main {
 
             ENVIRONMENT_ALIASES_PROCESSOR.addSystemPropVarsAsAliases();
 
-            io.cucumber.core.cli.Main.run(
+            final int retValue = io.cucumber.core.cli.Main.run(
                     options.toArray(new String[0]),
                     Thread.currentThread().getContextClassLoader());
+
+            System.exit(retValue);
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
         }
