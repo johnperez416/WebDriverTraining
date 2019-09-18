@@ -24,6 +24,7 @@ public class ScreenTransitionsImpl implements ScreenTransitions {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setUndecorated(true);
             frame.setVisible(true);
+            frame.setAlwaysOnTop(true);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
