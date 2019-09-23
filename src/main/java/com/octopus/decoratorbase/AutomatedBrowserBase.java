@@ -44,7 +44,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Before
     public void reuseSharedBrowser() {
         automatedBrowser = sharedAutomatedBrowser;
-        clearTransition();
     }
 
     @After
