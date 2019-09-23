@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScreenTransitionsImpl implements ScreenTransitions {
-    private static JFrame frame;
+    private static JFrame frame = null;
 
     @Override
     public void clear() {
