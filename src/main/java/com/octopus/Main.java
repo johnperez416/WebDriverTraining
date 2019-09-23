@@ -17,6 +17,7 @@ public class Main {
             final ArrayList<String> options = new ArrayList<String>() {{
                 add("--glue");
                 add("com.octopus.decoratorbase");
+                add("--strict");
             }};
 
             Collections.addAll(options, args);

@@ -80,6 +80,7 @@ public class LambdaEntry {
                         retValue = cucumber.api.cli.Main.run(
                                 new String[]{
                                         "--monochrome",
+                                        "--strict",
                                         "--glue", "com.octopus.decoratorbase",
                                         "--plugin", "json:" + outputFile.toString(),
                                         "--plugin", "pretty:" + txtOutputFile.toString(),
