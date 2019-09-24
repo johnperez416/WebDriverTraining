@@ -50,7 +50,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
 
         originalStyles.put(locator, element.getAttribute("style"));
 
-        if (StringUtils.equals(location.trim(), "inside")) {
+        if (StringUtils.equals(StringUtils.trim(location), "inside")) {
             ((JavascriptExecutor) getWebDriver()).executeScript(
                     "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
                     element);
