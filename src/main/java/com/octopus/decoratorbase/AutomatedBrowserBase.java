@@ -215,6 +215,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I refresh the page$")
+    @Override
+    public void refresh() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().refresh();
+        }
+    }
+
     @And("^I start recording the screen to the directory \"([^\"]*)\"$")
     @Override
     public void startScreenRecording(final String file) {

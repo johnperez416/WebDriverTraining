@@ -653,4 +653,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
         Try.run(() -> Thread.sleep(fadeOut * 1000));
     }
+
+    public void refresh() {
+        getWebDriver().navigate().refresh();
+    }
 }
