@@ -640,7 +640,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         "div.setAttribute('style', '" + style + "'); " +
                         "const span = document.createElement('span');" +
                         "span.setAttribute('style', 'display: inline-block; vertical-align: middle; line-height: normal;'); " +
-                        "span.innerHTML = '" + text.replaceAll("'", "\'") + "'; " +
+                        "span.innerHTML = '" + text.replaceAll("\\\\", "\\\\").replaceAll("'", "\'") + "'; " +
                         "div.appendChild(span); " +
                         "document.body.appendChild(div); ");
 
