@@ -926,4 +926,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getAliases().getOrDefault(duration, duration));
         }
     }
+
+    @Then("^I display a note with the text \"([^\"]*)\" for \"([^\"]*)\" seconds?")
+    @Override
+    public void displayNote(final String text, final String duration) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().displayNote(
+                    getAliases().getOrDefault(text, text),
+                    getAliases().getOrDefault(duration, duration));
+        }
+    }
 }

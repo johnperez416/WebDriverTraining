@@ -59,7 +59,9 @@ public class AutomatedBrowserFactory {
                 new ImplicitWaitDecorator(10,
                         new BrowserMobDecorator(
                                 new MouseMovementDecorator(
-                                    new WebDriverDecorator()
+                                        new HighlightDecorator(
+                                            new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )

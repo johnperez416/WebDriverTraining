@@ -9,7 +9,6 @@ public class ImplicitWaitDecorator extends AutomatedBrowserBase {
     private final int waitTime;
 
     public ImplicitWaitDecorator(final int waitTime, final AutomatedBrowser automatedBrowser) {
-
         super(automatedBrowser);
         this.waitTime = waitTime;
     }

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MouseMovementUtilsImpl implements MouseMovementUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(MouseMovementUtilsImpl.class);
 
-    private SystemPropertyUtils systemPropertyUtils = new SystemPropertyUtilsImpl();
+    private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     @Override
     public void mouseGlide(final int x1, final int y1, final int x2, final int y2, final int time, final int steps) {
@@ -58,16 +58,16 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
         checkNotNull(element);
 
         final boolean moveMouseCursor =
-                systemPropertyUtils.getPropertyAsBoolean(
+                SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
                         Constants.MOVE_CURSOR_TO_ELEMENT, false);
 
         final int verticalOffset =
-                systemPropertyUtils.getPropertyAsInt(
+                SYSTEM_PROPERTY_UTILS.getPropertyAsInt(
                         Constants.MOUSE_MOVE_VERTICAL_OFFSET, 0);
 
         if (moveMouseCursor) {
 
-            final float zoom = systemPropertyUtils.getPropertyAsFloat(
+            final float zoom = SYSTEM_PROPERTY_UTILS.getPropertyAsFloat(
                     Constants.SCREEN_ZOOM_FACTOR, 1.0f);
 
             final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();

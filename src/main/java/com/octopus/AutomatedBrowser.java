@@ -168,4 +168,6 @@ public interface AutomatedBrowser {
     void clearTransition();
 
     void fadeScreen(String red, String green, String blue, String duration);
+
+    void displayNote(String text, String duration);
 }

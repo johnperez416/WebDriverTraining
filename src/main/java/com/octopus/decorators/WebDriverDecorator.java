@@ -1,22 +1,25 @@
 package com.octopus.decorators;
 
+import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VideoException;
 import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
+import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.ScreenTransitionsImpl;
 import com.octopus.utils.impl.SimpleByImpl;
+import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.VideoFormatKeys;
 import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
-import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -25,16 +28,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
+    private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static ScreenRecorder screenRecorder;
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
-    private Map<String, String> originalStyles = new HashMap<>();
 
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
@@ -65,6 +66,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void startScreenRecording(final String file) {
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false)) {
+            return;
+        }
+
         if (screenRecorder != null) {
             throw new VideoException("The screen is already recording!");
         }
@@ -129,6 +134,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void takeScreenshot(final String file)
     {
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false)) {
+            return;
+        }
+
         try {
             final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshot, new File(file));
@@ -594,56 +603,6 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlight(final String location, final String locator,final String offset) {
-        this.elementHighlight(location, locator, offset, defaultExplicitWaitTime);
-    }
-
-    @Override
-    public void elementHighlight(final String location, final String locator, final String offset, final int waitTime) {
-        final int offsetValue = NumberUtils.toInt(offset, 10);
-
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
-
-        originalStyles.put(locator, element.getAttribute("style"));
-
-        if (StringUtils.equals(location.trim(), "inside")) {
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
-                    element);
-        } else {
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
-                    element);
-        }
-    }
-
-    @Override
-    public void removeElementHighlight(final String locator) {
-        removeElementHighlight(locator, defaultExplicitWaitTime);
-    }
-
-    @Override
-    public void removeElementHighlight(final String locator, final int waitTime) {
-        if (originalStyles.containsKey(locator)) {
-            final WebElement element = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
-
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].setAttribute('style', '" + originalStyles.get(locator) + "');",
-                    element);
-
-            originalStyles.remove(locator);
-        }
-    }
-
-    @Override
     public void pressEscape(final String locator) {
         pressEscape(locator, getDefaultExplicitWaitTime());
     }
@@ -669,5 +628,29 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 NumberUtils.toFloat(green, 1),
                 NumberUtils.toFloat(blue, 1),
                 NumberUtils.toLong(duration, 2000));
+    }
+
+    @Override
+    public void displayNote(final String text, final String duration) {
+        final int fadeOut = 1;
+        final String style = "position: absolute; bottom: 50px; height: 100px; line-height: 100px; left: 50px; right: 50px; text-align: center; background: rgba(0, 0, 0, 1); color: white; font-family: Arial, Helvetica, sans-serif; font-size: 2em; opacity: 0.7; transition: opacity " + fadeOut + "s linear;";
+        ((JavascriptExecutor) getWebDriver()).executeScript(
+                "const div = document.createElement('div'); " +
+                        "div.setAttribute('id', 'webdriver-note'); " +
+                        "div.setAttribute('style', '" + style + "'); " +
+                        "const span = document.createElement('span');" +
+                        "span.setAttribute('style', 'display: inline-block; vertical-align: middle; line-height: normal;'); " +
+                        "span.innerHTML = '" + text + "'; " +
+                        "div.appendChild(span); " +
+                        "document.body.appendChild(div); ");
+
+        Try.run(() -> Thread.sleep(NumberUtils.toInt(duration, 1) * 1000));
+
+        ((JavascriptExecutor) getWebDriver()).executeScript(
+                "const div = document.getElementById('webdriver-note'); " +
+                        "div.style.opacity = 0; " +
+                        "window.setTimeout(function(){document.body.removeChild(div)}, " + fadeOut * 1000 + ");");
+
+        Try.run(() -> Thread.sleep(fadeOut * 1000));
     }
 }
