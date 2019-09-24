@@ -73,7 +73,9 @@ public class AutomatedBrowserFactory {
                 new ImplicitWaitDecorator(10,
                         new BrowserMobDecorator(
                                 new MouseMovementDecorator(
-                                        new WebDriverDecorator()
+                                        new HighlightDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -84,7 +86,9 @@ public class AutomatedBrowserFactory {
         return new ChromeDecorator(
                 new BrowserMobDecorator(
                         new MouseMovementDecorator(
-                                new WebDriverDecorator()
+                                new HighlightDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -94,7 +98,9 @@ public class AutomatedBrowserFactory {
         return new FirefoxDecorator(
                 new BrowserMobDecorator(
                         new MouseMovementDecorator(
-                                new WebDriverDecorator()
+                                new HighlightDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -105,7 +111,9 @@ public class AutomatedBrowserFactory {
                 new BrowserStackEdgeDecorator(
                         new ImplicitWaitDecorator(10,
                                 new MouseMovementDecorator(
-                                        new WebDriverDecorator()
+                                        new HighlightDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -116,7 +124,9 @@ public class AutomatedBrowserFactory {
         return new BrowserStackDecorator(
                 new BrowserStackEdgeDecorator(
                         new MouseMovementDecorator(
-                                new WebDriverDecorator()
+                                new HighlightDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -127,7 +137,9 @@ public class AutomatedBrowserFactory {
                 new BrowserStackAndroidDecorator(
                         new ImplicitWaitDecorator(10,
                                 new MouseMovementDecorator(
-                                        new WebDriverDecorator()
+                                        new HighlightDecorator(
+                                                new WebDriverDecorator()
+                                        )
                                 )
                         )
                 )
@@ -138,7 +150,9 @@ public class AutomatedBrowserFactory {
         return new BrowserStackDecorator(
                 new BrowserStackAndroidDecorator(
                         new MouseMovementDecorator(
-                                new WebDriverDecorator()
+                                new HighlightDecorator(
+                                        new WebDriverDecorator()
+                                )
                         )
                 )
         );
@@ -147,7 +161,9 @@ public class AutomatedBrowserFactory {
     private AutomatedBrowser getChromeBrowserNoImplicitWaitLambda() {
         return new ChromeHeadlessLambdaDecorator(
                 new MouseMovementDecorator(
-                        new WebDriverDecorator()
+                        new HighlightDecorator(
+                                new WebDriverDecorator()
+                        )
                 )
         );
     }
