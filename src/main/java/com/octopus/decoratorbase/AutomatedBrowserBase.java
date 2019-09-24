@@ -10,6 +10,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -857,7 +858,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void elementHighlight(final String position, final String locator, final String offset) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().elementHighlight(
-                    getAliases().getOrDefault(position, position),
+                    position,
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(offset, offset));
         }
@@ -868,7 +869,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void elementHighlight(final String position, final String locator, final String offset, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().elementHighlight(
-                    getAliases().getOrDefault(position, position),
+                    position,
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(offset, offset),
                     waitTime);
