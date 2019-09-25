@@ -22,6 +22,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <screenrecorder.version>0.7.7</screenrecorder.version>
         <slf4jjdk14.version>1.7.28</slf4jjdk14.version>
         <vavr.version>0.9.2</vavr.version>
+        <bouncy.castle.version>1.63</bouncy.castle.version>
+        <netty.version>4.1.41.Final</netty.version>
     </properties>
     <build>
         <plugins>
@@ -150,6 +152,16 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>${aws.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bouncy.castle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
         </dependency>
     </dependencies>
     <repositories>

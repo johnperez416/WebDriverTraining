@@ -592,6 +592,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
+        // code from https://jsfiddle.net/s61x7c4e/
+
         final int scrollTime = 1000;
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
