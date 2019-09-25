@@ -10,7 +10,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons.lang.version>3.9</apache.commons.lang.version>
-        <java.version>1.8</java.version>
+        <java.version>13</java.version>
         <selenium.version>3.14.0</selenium.version>
         <junit.version>4.12</junit.version>
         <browsermob.version>2.1.5</browsermob.version>
@@ -32,6 +32,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

@@ -132,8 +132,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void takeScreenshot(final String file)
-    {
+    public void takeScreenshot(final String file) {
         if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false)) {
             return;
         }
@@ -478,7 +477,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     by -> ExpectedConditions.presenceOfElementLocated(by));
-            ((JavascriptExecutor)getWebDriver()).executeScript("arguments[0].click();", element);
+            ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
         } else {
             SIMPLE_BY.getElement(
                     getWebDriver(),
@@ -542,12 +541,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void scrollDown(final String distance) {
-        ((JavascriptExecutor)getWebDriver()).executeScript("window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0));
+        ((JavascriptExecutor) getWebDriver()).executeScript(
+                "window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0));
     }
 
     @Override
     public void scrollUp(final String distance) {
-        ((JavascriptExecutor)getWebDriver()).executeScript("window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0) * -1);
+        ((JavascriptExecutor) getWebDriver()).executeScript("window.scrollBy(0,arguments[0])", NumberUtils.toInt(distance, 0) * -1);
     }
 
     @Override
@@ -592,14 +592,54 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
+        final int scrollTime = 1000;
         final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by));
-        ((JavascriptExecutor) getWebDriver()).executeScript(
-                "arguments[0].scrollIntoView(true); window.scrollBy(0, " + Integer.parseInt(offset == null ? "0" : offset) + ");",
-                element);
+        ((JavascriptExecutor) getWebDriver()).executeScript("""
+            function getElementY(element) {
+              return window.pageYOffset + element.getBoundingClientRect().top
+            }
+
+            function doScrolling(element, offset, duration) {
+              var startingY = window.pageYOffset
+              var elementY = getElementY(element) + offset
+              // If element is close to page's bottom then window will scroll only to some position above the element.
+              var targetY = document.body.scrollHeight - elementY < window.innerHeight ? document.body.scrollHeight - window.innerHeight : elementY
+              var diff = targetY - startingY
+              // Easing function: easeInOutCubic
+              // From: https://gist.github.com/gre/1650294
+              var easing = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
+              var start
+
+              if (!diff) return
+            	// Bootstrap our animation - it will get called right before next frame shall be rendered.
+            	window.requestAnimationFrame(function step(timestamp) {
+                if (!start) start = timestamp
+                // Elapsed miliseconds since start of scrolling.
+                var time = timestamp - start
+            	// Get percent of completion in range [0, 1].
+                var percent = Math.min(time / duration, 1)
+                // Apply the easing.
+                // It can cause bad-looking slow frames in browser performance tool, so be careful.
+                percent = easing(percent)
+
+                window.scrollTo(0, startingY + diff * percent)
+
+            	// Proceed with animation as long as we wanted it to.
+                if (time < duration) {
+                  window.requestAnimationFrame(step)
+                }
+              })
+            }
+                doScrolling(arguments[0], arguments[1], arguments[2]);
+            """,
+                element,
+                Integer.parseInt(offset == null ? "0" : offset),
+                scrollTime);
+        Try.run(() -> Thread.sleep(scrollTime));
     }
 
     @Override
