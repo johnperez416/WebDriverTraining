@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleByImpl implements SimpleBy {
@@ -41,10 +43,15 @@ public class SimpleByImpl implements SimpleBy {
                             TimeUnit.MILLISECONDS);
                     final ExpectedCondition<WebElement> condition =
                             expectedConditionCallback.getExpectedCondition(by);
-                    final WebElement element =  wait.until(condition);
+                    final WebElement element = wait.until(condition);
 
-                    if (webDriver.findElements(by).size() > 1) {
-                        System.out.println("\nMatched " + webDriver.findElements(by).size() + " elements with the locator:");
+                    final List<WebElement> matched = webDriver.findElements(by);
+                    if (matched.size() > 1) {
+                        System.out.println("\nMatched " + matched.size() + " elements with the locator:");
+                        matched.stream().forEach(e -> System.out.println(
+                                e.getTagName() +
+                                        " X: " + e.getLocation().x +
+                                        " Y: " + e.getLocation().y));
                         System.out.println(locator);
                         System.out.println("Consider fixing the locator to be specific to a single element.");
                     }
