@@ -47,7 +47,7 @@ public class SimpleByImpl implements SimpleBy {
 
                     final List<WebElement> matched = webDriver.findElements(by);
                     if (matched.size() > 1) {
-                        System.out.println("\nMatched " + matched.size() + " elements with the locator:");
+                        System.out.println("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
                         matched.stream().forEach(e -> System.out.println(
                                 e.getTagName() +
                                         " X: " + e.getLocation().x +
