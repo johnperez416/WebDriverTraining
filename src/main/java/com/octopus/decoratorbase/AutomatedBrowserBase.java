@@ -624,7 +624,10 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    // A hack to match multiple regexes
+    // https://github.com/cucumber/cucumber-jvm/issues/1341#issuecomment-379521254
     @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"$")
+    @Then("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)?:$")
     @Override
     public void populateElement(final String locator, final String text) {
         if (getAutomatedBrowser() != null) {
