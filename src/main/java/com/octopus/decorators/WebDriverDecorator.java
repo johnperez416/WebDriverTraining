@@ -551,22 +551,6 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void mouseOver(final String locator) {
-        mouseOver(locator, getDefaultExplicitWaitTime());
-    }
-
-    @Override
-    public void mouseOver(final String locator, final int waitTime) {
-        final Actions action = new Actions(getWebDriver());
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
-        action.moveToElement(element).perform();
-    }
-
-    @Override
     public String getTextFromElement(final String locator) {
         return getTextFromElement(locator, defaultExplicitWaitTime);
     }

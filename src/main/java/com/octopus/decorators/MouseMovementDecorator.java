@@ -10,6 +10,7 @@ import com.octopus.utils.impl.SimpleByImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -507,5 +508,49 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(locator, text, 0);
         }
+    }
+
+    @Override
+    public void mouseOver(final String locator) {
+        MOUSE_MOVEMENT_UTILS.mouseGlide(
+                getWebDriver(),
+                (JavascriptExecutor) getWebDriver(),
+                SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        getDefaultExplicitWaitTime(),
+                        by -> ExpectedConditions.presenceOfElementLocated(by)),
+                Constants.MOUSE_MOVE_TIME,
+                Constants.MOUSE_MOVE_STEPS);
+
+        final Actions action = new Actions(getWebDriver());
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                0,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+        action.moveToElement(element).perform();
+    }
+
+    @Override
+    public void mouseOver(final String locator, final int waitTime) {
+        MOUSE_MOVEMENT_UTILS.mouseGlide(
+                getWebDriver(),
+                (JavascriptExecutor) getWebDriver(),
+                SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        by -> ExpectedConditions.presenceOfElementLocated(by)),
+                Constants.MOUSE_MOVE_TIME,
+                Constants.MOUSE_MOVE_STEPS);
+
+        final Actions action = new Actions(getWebDriver());
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                0,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+        action.moveToElement(element).perform();
     }
 }
