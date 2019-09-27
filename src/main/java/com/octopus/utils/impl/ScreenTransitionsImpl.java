@@ -1,6 +1,7 @@
 package com.octopus.utils.impl;
 
 import com.octopus.utils.ScreenTransitions;
+import io.vavr.control.Try;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,11 +33,13 @@ public class ScreenTransitionsImpl implements ScreenTransitions {
 
         final long start = System.currentTimeMillis();
         while (true) {
+            frame.toFront();
             final long now = System.currentTimeMillis();
             if (now >= start + transitionTime) {
                 break;
             }
             frame.setBackground(new Color(red, green, blue, (now - start) / (float)transitionTime));
+            Try.run(() -> Thread.sleep(15));
         }
     }
 }
