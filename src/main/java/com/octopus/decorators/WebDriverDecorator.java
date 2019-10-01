@@ -12,6 +12,7 @@ import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
@@ -219,7 +220,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public String getTextFromElementWithId(final String id) {
         if (defaultExplicitWaitTime <= 0) {
-            return webDriver.findElement(By.id(id)).getText();
+            final WebElement element = webDriver.findElement(By.id(id));
+
+            if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+                return element.getAttribute("value");
+            }
+
+            return element.getText();
         } else {
             return getTextFromElementWithId(id, defaultExplicitWaitTime);
         }
@@ -295,7 +302,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public String getTextFromElementWithXPath(final String xpath) {
         if (defaultExplicitWaitTime <= 0) {
-            return webDriver.findElement(By.xpath(xpath)).getText();
+            final WebElement element = webDriver.findElement(By.xpath(xpath));
+
+            if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+                return element.getAttribute("value");
+            }
+
+            return element.getText();
         } else {
             return getTextFromElementWithXPath(xpath, defaultExplicitWaitTime);
         }
@@ -372,7 +385,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public String getTextFromElementWithCSSSelector(final String cssSelector) {
         if (defaultExplicitWaitTime <= 0) {
-            return webDriver.findElement(By.cssSelector(cssSelector)).getText();
+            final WebElement element = webDriver.findElement(By.cssSelector(cssSelector));
+
+            if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+                return element.getAttribute("value");
+            }
+
+            return element.getText();
         } else {
             return getTextFromElementWithCSSSelector(cssSelector, defaultExplicitWaitTime);
         }
@@ -448,7 +467,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public String getTextFromElementWithName(final String name) {
         if (defaultExplicitWaitTime <= 0) {
-            return webDriver.findElement(By.name(name)).getText();
+            final WebElement element = webDriver.findElement(By.name(name));
+
+            if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+                return element.getAttribute("value");
+            }
+
+            return element.getText();
         } else {
             return getTextFromElementWithName(name, defaultExplicitWaitTime);
         }
@@ -557,11 +582,17 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElement(final String locator, final int waitTime) {
-        return SIMPLE_BY.getElement(
+        final WebElement element =  SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+
+        if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+            return element.getAttribute("value");
+        }
+
+        return element.getText();
     }
 
     @Override
