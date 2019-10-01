@@ -32,13 +32,13 @@ public interface MouseMovementUtils {
 	 * Move the mouse from the current position to the new position
 	 * @param driver The WebDriver instance
 	 * @param javascriptExecutor The selenium javascript executor
-	 * @param element the element to move the mouse to
+	 * @param element the callback to get the element
 	 * @param time The amount of time to take
 	 * @param steps The number of steps to use
 	 */
 	void mouseGlide(WebDriver driver,
                     JavascriptExecutor javascriptExecutor,
-                    WebElement element,
+					GetElement element,
                     int time,
                     int steps);
 }

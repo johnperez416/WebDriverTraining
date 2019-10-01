@@ -1,6 +1,7 @@
 package com.octopus.utils.impl;
 
 import com.octopus.Constants;
+import com.octopus.utils.GetElement;
 import com.octopus.utils.MouseMovementUtils;
 import com.octopus.utils.SystemPropertyUtils;
 import org.openqa.selenium.JavascriptExecutor;
@@ -51,7 +52,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
     public void mouseGlide(
             final WebDriver driver,
             final JavascriptExecutor javascriptExecutor,
-            final WebElement element,
+            final GetElement element,
             final int time,
             final int steps) {
 
@@ -71,22 +72,23 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     Constants.SCREEN_ZOOM_FACTOR, 1.0f);
 
             final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            final WebElement webElement = element.getElement();
 
             final Long top = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().top);", element);
+                    "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
             final Long left = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().left);", element);
+                    "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
             final Long height = (Long) javascriptExecutor.executeScript(
-                    "return arguments[0].clientHeight;", element);
+                    "return arguments[0].clientHeight;", webElement);
             final Long width = (Long) javascriptExecutor.executeScript(
-                    "return arguments[0].clientWidth;", element);
+                    "return arguments[0].clientWidth;", webElement);
             mouseGlide(
                     Math.min(d.width - 1, (int) ((left + width / 2) * zoom)),
                     Math.min(d.height - 1, (int) ((top + verticalOffset + height / 2) * zoom)),
                     Constants.MOUSE_MOVE_TIME,
                     Constants.MOUSE_MOVE_STEPS);
 
-            new Actions(driver).moveToElement(element).perform();
+            new Actions(driver).moveToElement(element.getElement()).perform();
         }
     }
 }

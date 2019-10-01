@@ -67,7 +67,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, getDefaultExplicitWaitTime()),
+                () -> getElementById(id, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -81,7 +81,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, waitTime),
+                () -> getElementById(id, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -95,7 +95,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, getDefaultExplicitWaitTime()),
+                () -> getElementById(id, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -109,7 +109,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, waitTime),
+                () -> getElementById(id, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -123,7 +123,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, getDefaultExplicitWaitTime()),
+                () ->  getElementById(id, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -137,7 +137,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementById(id, waitTime),
+                () -> getElementById(id, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -151,7 +151,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, getDefaultExplicitWaitTime()),
+                () -> getElementByXPath(xpath, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -165,7 +165,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, waitTime),
+                () -> getElementByXPath(xpath, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -179,7 +179,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, getDefaultExplicitWaitTime()),
+                () -> getElementByXPath(xpath, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -193,7 +193,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, waitTime),
+                () -> getElementByXPath(xpath, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -207,7 +207,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, getDefaultExplicitWaitTime()),
+                () -> getElementByXPath(xpath, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -221,7 +221,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByXPath(xpath, waitTime),
+                () -> getElementByXPath(xpath, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -235,7 +235,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
+                () -> getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -249,7 +249,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, waitTime),
+                () -> getElementByCSSSelector(cssSelector, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -263,7 +263,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
+                () -> getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -277,7 +277,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, waitTime),
+                () -> getElementByCSSSelector(cssSelector, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -291,7 +291,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
+                () -> getElementByCSSSelector(cssSelector, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -305,7 +305,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByCSSSelector(cssSelector, waitTime),
+                () -> getElementByCSSSelector(cssSelector, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -319,7 +319,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, getDefaultExplicitWaitTime()),
+                () -> getElementByName(name, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -333,7 +333,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, waitTime),
+                () -> getElementByName(name, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -347,7 +347,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, getDefaultExplicitWaitTime()),
+                () -> getElementByName(name, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -361,7 +361,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, waitTime),
+                () -> getElementByName(name, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -375,7 +375,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, getDefaultExplicitWaitTime()),
+                () -> getElementByName(name, getDefaultExplicitWaitTime()),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -389,7 +389,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                getElementByName(name, waitTime),
+                () -> getElementByName(name, waitTime),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -403,7 +403,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
@@ -423,7 +423,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
@@ -443,7 +443,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
@@ -461,7 +461,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
@@ -479,7 +479,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
@@ -497,7 +497,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
@@ -515,7 +515,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
@@ -537,7 +537,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
-                SIMPLE_BY.getElement(
+                () -> SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
