@@ -5,6 +5,8 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.ProfilesIni;
 
 public class FirefoxDecorator extends AutomatedBrowserBase {
 
@@ -22,8 +24,16 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
+        final ProfilesIni profile = new ProfilesIni();
+        final FirefoxProfile myprofile = profile.getProfile("default");
+        myprofile.setPreference("network.automatic-ntlm-auth.trusted-uris", "localhost");
+        myprofile.setPreference("network.negotiate-auth.delegation-uris", "localhost");
+        myprofile.setPreference("network.negotiate-auth.trusted-uris", "localhost");
+        myprofile.setPreference("network.automatic-ntlm-auth.allow-non-fqdn", "true");
+
         final FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(headless);
+        options.setProfile(myprofile);
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new FirefoxDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
