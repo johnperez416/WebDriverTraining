@@ -3,6 +3,7 @@ package com.octopus.decoratorbase;
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.exceptions.BrowserException;
+import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
 import cucumber.api.Scenario;
 import io.cucumber.java.After;
@@ -10,13 +11,14 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,6 +246,19 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void dumpAliases() {
         System.out.println("Start of alias dump");
         getAliases().entrySet().forEach(entrySet -> System.out.println(entrySet.getKey() + ": " + entrySet.getValue()));
+    }
+
+    @And("^I write the value of the alias \"([^\"]*)\" to the file \"([^\"]*)\"$")
+    @Override
+    public void writeAliasValueToFile(final String alias, final String filename) {
+        try {
+            FileUtils.write(
+                    new File(filename),
+                    getAliases().getOrDefault(alias, ""),
+                    StandardCharsets.UTF_8);
+        } catch (final IOException ex) {
+            throw new SaveException("Failed to write alias value to " + filename, ex);
+        }
     }
 
     @And("^I save a screenshot to \"([^\"]*)\"$")

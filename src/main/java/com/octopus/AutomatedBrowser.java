@@ -29,6 +29,8 @@ public interface AutomatedBrowser {
 
     void dumpAliases();
 
+    void writeAliasValueToFile(String alias, String filename);
+
     void takeScreenshot(String filename);
 
     void setWindowSize(String width, String height);
