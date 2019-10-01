@@ -24,8 +24,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
-        final ProfilesIni profile = new ProfilesIni();
-        final FirefoxProfile myprofile = profile.getProfile("default");
+        final FirefoxProfile myprofile = new FirefoxProfile();
         myprofile.setPreference("network.automatic-ntlm-auth.trusted-uris", "localhost");
         myprofile.setPreference("network.negotiate-auth.delegation-uris", "localhost");
         myprofile.setPreference("network.negotiate-auth.trusted-uris", "localhost");
