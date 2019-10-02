@@ -13,7 +13,6 @@ import java.util.Map;
 public class SlackWebHook implements EventHandler {
     private static final String HOOK_URL = "Hook-Url";
     private static final String SLACK_FAILURE_ONLY = "Slack-Failure-Only";
-    private static final DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     public Map<String, String> finished(final String id,

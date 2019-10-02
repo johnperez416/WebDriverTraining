@@ -20,7 +20,6 @@ public class SeqLogging implements EventHandler {
     public static final String SEQ_URL = "Seq-Url";
     public static final String SEQ_LEVEL = "Seq-Level";
     public static final String SEQ_FAILURE_ONLY = "Seq-Failure-Only";
-    private static final DecimalFormat df = new DecimalFormat("#.##");
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final List<String> LEVELS = Arrays.asList("Verbose", "Debug", "Information", "Warning", "Error", "Fatal");
 
