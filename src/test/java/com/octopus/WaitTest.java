@@ -1,6 +1,7 @@
 package com.octopus;
 
 import org.junit.Test;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
@@ -67,7 +68,7 @@ public class WaitTest {
         }
     }
 
-    @Test(expected = TimeoutException.class)
+    @Test(expected = NoSuchElementException.class)
     public void mixedTestShortExplicitWait() throws URISyntaxException {
 
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
@@ -85,7 +86,7 @@ public class WaitTest {
         }
     }
 
-    @Test(expected = TimeoutException.class)
+    @Test(expected = NoSuchElementException.class)
     public void mixedTestLongExplicitWait() throws URISyntaxException {
 
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
@@ -121,7 +122,7 @@ public class WaitTest {
         }
     }
 
-    @Test(expected = TimeoutException.class)
+    @Test(expected = NoSuchElementException.class)
     public void shortExplicitWaitNoImplicitWaitForDynamicElement() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
         final long start = System.currentTimeMillis();
