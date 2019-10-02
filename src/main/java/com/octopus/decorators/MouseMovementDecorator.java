@@ -78,7 +78,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithId(
                     id,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -95,7 +95,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithId(
                     id,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -113,7 +113,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     id,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -131,7 +131,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     id,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -149,7 +149,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     id,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -167,7 +167,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     id,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -184,7 +184,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithXPath(
                     xpath,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -201,7 +201,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithXPath(
                     xpath,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -219,7 +219,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     xpath,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -237,7 +237,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     xpath,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -255,7 +255,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     xpath,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -273,7 +273,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     xpath,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -290,7 +290,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithCSSSelector(
                     cssSelector,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -307,7 +307,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithCSSSelector(
                     cssSelector,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -325,7 +325,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     cssSelector,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -343,7 +343,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     cssSelector,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -361,7 +361,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     cssSelector,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -379,7 +379,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     cssSelector,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -396,7 +396,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithName(
                     name,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -413,7 +413,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             getAutomatedBrowser().clickElementWithName(
                     name,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -431,7 +431,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     name,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -449,7 +449,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     name,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -467,7 +467,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     name,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -485,7 +485,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     name,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -509,7 +509,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     force,
                     locator,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -533,7 +533,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     force,
                     locator,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -555,7 +555,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     locator,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -577,7 +577,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     optionText,
                     locator,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -599,7 +599,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     locator,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
@@ -621,7 +621,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     locator,
                     text,
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+                            ? getDefaultExplicitWaitTime() : 0);
         }
     }
 
