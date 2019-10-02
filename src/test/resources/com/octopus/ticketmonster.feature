@@ -1,6 +1,6 @@
 Feature: Test TicketMonster
   Scenario: Purchase Tickets
-    Given I open the browser "FirefoxNoImplicitWait"
+    Given I open the browser "ChromeNoImplicitWait"
     When I open the URL "https://ticket-monster.herokuapp.com"
     And I click the "Buy tickets now" button waiting up to "30" seconds
     And I click the "Concert" link waiting up to "30" seconds
@@ -15,7 +15,7 @@ Feature: Test TicketMonster
     Then I close the browser
 
   Scenario: Purchase Tickets with default wait time
-    Given I open the browser "FirefoxNoImplicitWait"
+    Given I open the browser "ChromeNoImplicitWait"
     And I set the default explicit wait time to "30" seconds
     When I open the URL "https://ticket-monster.herokuapp.com"
     And I click the "Buy tickets now" button
@@ -31,7 +31,7 @@ Feature: Test TicketMonster
     Then I close the browser
 
   Scenario: Purchase Tickets with default wait time and aliases
-    Given I open the browser "FirefoxNoImplicitWait"
+    Given I open the browser "ChromeNoImplicitWait"
     And I set the following aliases:
       | Venue | venueSelector |
       | Book | bookButton |
