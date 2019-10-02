@@ -9,6 +9,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 13
+    - name: Check for updates
+      run: mvn versions:display-dependency-updates
     - name: Build with Maven
       run: mvn package -DskipTests
     - name: Reattach HEAD
