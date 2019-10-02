@@ -1,8 +1,9 @@
 Feature: Test TicketMonster
+
   Scenario: Purchase Tickets
     Given I open the browser "ChromeNoImplicitWait"
     When I open the URL "https://ticket-monster.herokuapp.com"
-    And I sleep for "1" second
+    And I sleep for "2" seconds
     And I click the "Buy tickets now" button waiting up to "30" seconds
     And I click the "Concert" link waiting up to "30" seconds
     And I click the "Rock concert of the decade" link waiting up to "30" seconds
@@ -19,7 +20,7 @@ Feature: Test TicketMonster
     Given I open the browser "ChromeNoImplicitWait"
     And I set the default explicit wait time to "30" seconds
     When I open the URL "https://ticket-monster.herokuapp.com"
-    And I sleep for "1" second
+    And I sleep for "2" seconds
     And I click the "Buy tickets now" button
     And I click the "Concert" link
     And I click the "Rock concert of the decade" link
@@ -35,15 +36,15 @@ Feature: Test TicketMonster
   Scenario: Purchase Tickets with default wait time and aliases
     Given I open the browser "ChromeNoImplicitWait"
     And I set the following aliases:
-      | Venue | venueSelector |
-      | Book | bookButton |
-      | Section | sectionSelect |
-      | Adult Ticket Count | tickets-1 |
-      | Add Tickets | add |
-      | Checkout | submit |
+      | Venue              | venueSelector |
+      | Book               | bookButton    |
+      | Section            | sectionSelect |
+      | Adult Ticket Count | tickets-1     |
+      | Add Tickets        | add           |
+      | Checkout           | submit        |
     And I set the default explicit wait time to "30" seconds
     When I open the URL "https://ticket-monster.herokuapp.com"
-    And I sleep for "1" second
+    And I sleep for "2" seconds
     And I click the "Buy tickets now" button
     And I click the "Concert" link
     And I click the "Rock concert of the decade" link

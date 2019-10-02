@@ -178,10 +178,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithId(final String id) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.id(id)).click();
         } else {
-            clickElementWithId(id, defaultExplicitWaitTime);
+            clickElementWithId(id, getDefaultExplicitWaitTime());
         }
     }
 
@@ -197,10 +197,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String selectId) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             new Select(webDriver.findElement(By.id(selectId))).selectByVisibleText(optionText);
         } else {
-            selectOptionByTextFromSelectWithId(optionText, selectId, defaultExplicitWaitTime);
+            selectOptionByTextFromSelectWithId(optionText, selectId, getDefaultExplicitWaitTime());
         }
     }
 
@@ -216,10 +216,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithId(final String id, final String text) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.id(id)).sendKeys(text);
         } else {
-            populateElementWithId(id, text, defaultExplicitWaitTime);
+            populateElementWithId(id, text, getDefaultExplicitWaitTime());
         }
     }
 
@@ -235,7 +235,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithId(final String id) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             final WebElement element = webDriver.findElement(By.id(id));
 
             if (StringUtils.isNotBlank(element.getAttribute("value"))) {
@@ -244,7 +244,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             return element.getText();
         } else {
-            return getTextFromElementWithId(id, defaultExplicitWaitTime);
+            return getTextFromElementWithId(id, getDefaultExplicitWaitTime());
         }
     }
 
@@ -260,10 +260,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithXPath(final String xpath) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.xpath(xpath)).click();
         } else {
-            clickElementWithXPath(xpath, defaultExplicitWaitTime);
+            clickElementWithXPath(xpath, getDefaultExplicitWaitTime());
         }
     }
 
@@ -279,10 +279,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             new Select(webDriver.findElement(By.xpath(xpath))).selectByVisibleText(optionText);
         } else {
-            selectOptionByTextFromSelectWithXPath(optionText, xpath, defaultExplicitWaitTime);
+            selectOptionByTextFromSelectWithXPath(optionText, xpath, getDefaultExplicitWaitTime());
         }
     }
 
@@ -298,10 +298,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithXPath(final String xpath, final String text) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.xpath(xpath)).sendKeys(text);
         } else {
-            populateElementWithXPath(xpath, text, defaultExplicitWaitTime);
+            populateElementWithXPath(xpath, text, getDefaultExplicitWaitTime());
         }
     }
 
@@ -317,7 +317,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithXPath(final String xpath) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             final WebElement element = webDriver.findElement(By.xpath(xpath));
 
             if (StringUtils.isNotBlank(element.getAttribute("value"))) {
@@ -326,7 +326,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             return element.getText();
         } else {
-            return getTextFromElementWithXPath(xpath, defaultExplicitWaitTime);
+            return getTextFromElementWithXPath(xpath, getDefaultExplicitWaitTime());
         }
     }
 
@@ -342,7 +342,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithCSSSelector(final String cssSelector) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.cssSelector(cssSelector)).click();
         } else {
             clickElementWithCSSSelector(cssSelector, getDefaultExplicitWaitTime());
@@ -381,7 +381,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithCSSSelector(final String cssSelector, final String text) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.cssSelector(cssSelector)).sendKeys(text);
         } else {
             populateElementWithCSSSelector(cssSelector, text, getDefaultExplicitWaitTime());
@@ -400,7 +400,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithCSSSelector(final String cssSelector) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             final WebElement element = webDriver.findElement(By.cssSelector(cssSelector));
 
             if (StringUtils.isNotBlank(element.getAttribute("value"))) {
@@ -409,7 +409,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             return element.getText();
         } else {
-            return getTextFromElementWithCSSSelector(cssSelector, defaultExplicitWaitTime);
+            return getTextFromElementWithCSSSelector(cssSelector, getDefaultExplicitWaitTime());
         }
     }
 
@@ -425,10 +425,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithName(final String name) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.name(name)).click();
         } else {
-            clickElementWithName(name, defaultExplicitWaitTime);
+            clickElementWithName(name, getDefaultExplicitWaitTime());
         }
     }
 
@@ -444,10 +444,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithName(final String optionText, final String name) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             new Select(webDriver.findElement(By.name(name))).selectByVisibleText(optionText);
         } else {
-            selectOptionByTextFromSelectWithName(optionText, name, defaultExplicitWaitTime);
+            selectOptionByTextFromSelectWithName(optionText, name, getDefaultExplicitWaitTime());
         }
     }
 
@@ -463,10 +463,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithName(final String name, final String text) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             webDriver.findElement(By.name(name)).sendKeys(text);
         } else {
-            populateElementWithName(name, text, defaultExplicitWaitTime);
+            populateElementWithName(name, text, getDefaultExplicitWaitTime());
         }
     }
 
@@ -482,7 +482,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElementWithName(final String name) {
-        if (defaultExplicitWaitTime <= 0) {
+        if (getDefaultExplicitWaitTime() <= 0) {
             final WebElement element = webDriver.findElement(By.name(name));
 
             if (StringUtils.isNotBlank(element.getAttribute("value"))) {
@@ -491,7 +491,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             return element.getText();
         } else {
-            return getTextFromElementWithName(name, defaultExplicitWaitTime);
+            return getTextFromElementWithName(name, getDefaultExplicitWaitTime());
         }
     }
 
@@ -507,7 +507,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElement(final String force, final String locator) {
-        clickElement(force, locator, defaultExplicitWaitTime);
+        clickElement(force, locator, getDefaultExplicitWaitTime());
     }
 
     @Override
@@ -540,7 +540,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelect(final String optionText, final String locator) {
-        selectOptionByTextFromSelect(optionText, locator, defaultExplicitWaitTime);
+        selectOptionByTextFromSelect(optionText, locator, getDefaultExplicitWaitTime());
     }
 
     @Override
@@ -554,7 +554,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElement(final String locator, final String text) {
-        populateElement(locator, text, defaultExplicitWaitTime);
+        populateElement(locator, text, getDefaultExplicitWaitTime());
     }
 
     @Override
@@ -593,7 +593,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public String getTextFromElement(final String locator) {
-        return getTextFromElement(locator, defaultExplicitWaitTime);
+        return getTextFromElement(locator, getDefaultExplicitWaitTime());
     }
 
     @Override
@@ -618,7 +618,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void scrollElementIntoView(final String locator, final String offset) {
-        scrollElementIntoView(locator, offset, defaultExplicitWaitTime);
+        scrollElementIntoView(locator, offset, getDefaultExplicitWaitTime());
     }
 
     @Override
