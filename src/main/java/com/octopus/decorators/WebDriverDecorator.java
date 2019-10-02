@@ -651,7 +651,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 };
 
                 var windowInsteadOfHtml = function (node) {
-                    return node === document.documentElement
+                    return node === document.documentElement || node === document.body
                             ? window
                             : node;
                 }
