@@ -630,7 +630,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by));
         ((JavascriptExecutor) getWebDriver()).executeScript("""
-            const getScrollParent = function () {
+            var getScrollParent = function () {
                 var regex = /(auto|scroll)/;
 
                 var parents = function (node, ps) {
@@ -650,20 +650,26 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     return regex.test(overflow(node));
                 };
 
+                var windowInsteadOfHtml = function (node) {
+                    return node === document.documentElement
+                            ? window
+                            : node;
+                }
+
                 var scrollParent = function (node) {
-                if (!(node instanceof HTMLElement || node instanceof SVGElement)) {
-                    return ;
-                }
-
-                var ps = parents(node.parentNode, []);
-
-                for (var i = 0; i < ps.length; i += 1) {
-                    if (scroll(ps[i])) {
-                        return ps[i];
+                    if (!(node instanceof HTMLElement || node instanceof SVGElement)) {
+                        return ;
                     }
-                }
 
-                return document.scrollingElement || document.documentElement;
+                    var ps = parents(node.parentNode, []);
+
+                    for (var i = 0; i < ps.length; i += 1) {
+                        if (scroll(ps[i])) {
+                            return windowInsteadOfHtml(ps[i]);
+                        }
+                    }
+
+                    return windowInsteadOfHtml(document.scrollingElement || document.documentElement);
                 };
 
                 return scrollParent;
@@ -671,15 +677,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             function getElementY(element) {
                 var parent = getScrollParent(element)
-                return parent.scrollTop + element.getBoundingClientRect().top
+                return (parent.scrollTop || parent.scrollY) + element.getBoundingClientRect().top
             }
 
             function doScrolling(element, offset, duration) {
                 var parent = getScrollParent(element)
-                var startingY = parent.scrollTop
+                var startingY = parent.scrollTop || parent.scrollY
                 var elementY = getElementY(element) + offset
                 // If element is close to page's bottom then parent will scroll only to some position above the element.
-                var targetY = parent.scrollHeight - elementY < parent.innerHeight ? parent.scrollHeight - parent.innerHeight : elementY
+                var targetY = (parent.scrollHeight || document.body.scrollHeight) - elementY < parent.innerHeight ? (parent.scrollHeight || document.body.scrollHeight) - parent.innerHeight : elementY
                 var diff = targetY - startingY
                 // Easing function: easeInOutCubic
                 // From: https://gist.github.com/gre/1650294
