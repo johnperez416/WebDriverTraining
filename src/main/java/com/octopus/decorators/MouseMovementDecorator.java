@@ -590,7 +590,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         getDefaultExplicitWaitTime(),
-                        by -> ExpectedConditions.elementToBeClickable(by)),
+                        by -> ExpectedConditions.presenceOfElementLocated(by)),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 
@@ -612,7 +612,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        by -> ExpectedConditions.elementToBeClickable(by)),
+                        by -> ExpectedConditions.presenceOfElementLocated(by)),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
 

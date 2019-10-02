@@ -229,7 +229,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             populateElementWithId(id, text);
         } else {
             final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
-            wait.until(ExpectedConditions.elementToBeClickable((By.id(id)))).sendKeys(text);
+            wait.until(ExpectedConditions.presenceOfElementLocated((By.id(id)))).sendKeys(text);
         }
     }
 
@@ -311,7 +311,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             populateElementWithXPath(xpath, text);
         } else {
             final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
-            wait.until(ExpectedConditions.elementToBeClickable((By.xpath(xpath)))).sendKeys(text);
+            wait.until(ExpectedConditions.presenceOfElementLocated((By.xpath(xpath)))).sendKeys(text);
         }
     }
 
@@ -394,7 +394,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             populateElementWithCSSSelector(css, text);
         } else {
             final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
-            wait.until(ExpectedConditions.elementToBeClickable((By.cssSelector(css)))).sendKeys(text);
+            wait.until(ExpectedConditions.presenceOfElementLocated((By.cssSelector(css)))).sendKeys(text);
         }
     }
 
@@ -476,7 +476,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             populateElementWithName(name, text);
         } else {
             final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
-            wait.until(ExpectedConditions.elementToBeClickable((By.name(name)))).sendKeys(text);
+            wait.until(ExpectedConditions.presenceOfElementLocated((By.name(name)))).sendKeys(text);
         }
     }
 
@@ -563,7 +563,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by)).sendKeys(text);
+                by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(text);
     }
 
     @Override
