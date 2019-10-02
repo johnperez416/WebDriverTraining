@@ -30,6 +30,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         myprofile.setPreference("network.negotiate-auth.trusted-uris", "localhost");
         myprofile.setPreference("network.automatic-ntlm-auth.allow-non-fqdn", "true");
 
+
         final FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(headless);
         options.setProfile(myprofile);

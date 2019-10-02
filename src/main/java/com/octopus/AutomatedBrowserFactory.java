@@ -30,6 +30,10 @@ public class AutomatedBrowserFactory {
             return getFirefoxBrowserNoImplicitWait();
         }
 
+        if ("FirefoxNoImplicitWaitNoProxy".equalsIgnoreCase(browser)) {
+            return getFirefoxBrowserNoImplicitWaitNoProxy();
+        }
+
         if ("BrowserStackEdge".equalsIgnoreCase(browser)) {
             return getBrowserStackEdge();
         }
@@ -60,7 +64,7 @@ public class AutomatedBrowserFactory {
                         new BrowserMobDecorator(
                                 new MouseMovementDecorator(
                                         new HighlightDecorator(
-                                            new WebDriverDecorator()
+                                                new WebDriverDecorator()
                                         )
                                 )
                         )
@@ -101,6 +105,16 @@ public class AutomatedBrowserFactory {
                                 new HighlightDecorator(
                                         new WebDriverDecorator()
                                 )
+                        )
+                )
+        );
+    }
+
+    private AutomatedBrowser getFirefoxBrowserNoImplicitWaitNoProxy() {
+        return new FirefoxDecorator(
+                new MouseMovementDecorator(
+                        new HighlightDecorator(
+                                new WebDriverDecorator()
                         )
                 )
         );

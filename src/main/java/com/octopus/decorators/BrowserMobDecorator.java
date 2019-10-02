@@ -1,14 +1,18 @@
 package com.octopus.decorators;
 
 import com.octopus.AutomatedBrowser;
+import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
+import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
@@ -20,6 +24,8 @@ import java.util.EnumSet;
 import java.util.regex.Pattern;
 
 public class BrowserMobDecorator extends AutomatedBrowserBase {
+
+    private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     private BrowserMobProxy proxy;
 
@@ -40,6 +46,11 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
 
         seleniumProxy.setHttpProxy(proxyStr);
         seleniumProxy.setSslProxy(proxyStr);
+
+        if (StringUtils.isNotBlank(SYSTEM_PROPERTY_UTILS.getProperty(Constants.NO_PROXY_LIST))) {
+            seleniumProxy.setNoProxy(SYSTEM_PROPERTY_UTILS.getProperty(Constants.NO_PROXY_LIST));
+        }
+
         desiredCapabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
         return desiredCapabilities;
     }
