@@ -150,6 +150,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                             file.substring(5 + urlParts[2].length() + 1),
                             screenshot,
                             true);
+                } else {
+                    throw new SaveException("S3 paths must be in the format S3://bucket/filename or S3://bucket/dir/filename. The path \"" + file + "\" is missing some paths.");
                 }
             } else {
                 final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
