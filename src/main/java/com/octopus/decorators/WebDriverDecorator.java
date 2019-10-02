@@ -677,15 +677,23 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
             function getElementY(element) {
                 var parent = getScrollParent(element)
-                return (parent.scrollTop || parent.scrollY) + element.getBoundingClientRect().top
+                return getScrollTop(parent) + element.getBoundingClientRect().top
+            }
+
+            function getScrollTop(parent) {
+                return parent.scrollTop !== undefined ? parent.scrollTop : parent.scrollY;
+            }
+
+            function getScrollingHeight(parent) {
+                return parent.scrollHeight !== undefined ? parent.scrollHeight : document.body.scrollHeight;
             }
 
             function doScrolling(element, offset, duration) {
                 var parent = getScrollParent(element)
-                var startingY = parent.scrollTop || parent.scrollY
+                var startingY = getScrollTop(parent)
                 var elementY = getElementY(element) + offset
                 // If element is close to page's bottom then parent will scroll only to some position above the element.
-                var targetY = (parent.scrollHeight || document.body.scrollHeight) - elementY < parent.innerHeight ? (parent.scrollHeight || document.body.scrollHeight) - parent.innerHeight : elementY
+                var targetY = getScrollingHeight(parent) - elementY < parent.innerHeight ? getScrollingHeight(parent) - parent.innerHeight : elementY
                 var diff = targetY - startingY
                 // Easing function: easeInOutCubic
                 // From: https://gist.github.com/gre/1650294
