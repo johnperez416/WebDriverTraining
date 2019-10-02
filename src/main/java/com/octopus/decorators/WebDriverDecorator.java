@@ -4,9 +4,11 @@ import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.VideoException;
+import com.octopus.utils.S3Uploader;
 import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.ScreenTransitionsImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
@@ -21,7 +23,6 @@ import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -34,6 +35,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final S3Uploader S_3_UPLOADER = new S3UploaderImpl();
     private static ScreenRecorder screenRecorder;
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
@@ -139,8 +141,20 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         }
 
         try {
-            final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot, new File(file));
+            if (file.startsWith("s3://")) {
+                final String[] urlParts = file.split("/");
+                if (urlParts.length >= 4) {
+                    final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+                    S_3_UPLOADER.uploadFileToS3(
+                            urlParts[2],
+                            file.substring(5 + urlParts[2].length() + 1),
+                            screenshot,
+                            true);
+                }
+            } else {
+                final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+                FileUtils.copyFile(screenshot, new File(file));
+            }
         } catch (final IOException ex) {
             throw new SaveException("Failed to copy the screenshot to " + file, ex);
         }
