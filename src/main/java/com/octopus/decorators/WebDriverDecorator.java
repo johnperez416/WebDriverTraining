@@ -616,42 +616,83 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by));
         ((JavascriptExecutor) getWebDriver()).executeScript("""
+            const getScrollParent = function () {
+                var regex = /(auto|scroll)/;
+
+                var parents = function (node, ps) {
+                    if (node.parentNode === null) { return ps; }
+                    return parents(node.parentNode, ps.concat([node]));
+                };
+
+                var style = function (node, prop) {
+                    return getComputedStyle(node, null).getPropertyValue(prop);
+                };
+
+                var overflow = function (node) {
+                    return style(node, "overflow") + style(node, "overflow-y") + style(node, "overflow-x");
+                };
+
+                var scroll = function (node) {
+                    return regex.test(overflow(node));
+                };
+
+                var scrollParent = function (node) {
+                if (!(node instanceof HTMLElement || node instanceof SVGElement)) {
+                    return ;
+                }
+
+                var ps = parents(node.parentNode, []);
+
+                for (var i = 0; i < ps.length; i += 1) {
+                    if (scroll(ps[i])) {
+                        return ps[i];
+                    }
+                }
+
+                return document.scrollingElement || document.documentElement;
+                };
+
+                return scrollParent;
+            }();
+
             function getElementY(element) {
-              return window.pageYOffset + element.getBoundingClientRect().top
+                var parent = getScrollParent(element)
+                return parent.scrollTop + element.getBoundingClientRect().top
             }
 
             function doScrolling(element, offset, duration) {
-              var startingY = window.pageYOffset
-              var elementY = getElementY(element) + offset
-              // If element is close to page's bottom then window will scroll only to some position above the element.
-              var targetY = document.body.scrollHeight - elementY < window.innerHeight ? document.body.scrollHeight - window.innerHeight : elementY
-              var diff = targetY - startingY
-              // Easing function: easeInOutCubic
-              // From: https://gist.github.com/gre/1650294
-              var easing = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
-              var start
+                var parent = getScrollParent(element)
+                var startingY = parent.scrollTop
+                var elementY = getElementY(element) + offset
+                // If element is close to page's bottom then parent will scroll only to some position above the element.
+                var targetY = parent.scrollHeight - elementY < parent.innerHeight ? parent.scrollHeight - parent.innerHeight : elementY
+                var diff = targetY - startingY
+                // Easing function: easeInOutCubic
+                // From: https://gist.github.com/gre/1650294
+                var easing = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
+                var start
 
-              if (!diff) return
-            	// Bootstrap our animation - it will get called right before next frame shall be rendered.
-            	window.requestAnimationFrame(function step(timestamp) {
-                if (!start) start = timestamp
-                // Elapsed miliseconds since start of scrolling.
-                var time = timestamp - start
-            	// Get percent of completion in range [0, 1].
-                var percent = Math.min(time / duration, 1)
-                // Apply the easing.
-                // It can cause bad-looking slow frames in browser performance tool, so be careful.
-                percent = easing(percent)
+                if (!diff) return
+                // Bootstrap our animation - it will get called right before next frame shall be rendered.
+                window.requestAnimationFrame(function step(timestamp) {
+                    if (!start) start = timestamp
+                    // Elapsed milliseconds since start of scrolling.
+                    var time = timestamp - start
+                    // Get percent of completion in range [0, 1].
+                    var percent = Math.min(time / duration, 1)
+                    // Apply the easing.
+                    // It can cause bad-looking slow frames in browser performance tool, so be careful.
+                    percent = easing(percent)
 
-                window.scrollTo(0, startingY + diff * percent)
+                    parent.scrollTo(0, startingY + diff * percent)
 
-            	// Proceed with animation as long as we wanted it to.
-                if (time < duration) {
-                  window.requestAnimationFrame(step)
-                }
-              })
+                    // Proceed with animation as long as we wanted it to.
+                    if (time < duration) {
+                        window.requestAnimationFrame(step)
+                    }
+                })
             }
-                doScrolling(arguments[0], arguments[1], arguments[2]);
+            doScrolling(arguments[0], arguments[1], arguments[2]);
             """,
                 element,
                 Integer.parseInt(offset == null ? "0" : offset),
