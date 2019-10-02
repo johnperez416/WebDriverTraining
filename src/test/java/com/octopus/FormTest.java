@@ -1,5 +1,7 @@
 package com.octopus;
 
+import com.octopus.decorators.BrowserStackDecorator;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import java.net.URISyntaxException;
 
@@ -16,6 +18,7 @@ public class FormTest {
 
         try {
             automatedBrowser.init();
+            automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
             automatedBrowser.clickElementWithId("button_element");
@@ -54,6 +57,7 @@ public class FormTest {
 
         try {
             automatedBrowser.init();
+            automatedBrowser.setDefaultExplicitWaitTime(2);
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
@@ -92,6 +96,7 @@ public class FormTest {
 
         try {
             automatedBrowser.init();
+            automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
             automatedBrowser.clickElementWithId("button_element");
@@ -166,7 +171,7 @@ public class FormTest {
 
         try {
             automatedBrowser.init();
-
+            automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
             automatedBrowser.clickElementWithXPath("//*[@id=\"button_element\"]");
@@ -203,6 +208,7 @@ public class FormTest {
 
         try {
             automatedBrowser.init();
+            automatedBrowser.setDefaultExplicitWaitTime(2);
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
@@ -311,6 +317,11 @@ public class FormTest {
     @Test
     public void browserStackTest() {
 
+        if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
+                StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
+            return;
+        }
+
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("BrowserStackEdge");
 
@@ -349,6 +360,11 @@ public class FormTest {
 
     @Test
     public void browserStackEdgeTest() {
+        if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
+                StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
+            return;
+        }
+
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("BrowserStackEdge");
 
@@ -390,6 +406,11 @@ public class FormTest {
 
     @Test
     public void browserStackAndroidTest() {
+
+        if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
+            StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
+            return;
+        }
 
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("BrowserStackAndroid");

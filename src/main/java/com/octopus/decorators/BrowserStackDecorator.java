@@ -11,8 +11,8 @@ import java.net.URL;
 
 public class BrowserStackDecorator extends AutomatedBrowserBase {
 
-    private static final String USERNAME_ENV = "BROWSERSTACK_USERNAME";
-    private static final String AUTOMATE_KEY_ENV = "BROWSERSTACK_KEY";
+    public static final String USERNAME_ENV = "BROWSERSTACK_USERNAME";
+    public static final String AUTOMATE_KEY_ENV = "BROWSERSTACK_KEY";
 
     public BrowserStackDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
