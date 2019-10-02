@@ -3,6 +3,7 @@ package com.octopus.pages.ticketmonster;
 import com.octopus.AutomatedBrowser;
 
 import com.octopus.pages.BasePage;
+import io.vavr.control.Try;
 
 public class MainPage extends BasePage {
 
@@ -19,6 +20,7 @@ public class MainPage extends BasePage {
 
     public MainPage openPage() {
         automatedBrowser.goTo(URL);
+        Try.run(() -> Thread.sleep(10000));
         return this;
     }
 

@@ -1,6 +1,7 @@
 package com.octopus;
 
 import com.octopus.pages.ticketmonster.*;
+import io.vavr.control.Try;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,6 +25,8 @@ public class TicketMonsterTest {
             automatedBrowser.captureHarFile();
 
             automatedBrowser.goTo("https://ticket-monster.herokuapp.com");
+
+            Try.run(() -> Thread.sleep(10000));
 
             automatedBrowser.clickElement("Buy tickets now", WAIT_TIME);
 
