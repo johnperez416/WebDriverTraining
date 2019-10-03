@@ -4,6 +4,12 @@ public class Constants {
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**
+     * The number of times to retry a feature
+     */
+    public static final String RETRY_COUNT = "retryCount";
+    public static final int RETRY_DELAY = 5000;
+
+    /**
      * If a scenario fails, setting this property to true means the aliases will be dumped.
      * This is useful for checking that a step referenced the expected alias.
      */
