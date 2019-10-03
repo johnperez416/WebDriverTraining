@@ -3,7 +3,7 @@ package com.octopus.stephandlers.impl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octopus.stephandlers.ScreenshotUploader;
-import com.octopus.stephandlers.StepHanlder;
+import com.octopus.stephandlers.StepHandler;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.core.api.Scenario;
@@ -18,7 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class SlackStepHandler implements StepHanlder {
+public class SlackStepHandler implements StepHandler {
     public static final String SLACK_HOOK_URL = "slackHookUrl";
     public static final String SLACK_HANDER_ENABLED = "slackStepHandlerEnabled";
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -49,7 +49,8 @@ public class SlackStepHandler implements StepHanlder {
 
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
             final SlackMessage message = SlackMessage.builder()
-                    .text("Scenario " + scenario.getName() + " status " + scenario.getStatus().name())
+                    .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(STEP_HANDLER_MESSAGE) +
+                            " Scenario " + scenario.getName() + " status " + scenario.getStatus().name())
                     .attachments(new Attachments[]{
                             Attachments.builder()
                                     .text(scenario.getName())

@@ -6,7 +6,7 @@ import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
-import com.octopus.stephandlers.StepHanlder;
+import com.octopus.stephandlers.StepHandler;
 import com.octopus.stephandlers.impl.SlackStepHandler;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
@@ -33,7 +33,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
-    private static final StepHanlder[] STEP_HANLDERS = new StepHanlder[] {
+    private static final StepHandler[] STEP_HANLDERS = new StepHandler[] {
             new SlackStepHandler()
     };
     private Map<String, String> aliases = new HashMap<>();
@@ -82,7 +82,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @AfterStep
     public void afterStep(final Scenario scenario) {
-        for (final StepHanlder stepHandler: STEP_HANLDERS) {
+        for (final StepHandler stepHandler: STEP_HANLDERS) {
             stepHandler.handleStep(scenario);
         }
     }
