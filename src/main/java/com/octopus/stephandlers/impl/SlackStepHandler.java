@@ -49,7 +49,7 @@ public class SlackStepHandler implements StepHanlder {
 
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
             final SlackMessage message = SlackMessage.builder()
-                    .text("Scenario: " + scenario.getName())
+                    .text("Scenario " + scenario.getName() + " status " + scenario.getStatus().name())
                     .attachments(new Attachments[]{
                             Attachments.builder()
                                     .text(scenario.getName())
