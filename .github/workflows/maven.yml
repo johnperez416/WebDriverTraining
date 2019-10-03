@@ -9,10 +9,33 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 13
+    - name: Setup VM
+      run: |
+        sudo apt-get update
+        sudo apt-get install dbus-x11
+        sudo /usr/bin/Xvfb :99 -screen 0 1024x768x24 &
+        sudo apt-get install -y firefox
+        sudo apt-get install -y libappindicator1 fonts-liberation
+        #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        wget https://dl.google.com/linux/direct/google-chrome-beta_current_amd64.deb
+        #wget https://dl.google.com/linux/direct/google-chrome-unstable_current_amd64.deb
+        sudo dpkg -i google-chrome*.deb
+        wget https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        cp chromedriver /usr/local/bin
+        chmod +x /usr/local/bin/chromedriver
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz
+        tar -xjf geckodriver-v0.25.0-linux64.tar.gz
+        cp geckodriver /usr/local/bin
+        chmod +x /usr/local/bin/geckodriver
     - name: Check for updates
       run: mvn versions:display-dependency-updates
     - name: Build with Maven
       run: mvn package -DskipTests
+    - name: Test
+      run: mvn test
+      env:
+        DISPLAY: 99
     - name: Reattach HEAD
       run: git checkout "$(echo ${{ github.ref }} | sed -E 's|refs/[a-zA-Z]+/||')"
     - name: Get Git Version
