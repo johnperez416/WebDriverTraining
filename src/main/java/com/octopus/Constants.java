@@ -4,6 +4,12 @@ public class Constants {
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**
+     * If a scenario fails, setting this property to true means the aliases will be dumped.
+     * This is useful for checking that a step referenced the expected alias.
+     */
+    public static final String DUMP_ALIASES_ON_FAILURE = "dumpAliasesOnFailure";
+
+    /**
      * A list of addresses to exclude from the browser proxy
      */
     public static final String NO_PROXY_LIST = "noProxyList";
