@@ -65,7 +65,7 @@ public class UploadToS3 implements EventHandler {
                 System.out.println("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
                         " to s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
 
-                return new HashMap<String, String>() {{
+                return new HashMap<>() {{
                     this.putAll(previousResults);
                     this.put(S3_REPORT_URL, "s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
                 }};

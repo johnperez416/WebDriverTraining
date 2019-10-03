@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            final ArrayList<String> options = new ArrayList<String>() {{
+            final ArrayList<String> options = new ArrayList<>() {{
                 add("--glue");
                 add("com.octopus.decoratorbase");
                 add("--strict");

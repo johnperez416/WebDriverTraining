@@ -6,10 +6,13 @@ import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
+import com.octopus.stephandlers.StepHanlder;
+import com.octopus.stephandlers.impl.SlackStepHandler;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-import cucumber.api.Scenario;
+import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -20,7 +23,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.constant.Constable;
 import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -31,10 +33,18 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final StepHanlder[] STEP_HANLDERS = new StepHanlder[] {
+            new SlackStepHandler()
+    };
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
     private static AutomatedBrowser sharedAutomatedBrowser;
+    private static AutomatedBrowser instanceAutomatedBrowser;
+
+    public static AutomatedBrowser GetInstance() {
+        return instanceAutomatedBrowser;
+    }
 
     public AutomatedBrowserBase() {
 
@@ -52,6 +62,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Before
     public void reuseSharedBrowser() {
         automatedBrowser = sharedAutomatedBrowser;
+
+        System.out.println("Options:");
+        System.out.println("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
+        System.out.println("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
+        System.out.println("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
     }
 
     @After
@@ -62,6 +77,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DUMP_ALIASES_ON_FAILURE, false)) {
                 dumpAliases();
             }
+        }
+    }
+
+    @AfterStep
+    public void afterStep(final Scenario scenario) {
+        for (final StepHanlder stepHandler: STEP_HANLDERS) {
+            stepHandler.handleStep(scenario);
         }
     }
 
@@ -149,6 +171,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
             automatedBrowser.init();
         }
+
+        instanceAutomatedBrowser = automatedBrowser;
     }
 
     @Given("^I close the browser$")
@@ -159,6 +183,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
         automatedBrowser = null;
         sharedAutomatedBrowser = null;
+        instanceAutomatedBrowser = null;
     }
 
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
@@ -271,9 +296,19 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I save a screenshot to \"([^\"]*)\"$")
     @Override
-    public void takeScreenshot(String filename) {
+    public void takeScreenshot(final String filename) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().takeScreenshot(getAliases().getOrDefault(filename, filename));
+        }
+    }
+
+    @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"$")
+    @Override
+    public void takeScreenshot(final String directory, final String filename) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().takeScreenshot(
+                    getAliases().getOrDefault(directory, directory),
+                    getAliases().getOrDefault(filename, filename));
         }
     }
 

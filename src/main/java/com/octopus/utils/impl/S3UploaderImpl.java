@@ -19,7 +19,6 @@ public class S3UploaderImpl implements S3Uploader {
                 .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
                 .build();
 
-        // Upload a file as a new object with ContentType and title specified.
         final PutObjectRequest request = new PutObjectRequest(bucket, filename, file)
                 .withCannedAcl(publicAcl ? CannedAccessControlList.PublicRead : CannedAccessControlList.Private);
         s3Client.putObject(request);

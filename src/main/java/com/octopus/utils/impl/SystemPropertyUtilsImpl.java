@@ -50,6 +50,11 @@ public class SystemPropertyUtilsImpl implements SystemPropertyUtils {
     }
 
     @Override
+    public boolean hasProperty(String name) {
+        return getPropertyEmptyAsNull(name) != null;
+    }
+
+    @Override
     public boolean getPropertyAsBoolean(final String name, final boolean defaultValue) {
         checkArgument(StringUtils.isNotBlank(name));
 

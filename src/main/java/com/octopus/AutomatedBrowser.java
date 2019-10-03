@@ -33,6 +33,8 @@ public interface AutomatedBrowser {
 
     void takeScreenshot(String filename);
 
+    void takeScreenshot(String directory, String filename);
+
     void setWindowSize(String width, String height);
 
     void sleep(String seconds);

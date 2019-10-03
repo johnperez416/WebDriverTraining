@@ -26,6 +26,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <netty.version>4.1.42.Final</netty.version>
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <apache.http.version>4.5.10</apache.http.version>
+        <lombok.version>1.18.10</lombok.version>
     </properties>
     <build>
         <plugins>
@@ -91,6 +92,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>

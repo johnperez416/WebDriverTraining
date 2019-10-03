@@ -23,6 +23,14 @@ public interface SystemPropertyUtils {
 	String getProperty(String name);
 
 	/**
+	 * Checks for the given system property
+	 *
+	 * @param name The name of the system property
+	 * @return true if the property is defined, false otherwise
+	 */
+	boolean hasProperty(String name);
+
+	/**
 	 * Gets a system property as a boolean
 	 * @param name The name of the property
 	 * @param defaultValue The default value if the property is empty or null
