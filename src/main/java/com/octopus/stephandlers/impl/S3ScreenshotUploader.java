@@ -7,7 +7,9 @@ import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,18 +30,19 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
             return Optional.empty();
         }
 
-        try (final AutoDeletingTempFile screenshot = new AutoDeletingTempFile("screenshot" + UUID.randomUUID(), ".png")) {
-            AutomatedBrowserBase.GetInstance().takeScreenshot(screenshot.getFile().getAbsolutePath());
+        final String filename = "screenshot" + UUID.randomUUID() + ".png";
+        final String file = System.getProperty("java.io.tmpdir") + File.pathSeparator + filename;
+        try {
+            AutomatedBrowserBase.GetInstance().takeScreenshot(file);
             S_3_UPLOADER.uploadFileToS3(
                     SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET),
-                    screenshot.getFile().getName(),
-                    screenshot.getFile(),
+                    filename,
+                    new File(file),
                     true
             );
-            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + screenshot.getFile().getName());
-        } catch (final IOException ex) {
-            System.out.println("Failed to upload screenshot");
+            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
+        } finally {
+            FileUtils.deleteQuietly(new File(file));
         }
-        return Optional.empty();
     }
 }
