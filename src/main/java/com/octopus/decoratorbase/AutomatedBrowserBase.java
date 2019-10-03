@@ -252,7 +252,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @And("^I dump the aliases$")
     @Override
     public void dumpAliases() {
-        System.out.println("Start of alias dump");
+        System.out.println("\nStart of alias dump");
         getAliases().entrySet().forEach(entrySet -> System.out.println(entrySet.getKey() + ": " + entrySet.getValue()));
     }
 
