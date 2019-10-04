@@ -47,7 +47,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     public AutomatedBrowserBase() {
-
+        instanceAutomatedBrowser = this;
     }
 
     public AutomatedBrowserBase(final AutomatedBrowser automatedBrowser) {
@@ -171,8 +171,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
             automatedBrowser.init();
         }
-
-        instanceAutomatedBrowser = automatedBrowser;
     }
 
     @Given("^I close the browser$")
