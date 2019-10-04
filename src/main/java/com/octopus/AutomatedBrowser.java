@@ -31,6 +31,8 @@ public interface AutomatedBrowser {
 
     void writeAliasValueToFile(String alias, String filename);
 
+    void takeScreenshot(String filename, boolean force);
+
     void takeScreenshot(String filename);
 
     void takeScreenshot(String directory, String filename);

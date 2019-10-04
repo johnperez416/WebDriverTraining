@@ -291,6 +291,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @Override
+    public void takeScreenshot(final String filename, boolean force) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().takeScreenshot(filename, force);
+        }
+    }
+
     @And("^I save a screenshot to \"([^\"]*)\"$")
     @Override
     public void takeScreenshot(final String filename) {

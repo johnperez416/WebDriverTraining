@@ -4,11 +4,9 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.S3Uploader;
 import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +27,9 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
         }
 
         final String filename = "screenshot" + UUID.randomUUID() + ".png";
-        AutomatedBrowserBase.getInstance().takeScreenshot("s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename);
+        AutomatedBrowserBase.getInstance().takeScreenshot(
+                "s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename,
+                true);
         return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
     }
 }
