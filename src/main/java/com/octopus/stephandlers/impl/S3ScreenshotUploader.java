@@ -31,7 +31,7 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
         }
 
         final String filename = "screenshot" + UUID.randomUUID() + ".png";
-        final String file = System.getProperty("java.io.tmpdir") + File.pathSeparator + filename;
+        final String file = System.getProperty("java.io.tmpdir") + File.separator + filename;
         try {
             AutomatedBrowserBase.GetInstance().takeScreenshot(file);
             S_3_UPLOADER.uploadFileToS3(

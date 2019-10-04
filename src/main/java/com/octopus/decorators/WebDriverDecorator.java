@@ -136,7 +136,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void takeScreenshot(final String directory, final String filename) {
-        takeScreenshot(directory + File.pathSeparator + filename);
+        takeScreenshot(directory + File.separator + filename);
     }
 
     @Override

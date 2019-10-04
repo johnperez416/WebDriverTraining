@@ -7,6 +7,9 @@ public class Constants {
      * The number of times to retry a feature
      */
     public static final String RETRY_COUNT = "retryCount";
+    /**
+     * The delay before the next retry
+     */
     public static final int RETRY_DELAY = 5000;
 
     /**
