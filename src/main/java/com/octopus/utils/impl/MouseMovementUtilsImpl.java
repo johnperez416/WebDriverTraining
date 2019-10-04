@@ -3,6 +3,7 @@ package com.octopus.utils.impl;
 import com.octopus.Constants;
 import com.octopus.utils.GetElement;
 import com.octopus.utils.MouseMovementUtils;
+import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -23,6 +24,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(MouseMovementUtilsImpl.class);
 
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
 
     @Override
     public void mouseGlide(final int x1, final int y1, final int x2, final int y2, final int time, final int steps) {
@@ -88,7 +90,17 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     Constants.MOUSE_MOVE_TIME,
                     Constants.MOUSE_MOVE_STEPS);
 
-            new Actions(driver).moveToElement(element.getElement()).perform();
+            /*
+                This can fail with the error:
+                The element reference of <reference>> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
+                We retry here to allow the movement to complete if the source element disappears.
+             */
+            RETRY_SERVICE.getTemplate(5, 100)
+                    .execute(context -> {
+                        new Actions(driver).moveToElement(element.getElement()).perform();
+                        return 1;
+                    });
+
         }
     }
 }
