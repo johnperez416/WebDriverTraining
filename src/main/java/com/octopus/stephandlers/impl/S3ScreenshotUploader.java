@@ -4,7 +4,6 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.S3Uploader;
 import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.io.FileUtils;
@@ -22,7 +21,7 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
 
     @Override
     public Optional<String> takeAndUploadScreenshot() {
-        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(S3_UPLOADING_ENABLED, false) || AutomatedBrowserBase.GetInstance() == null)
+        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(S3_UPLOADING_ENABLED, false) || AutomatedBrowserBase.getInstance() == null)
             return Optional.empty();
 
         if (!SYSTEM_PROPERTY_UTILS.hasProperty(SCREENSHOT_S3_BUCKET)) {
@@ -34,7 +33,7 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
             final String filename = "screenshot" + UUID.randomUUID() + ".png";
             final String file = new File(System.getProperty("java.io.tmpdir") + File.separator + filename).getCanonicalFile().getAbsolutePath();
             try {
-                AutomatedBrowserBase.GetInstance().takeScreenshot(file);
+                AutomatedBrowserBase.getInstance().takeScreenshot(file);
 
                 if (!new File(file).exists()) {
                     return Optional.empty();

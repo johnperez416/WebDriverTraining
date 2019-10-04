@@ -8,7 +8,6 @@ import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.vavr.control.Try;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,8 +48,8 @@ public class Main {
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(BROWSER_CLEANUP, true)) {
-                if (AutomatedBrowserBase.GetInstance() != null) {
-                    AutomatedBrowserBase.GetInstance().closeBrowser();
+                if (AutomatedBrowserBase.getInstance() != null) {
+                    AutomatedBrowserBase.getInstance().closeBrowser();
                 }
             }
         }

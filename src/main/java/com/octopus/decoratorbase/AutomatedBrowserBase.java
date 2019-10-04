@@ -42,7 +42,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     private static AutomatedBrowser sharedAutomatedBrowser;
     private static AutomatedBrowserBase instanceAutomatedBrowser;
 
-    public static AutomatedBrowserBase GetInstance() {
+    public static AutomatedBrowserBase getInstance() {
         return instanceAutomatedBrowser;
     }
 
@@ -181,7 +181,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
         automatedBrowser = null;
         sharedAutomatedBrowser = null;
-        instanceAutomatedBrowser = null;
     }
 
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
