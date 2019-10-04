@@ -22,17 +22,17 @@ public class Main {
 
         try {
             int retValue = 0;
+            final ArrayList<String> options = new ArrayList<>() {{
+                add("--glue");
+                add("com.octopus.decoratorbase");
+                add("--strict");
+            }};
+
+            Collections.addAll(options, args);
+
+            ENVIRONMENT_ALIASES_PROCESSOR.addSystemPropVarsAsAliases();
+
             for (int x = 0; x < SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.RETRY_COUNT, 1); ++x) {
-                final ArrayList<String> options = new ArrayList<>() {{
-                    add("--glue");
-                    add("com.octopus.decoratorbase");
-                    add("--strict");
-                }};
-
-                Collections.addAll(options, args);
-
-                ENVIRONMENT_ALIASES_PROCESSOR.addSystemPropVarsAsAliases();
-
                 retValue = io.cucumber.core.cli.Main.run(
                         options.toArray(new String[0]),
                         Thread.currentThread().getContextClassLoader());
