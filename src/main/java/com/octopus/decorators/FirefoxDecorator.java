@@ -57,6 +57,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
     @Override
     public void destroy() {
+        super.destroy();
         if (logFile != null) {
             FileUtils.deleteQuietly(logFile);
         }
