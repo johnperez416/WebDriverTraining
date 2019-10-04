@@ -30,24 +30,29 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
             return Optional.empty();
         }
 
-        final String filename = "screenshot" + UUID.randomUUID() + ".png";
-        final String file = System.getProperty("java.io.tmpdir") + File.separator + filename;
         try {
-            AutomatedBrowserBase.GetInstance().takeScreenshot(file);
+            final String filename = "screenshot" + UUID.randomUUID() + ".png";
+            final String file = new File(System.getProperty("java.io.tmpdir") + File.separator + filename).getCanonicalFile().getAbsolutePath();
+            try {
+                AutomatedBrowserBase.GetInstance().takeScreenshot(file);
 
-            if (!new File(file).exists()) {
-                return Optional.empty();
+                if (!new File(file).exists()) {
+                    return Optional.empty();
+                }
+
+                S_3_UPLOADER.uploadFileToS3(
+                        SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET),
+                        filename,
+                        new File(file),
+                        true
+                );
+                return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
+            } finally {
+                FileUtils.deleteQuietly(new File(file));
             }
-
-            S_3_UPLOADER.uploadFileToS3(
-                    SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET),
-                    filename,
-                    new File(file),
-                    true
-            );
-            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
-        } finally {
-            FileUtils.deleteQuietly(new File(file));
+        } catch (final IOException ex) {
+            System.out.println("Failed to create a temporary file for the screenshot.");
+            return Optional.empty();
         }
     }
 }

@@ -44,21 +44,20 @@ public class SlackStepHandler implements StepHandler {
                 .map(x -> x.get())
                 .findFirst();
 
-        if (!imageUrl.isPresent())
-            return;
-
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
             final SlackMessage message = SlackMessage.builder()
                     .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(STEP_HANDLER_MESSAGE) +
                             " Scenario " + scenario.getName() + " status " + scenario.getStatus().name())
-                    .attachments(new Attachments[]{
-                            Attachments.builder()
-                                    .text(scenario.getName())
-                                    .imageUrl(imageUrl.get())
-                                    .build()
-
-                    })
                     .build();
+
+            if (imageUrl.isPresent()) {
+                message.attachments = new Attachments[]{
+                        Attachments.builder()
+                                .text(scenario.getName())
+                                .imageUrl(imageUrl.get())
+                                .build()
+                };
+            }
 
             final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
             httpPost.setHeader("Content-Type", "application/json");
