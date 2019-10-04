@@ -20,8 +20,8 @@ import java.util.Optional;
 
 public class SlackStepHandler implements StepHandler {
     public static final String SLACK_HOOK_URL = "slackHookUrl";
-    public static final String SLACK_HANDER_ENABLED = "slackStepHandlerEnabled";
-    public static final String SLACK_HANDER_ERROR_ONLY = "slackStepHandlerErrorOnly";
+    public static final String SLACK_HANDLER_ENABLED = "slackStepHandlerEnabled";
+    public static final String SLACK_HANDLER_ERROR_ONLY = "slackStepHandlerErrorOnly";
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final ScreenshotUploader[] SCREENSHOT_UPLOADER = new ScreenshotUploader[]{
             new S3ScreenshotUploader()
@@ -29,11 +29,11 @@ public class SlackStepHandler implements StepHandler {
 
     @Override
     public void handleStep(final Scenario scenario) {
-        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDER_ENABLED, false)) {
+        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ENABLED, false)) {
             return;
         }
 
-        if (!scenario.isFailed() && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDER_ERROR_ONLY, false)) {
+        if (!scenario.isFailed() && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
             return;
         }
 
