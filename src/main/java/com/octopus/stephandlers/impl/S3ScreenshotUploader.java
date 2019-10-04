@@ -28,18 +28,8 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
             return Optional.empty();
         }
 
-        try (final AutoDeletingTempFile screenshot = new AutoDeletingTempFile("screenshot" + UUID.randomUUID(), ".png")) {
-            AutomatedBrowserBase.getInstance().takeScreenshot(screenshot.getFile().getCanonicalPath());
-            S_3_UPLOADER.uploadFileToS3(
-                    SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET),
-                    screenshot.getFile().getName(),
-                    screenshot.getFile(),
-                    true
-            );
-            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + screenshot.getFile().getName());
-        } catch (final IOException ex) {
-            System.out.println("Failed to upload screenshot");
-        }
-        return Optional.empty();
+        final String filename = "screenshot" + UUID.randomUUID() + ".png";
+        AutomatedBrowserBase.getInstance().takeScreenshot("s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename);
+        return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
     }
 }
