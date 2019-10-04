@@ -40,9 +40,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
     private static AutomatedBrowser sharedAutomatedBrowser;
-    private static AutomatedBrowser instanceAutomatedBrowser;
+    private static AutomatedBrowserBase instanceAutomatedBrowser;
 
-    public static AutomatedBrowser GetInstance() {
+    public static AutomatedBrowserBase GetInstance() {
         return instanceAutomatedBrowser;
     }
 

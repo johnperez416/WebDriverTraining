@@ -1,5 +1,6 @@
 package com.octopus;
 
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.decorators.WebDriverDecorator;
 import com.octopus.utils.EnvironmentAliasesProcessor;
 import com.octopus.utils.SystemPropertyUtils;
@@ -10,6 +11,8 @@ import io.vavr.control.Try;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static com.octopus.Constants.BROWSER_CLEANUP;
 
 public class Main {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
@@ -45,6 +48,11 @@ public class Main {
             System.exit(retValue);
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
+            if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(BROWSER_CLEANUP, true)) {
+                if (AutomatedBrowserBase.GetInstance() != null) {
+                    AutomatedBrowserBase.GetInstance().closeBrowser();
+                }
+            }
         }
     }
 }
