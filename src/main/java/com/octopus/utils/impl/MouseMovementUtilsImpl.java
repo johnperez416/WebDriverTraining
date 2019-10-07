@@ -31,15 +31,18 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
         try {
             final Robot r = new Robot();
 
-            final double dx = (x2 - x1) / ((double) steps);
-            final double dy = (y2 - y1) / ((double) steps);
-            final double dt = time / ((double) steps);
-            for (int step = 1; step <= steps; step++) {
+            final double dist =  Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            final double fixedSteps = Math.min(dist, steps);
+
+            final double dx = (x2 - x1) / (fixedSteps);
+            final double dy = (y2 - y1) / (fixedSteps);
+            final double dt = time / (fixedSteps);
+            for (int step = 1; step <= fixedSteps; step++) {
                 Thread.sleep((int) dt);
                 r.mouseMove((int) (x1 + dx * step), (int) (y1 + dy * step));
             }
         } catch (final AWTException | InterruptedException ex) {
-            LOGGER.error("WEBAPPTESTER-BUG-0010: Exception thrown while moving mouse cursor", ex);
+            LOGGER.error("Exception thrown while moving mouse cursor", ex);
         }
     }
 
