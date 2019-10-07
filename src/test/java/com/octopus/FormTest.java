@@ -258,19 +258,19 @@ public class FormTest {
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElementIfExists(formButtonLocator, 10, null);
+            automatedBrowser.clickElement(formButtonLocator, 10);
             assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.populateElement(formTextBoxLocator, "test text", 10, null);
+            automatedBrowser.populateElement(formTextBoxLocator, "test text", 10);
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.populateElement(formTextAreaLocator, "test text", 10, null);
+            automatedBrowser.populateElement(formTextAreaLocator, "test text", 10);
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.selectOptionByTextFromSelectIfExists("Option 2.1", formDropDownListLocator, 10, null);
+            automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.clickElementIfExists(formCheckboxLocator, 10, null);
+            automatedBrowser.clickElement(formCheckboxLocator, 10);
             assertEquals("Checkbox Changed", automatedBrowser.getTextFromElement(messageLocator));
         } finally {
             automatedBrowser.destroy();
