@@ -10,6 +10,7 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -30,34 +31,40 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlight(final String location, final String locator,final String offset) {
-        this.elementHighlight(location, locator, offset, getDefaultExplicitWaitTime());
+    public void elementHighlightIfExists(final String location, final String locator, final String offset, final String ifExists) {
+        this.elementHighlightIfExists(location, locator, offset, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void elementHighlight(final String location, final String locator, final String offset, final int waitTime) {
-        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
-            return;
-        }
+    public void elementHighlightIfExists(final String location, final String locator, final String offset, final int waitTime, final String ifExists) {
+        try {
+            if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
+                return;
+            }
 
-        final int offsetValue = NumberUtils.toInt(offset, 10);
+            final int offsetValue = NumberUtils.toInt(offset, 10);
 
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
 
-        originalStyles.put(locator, element.getAttribute("style"));
+            originalStyles.put(locator, element.getAttribute("style"));
 
-        if (StringUtils.equals(StringUtils.trim(location), "inside")) {
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
-                    element);
-        } else {
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
-                    element);
+            if (StringUtils.equals(StringUtils.trim(location), "inside")) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
+                        element);
+            } else {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].style.outline = '5px solid rgb(0, 204, 101)'; arguments[0].style['outline-offset'] = '" + offsetValue + "px';",
+                        element);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 

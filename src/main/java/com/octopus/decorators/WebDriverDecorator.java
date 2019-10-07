@@ -516,78 +516,102 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElement(final String force, final String locator) {
-        clickElement(force, locator, getDefaultExplicitWaitTime());
+    public void clickElementIfExists(final String force, final String locator, final String ifExists) {
+        clickElementIfExists(force, locator, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void clickElement(final String force, final String locator, final int waitTime) {
-        if (force != null) {
-            final WebElement element = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
-            ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
-        } else {
-            SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.elementToBeClickable(by)).click();
+    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExists) {
+        try {
+            if (force != null) {
+                final WebElement element = SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        by -> ExpectedConditions.presenceOfElementLocated(by));
+                ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
+            } else {
+                SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        by -> ExpectedConditions.elementToBeClickable(by)).click();
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void clickElement(final String locator) {
-        clickElement(null, locator);
+    public void clickElementIfExists(final String locator, final String ifExists) {
+        clickElementIfExists(null, locator, ifExists);
     }
 
     @Override
-    public void clickElement(final String locator, final int waitTime) {
-        clickElement(null, locator, waitTime);
+    public void clickElementIfExists(final String locator, final int waitTime, final String ifExists) {
+        clickElementIfExists(null, locator, waitTime, ifExists);
     }
 
     @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator) {
-        selectOptionByTextFromSelect(optionText, locator, getDefaultExplicitWaitTime());
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {
+        selectOptionByTextFromSelectIfExists(optionText, locator, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator, final int waitTime) {
-        new Select(SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.elementToBeClickable(by))).selectByVisibleText(optionText);
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExists) {
+        try {
+            new Select(SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.elementToBeClickable(by))).selectByVisibleText(optionText);
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 
     @Override
-    public void populateElement(final String locator, final String text) {
-        populateElement(locator, text, getDefaultExplicitWaitTime());
+    public void populateElement(final String locator, final String text, final String ifExists) {
+        populateElement(locator, text, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final int waitTime) {
-        SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(text);
+    public void populateElement(final String locator, final String text, final int waitTime, final String ifExists) {
+        try {
+            SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(text);
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 
     @Override
-    public void clear(final String locator) {
-        clear(locator, getDefaultExplicitWaitTime());
+    public void clearIfExists(final String locator, final String ifExists) {
+        clearIfExists(locator, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void clear(final String locator, final int waitTime) {
+    public void clearIfExists(final String locator, final int waitTime, final String ifExists) {
+        try {
         SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
                 by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 
     @Override
@@ -602,23 +626,31 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public String getTextFromElement(final String locator) {
-        return getTextFromElement(locator, getDefaultExplicitWaitTime());
+    public String getTextFromElementIfExists(final String locator, final String ifExists) {
+        return getTextFromElementIfExists(locator, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public String getTextFromElement(final String locator, final int waitTime) {
-        final WebElement element =  SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
+    public String getTextFromElementIfExists(final String locator, final int waitTime, final String ifExists) {
+        try {
+            final WebElement element =  SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
 
-        if (StringUtils.isNotBlank(element.getAttribute("value"))) {
-            return element.getAttribute("value");
+            if (StringUtils.isNotBlank(element.getAttribute("value"))) {
+                return element.getAttribute("value");
+            }
+
+            return element.getText();
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
 
-        return element.getText();
+        return null;
     }
 
     @Override
@@ -627,21 +659,21 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void scrollElementIntoView(final String locator, final String offset) {
-        scrollElementIntoView(locator, offset, getDefaultExplicitWaitTime());
+    public void scrollElementIntoViewIfExists(final String locator, final String offset, final String ifExists) {
+        scrollElementIntoViewIfExists(locator, offset, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
-    public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
-        // code from https://jsfiddle.net/s61x7c4e/
+    public void scrollElementIntoViewIfExists(final String locator, final String offset, final int waitTime, final String ifExists) {
+        try {
 
-        final int scrollTime = 1000;
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
-        ((JavascriptExecutor) getWebDriver()).executeScript("""
+            final int scrollTime = 1000;
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            ((JavascriptExecutor) getWebDriver()).executeScript("""
             var getScrollParent = function () {
                 var regex = /(auto|scroll)/;
 
@@ -734,10 +766,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             }
             doScrolling(arguments[0], arguments[1], arguments[2]);
             """,
-                element,
-                Integer.parseInt(offset == null ? "0" : offset),
-                scrollTime);
-        Try.run(() -> Thread.sleep(scrollTime));
+                    element,
+                    Integer.parseInt(offset == null ? "0" : offset),
+                    scrollTime);
+            Try.run(() -> Thread.sleep(scrollTime));
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 
     @Override

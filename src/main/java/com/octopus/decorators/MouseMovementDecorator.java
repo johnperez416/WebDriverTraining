@@ -9,8 +9,10 @@ import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.MouseMovementUtilsImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -490,184 +492,238 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElement(final String force, final String locator) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        getDefaultExplicitWaitTime(),
-                        by -> force == null
-                                ? ExpectedConditions.elementToBeClickable(by)
-                                : ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void clickElementIfExists(final String force, final String locator, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            getDefaultExplicitWaitTime(),
+                            by -> force == null
+                                    ? ExpectedConditions.elementToBeClickable(by)
+                                    : ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(
-                    force,
-                    locator,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().clickElementIfExists(
+                        force,
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : getDefaultExplicitWaitTime(),
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void clickElement(final String force, final String locator, final int waitTime) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        by -> force == null
-                                ? ExpectedConditions.elementToBeClickable(by)
-                                : ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> force == null
+                                    ? ExpectedConditions.elementToBeClickable(by)
+                                    : ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(
-                    force,
-                    locator,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : waitTime);
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().clickElementIfExists(
+                        force,
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : waitTime,
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        getDefaultExplicitWaitTime(),
-                        by -> ExpectedConditions.elementToBeClickable(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            getDefaultExplicitWaitTime(),
+                            by -> ExpectedConditions.elementToBeClickable(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(
-                    optionText,
-                    locator,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                        optionText,
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : getDefaultExplicitWaitTime(),
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator, final int waitTime) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        by -> ExpectedConditions.elementToBeClickable(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> ExpectedConditions.elementToBeClickable(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(
-                    optionText,
-                    locator,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : waitTime);
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                        optionText,
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : waitTime,
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void populateElement(final String locator, final String text) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        getDefaultExplicitWaitTime(),
-                        by -> ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void populateElement(final String locator, final String text, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            getDefaultExplicitWaitTime(),
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElement(
-                    locator,
-                    text,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : getDefaultExplicitWaitTime());
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().populateElement(
+                        locator,
+                        text,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : getDefaultExplicitWaitTime(),
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final int waitTime) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        by -> ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void populateElement(final String locator, final String text, final int waitTime, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElement(
-                    locator,
-                    text,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                            ? 0 : waitTime);
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().populateElement(
+                        locator,
+                        text,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : waitTime,
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
         }
     }
 
     @Override
-    public void mouseOver(final String locator) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        getDefaultExplicitWaitTime(),
-                        by -> ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void mouseOverIfExists(final String locator, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            getDefaultExplicitWaitTime(),
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        final Actions action = new Actions(getWebDriver());
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                        ? 0 : getDefaultExplicitWaitTime(),
-                by -> ExpectedConditions.presenceOfElementLocated(by));
-        action.moveToElement(element).perform();
+            final Actions action = new Actions(getWebDriver());
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                            ? 0 : getDefaultExplicitWaitTime(),
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            action.moveToElement(element).perform();
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 
     @Override
-    public void mouseOver(final String locator, final int waitTime) {
-        MOUSE_MOVEMENT_UTILS.mouseGlide(
-                getWebDriver(),
-                (JavascriptExecutor) getWebDriver(),
-                () -> SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        by -> ExpectedConditions.presenceOfElementLocated(by)),
-                Constants.MOUSE_MOVE_TIME,
-                Constants.MOUSE_MOVE_STEPS);
+    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
 
-        final Actions action = new Actions(getWebDriver());
-        final WebElement element = SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
-                        ? 0 : waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
-        action.moveToElement(element).perform();
+            final Actions action = new Actions(getWebDriver());
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                            ? 0 : waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            action.moveToElement(element).perform();
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 }

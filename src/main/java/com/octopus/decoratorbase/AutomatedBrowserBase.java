@@ -635,97 +635,110 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
     @Override
-    public void clickElement(final String force, final String locator) {
+    public void clickElementIfExists(final String force, final String locator, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(force, getAliases().getOrDefault(locator, locator));
+            getAutomatedBrowser().clickElementIfExists(
+                    force,
+                    getAliases().getOrDefault(locator, locator),
+                    ifExists);
         }
     }
 
-    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void clickElement(final String force, final String locator, final int waitTime) {
+    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(force, getAliases().getOrDefault(locator, locator), waitTime);
+            getAutomatedBrowser().clickElementIfExists(
+                    force,
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
         }
     }
 
     @Override
-    public void clickElement(final String locator) {
+    public void clickElementIfExists(final String locator, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(getAliases().getOrDefault(locator, locator));
+            getAutomatedBrowser().clickElementIfExists(getAliases().getOrDefault(locator, locator), ifExists);
         }
     }
 
     @Override
-    public void clickElement(final String locator, final int waitTime) {
+    public void clickElementIfExists(final String locator, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElement(getAliases().getOrDefault(locator, locator), waitTime);
+            getAutomatedBrowser().clickElementIfExists(getAliases().getOrDefault(locator, locator), waitTime, ifExists);
         }
     }
 
-    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
     @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator) {
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(
-                    getAliases().getOrDefault(optionText, optionText),
-                    getAliases().getOrDefault(locator, locator));
-        }
-    }
-
-    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
-    @Override
-    public void selectOptionByTextFromSelect(final String optionText, final String locator, final int waitTime) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().selectOptionByTextFromSelect(
+            getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
                     getAliases().getOrDefault(optionText, optionText),
                     getAliases().getOrDefault(locator, locator),
-                    waitTime);
+                    ifExists);
+        }
+    }
+
+    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                    getAliases().getOrDefault(optionText, optionText),
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
         }
     }
 
     // A hack to match multiple regexes
     // https://github.com/cucumber/cucumber-jvm/issues/1341#issuecomment-379521254
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"$")
-    @Then("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)?:$")
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")
+    @Then("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)?:( if it exists)?$")
     @Override
-    public void populateElement(final String locator, final String text) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().populateElement(
-                    getAliases().getOrDefault(locator, locator),
-                    getAliases().getOrDefault(text, text));
-        }
-    }
-
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
-    @Override
-    public void populateElement(final String locator, final String text, final int waitTime) {
+    public void populateElement(final String locator, final String text, final String ifExists) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(text, text),
-                    waitTime);
+                    ifExists);
         }
     }
 
-    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void clear(String locator) {
+    public void populateElement(final String locator, final String text, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clear(
-                    getAliases().getOrDefault(locator, locator));
-        }
-    }
-
-    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
-    @Override
-    public void clear(String locator, int waitTime) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clear(
+            getAutomatedBrowser().populateElement(
                     getAliases().getOrDefault(locator, locator),
-                    waitTime);
+                    getAliases().getOrDefault(text, text),
+                    waitTime,
+                    ifExists);
+        }
+    }
+
+    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @Override
+    public void clearIfExists(final String locator, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clearIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    ifExists);
+        }
+    }
+
+    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public void clearIfExists(final String locator, final int waitTime, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clearIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
         }
     }
 
@@ -747,61 +760,32 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*")
+    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?")
     @Override
-    public void mouseOver(final String locator) {
+    public void mouseOverIfExists(final String locator, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().mouseOver(getAliases().getOrDefault(locator, locator));
+            getAutomatedBrowser().mouseOverIfExists(getAliases().getOrDefault(locator, locator), ifExists);
         }
     }
 
-    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?")
+    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?")
     @Override
-    public void mouseOver(final String locator, final int waitTime) {
+    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().mouseOver(getAliases().getOrDefault(locator, locator), waitTime);
-        }
-    }
-
-    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
-    @Override
-    public String getTextFromElement(final String locator) {
-        if (getAutomatedBrowser() != null) {
-            final String text = getAutomatedBrowser().getTextFromElement(getAliases().getOrDefault(locator, locator));
-            aliases.put(LastReturn, text);
-            return text;
-        }
-
-        aliases.put(LastReturn, null);
-        return null;
-    }
-
-    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
-    @Override
-    public String getTextFromElement(final String locator, final int waitTime) {
-        if (getAutomatedBrowser() != null) {
-            final String text = getAutomatedBrowser().getTextFromElement(
+            getAutomatedBrowser().mouseOverIfExists(
                     getAliases().getOrDefault(locator, locator),
-                    waitTime);
-            aliases.put(LastReturn, text);
-            return text;
+                    waitTime,
+                    ifExists);
         }
-
-        aliases.put(LastReturn, null);
-        return null;
     }
 
-    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
     @Override
-    public String getRegexGroupFromElement(
-            final String group,
-            final String regex,
-            final String locator) {
+    public String getTextFromElementIfExists(final String locator, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            final String text = getAutomatedBrowser().getRegexGroupFromElement(
-                    getAliases().getOrDefault(group, group),
-                    getAliases().getOrDefault(regex, regex),
-                    getAliases().getOrDefault(locator, locator));
+            final String text = getAutomatedBrowser().getTextFromElementIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    ifExists);
             aliases.put(LastReturn, text);
             return text;
         }
@@ -810,19 +794,35 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?$")
+    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public String getRegexGroupFromElement(
+    public String getTextFromElementIfExists(final String locator, final int waitTime, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getTextFromElementIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
+            aliases.put(LastReturn, text);
+            return text;
+        }
+
+        aliases.put(LastReturn, null);
+        return null;
+    }
+
+    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @Override
+    public String getRegexGroupFromElementIfExists(
             final String group,
             final String regex,
             final String locator,
-            final int waitTime) {
+            final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            final String text = getAutomatedBrowser().getRegexGroupFromElement(
+            final String text = getAutomatedBrowser().getRegexGroupFromElementIfExists(
                     getAliases().getOrDefault(group, group),
                     getAliases().getOrDefault(regex, regex),
                     getAliases().getOrDefault(locator, locator),
-                    waitTime);
+                    ifExists);
             aliases.put(LastReturn, text);
             return text;
         }
@@ -831,7 +831,30 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\"$")
+    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public String getRegexGroupFromElementIfExists(
+            final String group,
+            final String regex,
+            final String locator,
+            final int waitTime,
+            final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getRegexGroupFromElementIfExists(
+                    getAliases().getOrDefault(group, group),
+                    getAliases().getOrDefault(regex, regex),
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
+            aliases.put(LastReturn, text);
+            return text;
+        }
+
+        aliases.put(LastReturn, null);
+        return null;
+    }
+
+    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\"( if it exists)?$")
     @Override
     public void verifyTextFromElement(final String locator, final String regex) {
         if (getAutomatedBrowser() != null) {
@@ -841,7 +864,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?$")
+    @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
     public void verifyTextFromElement(final String locator, final String regex, final int waitTime) {
         if (getAutomatedBrowser() != null) {
@@ -853,23 +876,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")?$")
-    public void scrollElementIntoView(final String locator, final String offset) {
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")?( if it exists)?$")
+    public void scrollElementIntoViewIfExists(final String locator, final String offset, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().scrollElementIntoView(
+            getAutomatedBrowser().scrollElementIntoViewIfExists(
                     getAliases().getOrDefault(locator, locator),
-                    getAliases().getOrDefault(offset, offset));
+                    getAliases().getOrDefault(offset, offset),
+                    ifExists);
         }
     }
 
     @Override
-    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?$")
-    public void scrollElementIntoView(final String locator, final String offset, final int waitTime) {
+    @And("^I scroll the \"([^\"]*)\" \\w+(?:\\s+\\w+)* into view(?: offset by \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    public void scrollElementIntoViewIfExists(final String locator, final String offset, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().scrollElementIntoView(
+            getAutomatedBrowser().scrollElementIntoViewIfExists(
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(offset, offset),
-                    waitTime);
+                    waitTime,
+                    ifExists);
         }
     }
 
@@ -926,26 +951,28 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?$")
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
     @Override
-    public void elementHighlight(final String position, final String locator, final String offset) {
+    public void elementHighlightIfExists(final String position, final String locator, final String offset, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(
-                    position,
-                    getAliases().getOrDefault(locator, locator),
-                    getAliases().getOrDefault(offset, offset));
-        }
-    }
-
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds$")
-    @Override
-    public void elementHighlight(final String position, final String locator, final String offset, final int waitTime) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().elementHighlight(
+            getAutomatedBrowser().elementHighlightIfExists(
                     position,
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(offset, offset),
-                    waitTime);
+                    ifExists);
+        }
+    }
+
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public void elementHighlightIfExists(final String position, final String locator, final String offset, final int waitTime, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().elementHighlightIfExists(
+                    position,
+                    getAliases().getOrDefault(locator, locator),
+                    getAliases().getOrDefault(offset, offset),
+                    waitTime,
+                    ifExists);
         }
     }
 
