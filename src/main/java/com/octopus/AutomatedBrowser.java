@@ -19,28 +19,43 @@ public interface AutomatedBrowser {
 
     void destroy();
 
+    void sleep(String seconds);
+
+    //<editor-fold desc="Browser Navigation and Window Interaction">
     void goTo(String url);
 
     void refresh();
 
-    void startScreenRecording(final String file);
+    void maximizeWindow();
 
-    void stopScreenRecording();
+    void setWindowSize(String width, String height);
+    //</editor-fold>
 
+    //<editor-fold desc="Aliases">
     void dumpAliases();
 
     void writeAliasValueToFile(String alias, String filename);
+    //</editor-fold>
+
+    //<editor-fold desc="Keyboard Interaction">
+    void pressEscape(String locator);
+
+    void pressEscape(String locator, int waitTime);
+    //</editor-fold>
+
+    //<editor-fold desc="Screenshots and Recording">
+    void startScreenRecording(final String file);
+
+    void stopScreenRecording();
 
     void takeScreenshot(String filename, boolean force);
 
     void takeScreenshot(String filename);
 
     void takeScreenshot(String directory, String filename);
+    //</editor-fold>
 
-    void setWindowSize(String width, String height);
-
-    void sleep(String seconds);
-
+    //<editor-fold desc="ID Selection">
     void clickElementWithId(String id);
 
     void clickElementWithId(String id, int waitTime);
@@ -56,7 +71,9 @@ public interface AutomatedBrowser {
     String getTextFromElementWithId(String id);
 
     String getTextFromElementWithId(String id, int waitTime);
+    //</editor-fold>
 
+    //<editor-fold desc="XPath Selection">
     void clickElementWithXPath(String xpath);
 
     void clickElementWithXPath(String xpath, int waitTime);
@@ -72,7 +89,9 @@ public interface AutomatedBrowser {
     String getTextFromElementWithXPath(String xpath);
 
     String getTextFromElementWithXPath(String xpath, int waitTime);
+    //</editor-fold>
 
+    //<editor-fold desc="CSS Selection">
     void clickElementWithCSSSelector(String cssSelector);
 
     void clickElementWithCSSSelector(String cssSelector, int waitTime);
@@ -88,7 +107,9 @@ public interface AutomatedBrowser {
     String getTextFromElementWithCSSSelector(String cssSelector);
 
     String getTextFromElementWithCSSSelector(String cssSelector, int waitTime);
+    //</editor-fold>
 
+    //<editor-fold desc="Name Selection">
     void clickElementWithName(String name);
 
     void clickElementWithName(String name, int waitTime);
@@ -104,7 +125,9 @@ public interface AutomatedBrowser {
     String getTextFromElementWithName(String name);
 
     String getTextFromElementWithName(String name, int waitTime);
+    //</editor-fold>
 
+    //<editor-fold desc="Simple Selection">
     void clickElement(String force, String locator);
 
     void clickElement(String force, String locator, int waitTime);
@@ -149,6 +172,16 @@ public interface AutomatedBrowser {
 
     void scrollElementIntoView(String locator, String offset, int waitTime);
 
+    void elementHighlight(String location, String locator, final String offset);
+
+    void elementHighlight(String location, String locator, final String offset, int waitTime);
+
+    void removeElementHighlight(String locator);
+
+    void removeElementHighlight(String locator, int waitTime);
+    //</editor-fold>
+
+    //<editor-fold desc="Network Alter and Capture">
     void captureHarFile();
 
     void captureCompleteHarFile();
@@ -158,24 +191,13 @@ public interface AutomatedBrowser {
     void blockRequestTo(String url, int responseCode);
 
     void alterResponseFrom(String url, int responseCode, String responseBody);
+    //</editor-fold>
 
-    void maximizeWindow();
-
-    void elementHighlight(String location, String locator, final String offset);
-
-    void elementHighlight(String location, String locator, final String offset, int waitTime);
-
-    void removeElementHighlight(String locator);
-
-    void removeElementHighlight(String locator, int waitTime);
-
-    void pressEscape(String locator);
-
-    void pressEscape(String locator, int waitTime);
-
+    //<editor-fold desc="Transitions and Annotations">
     void clearTransition();
 
     void fadeScreen(String red, String green, String blue, String duration);
 
     void displayNote(String text, String duration);
+    //</editor-fold>
 }
