@@ -35,7 +35,6 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
 
     public BrowserMobDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
-        LogManager.getLogManager().getLogger("").setLevel(Level.WARNING);
     }
 
     @Override
@@ -57,8 +56,6 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         }
 
         desiredCapabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
-
-
 
         return desiredCapabilities;
     }
