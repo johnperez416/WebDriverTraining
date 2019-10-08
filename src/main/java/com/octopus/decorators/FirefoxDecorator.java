@@ -40,6 +40,10 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().init();
+        }
+
         final FirefoxProfile myprofile = new FirefoxProfile();
         myprofile.setPreference("network.automatic-ntlm-auth.trusted-uris", "localhost");
         myprofile.setPreference("network.negotiate-auth.delegation-uris", "localhost");
@@ -57,7 +61,10 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
     @Override
     public void destroy() {
-        super.destroy();
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().destroy();
+        }
+
         if (logFile != null) {
             FileUtils.deleteQuietly(logFile);
         }

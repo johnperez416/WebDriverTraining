@@ -2,6 +2,7 @@ package com.octopus.decorators;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -32,6 +33,10 @@ public class ChromeDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().init();
+        }
+
         final ChromeOptions options = new ChromeOptions();
         options.setHeadless(headless);
         // https://bugs.chromium.org/p/chromedriver/issues/detail?id=795
@@ -39,11 +44,19 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         if (userData != null) {
             options.addArguments("--user-data-dir=" + userData.getAbsolutePath());
         }
-        options.addArguments("--disable-dev-shm-usage");
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
         getAutomatedBrowser().init();
+    }
 
+    @Override
+    public void destroy() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().destroy();
+        }
+
+        FileUtils.deleteQuietly(userData);
+        userData = null;
     }
 }

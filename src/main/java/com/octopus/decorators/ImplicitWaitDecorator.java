@@ -15,12 +15,14 @@ public class ImplicitWaitDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
-        getAutomatedBrowser()
-                .getWebDriver()
-                .manage()
-                .timeouts()
-                .implicitlyWait(waitTime, TimeUnit.SECONDS);
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser()
+                    .getWebDriver()
+                    .manage()
+                    .timeouts()
+                    .implicitlyWait(waitTime, TimeUnit.SECONDS);
 
-        getAutomatedBrowser().init();
+            getAutomatedBrowser().init();
+        }
     }
 }

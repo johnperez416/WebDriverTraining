@@ -62,7 +62,10 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
 
     @Override
     public void destroy() {
-        getAutomatedBrowser().destroy();
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().destroy();
+        }
+
         if (proxy != null) {
             proxy.stop();
         }

@@ -20,7 +20,7 @@ public class FactoryTest {
     @Parameterized.Parameters
     public static Iterable data() {
         return Arrays.asList(
-                "Chrome",
+                "FirefoxNoImplicitWait",
                 "Firefox"
         );
     }

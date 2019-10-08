@@ -13,7 +13,7 @@ public class WaitTest {
 
     @Test
     public void clickDynamicElement() throws URISyntaxException, InterruptedException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         try {
             automatedBrowser.init();
@@ -27,7 +27,7 @@ public class WaitTest {
     @Test
     public void clickDynamicElementWithExplicitWait() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         try {
             automatedBrowser.init();
@@ -57,7 +57,7 @@ public class WaitTest {
     @Test
     public void clickHiddenElementWithExplicitWait() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         try {
             automatedBrowser.init();
@@ -71,7 +71,7 @@ public class WaitTest {
     @Test(expected = TimeoutException.class)
     public void mixedTestShortExplicitWait() throws URISyntaxException {
 
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         final long start = System.currentTimeMillis();
 
@@ -89,7 +89,7 @@ public class WaitTest {
     @Test(expected = TimeoutException.class)
     public void mixedTestLongExplicitWait() throws URISyntaxException {
 
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         final long start = System.currentTimeMillis();
 
@@ -107,7 +107,7 @@ public class WaitTest {
     @Test
     public void shortExplicitWaitForDynamicElement() throws URISyntaxException {
 
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
         final long start = System.currentTimeMillis();
 
@@ -124,7 +124,7 @@ public class WaitTest {
 
     @Test(expected = TimeoutException.class)
     public void shortExplicitWaitNoImplicitWaitForDynamicElement() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
         final long start = System.currentTimeMillis();
 
         try {

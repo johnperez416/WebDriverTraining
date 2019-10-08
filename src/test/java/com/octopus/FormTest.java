@@ -14,7 +14,7 @@ public class FormTest {
     @Test
     public void formTestByID() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();
@@ -92,7 +92,7 @@ public class FormTest {
     @Test
     public void formTestByIDHeadless() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeHeadless");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxHeadless");
 
         try {
             automatedBrowser.init();
@@ -167,7 +167,7 @@ public class FormTest {
     @Test
     public void formTestByXPath() throws URISyntaxException {
 
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();
@@ -204,7 +204,7 @@ public class FormTest {
 
     @Test
     public void formTestByCSSSelector() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();
@@ -242,7 +242,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleBy() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         final String formButtonLocator = "button_element";
         final String formTextBoxLocator = "text_element";
@@ -290,7 +290,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleByForceInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         final String formButtonLocator = "button_element";
 
@@ -311,7 +311,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleByMoveTo() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         final String formButtonLocator = "button_element";
 
@@ -332,7 +332,7 @@ public class FormTest {
 
     @Test
     public void windowInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();
@@ -354,7 +354,7 @@ public class FormTest {
     @Test
     public void captureHarFile() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();
@@ -373,7 +373,7 @@ public class FormTest {
     public void captureCompleteHarFile() throws URISyntaxException {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Chrome");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
         try {
             automatedBrowser.init();

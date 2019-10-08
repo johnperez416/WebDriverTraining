@@ -14,6 +14,10 @@ public class ChromeHeadlessLambdaDecorator extends AutomatedBrowserBase
 
     @Override
     public void init() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().init();
+        }
+
         final ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-gpu");
         options.addArguments("--headless");

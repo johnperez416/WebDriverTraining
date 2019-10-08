@@ -65,6 +65,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void destroy() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().destroy();
+        }
+
         if (webDriver != null) {
             webDriver.quit();
         }
