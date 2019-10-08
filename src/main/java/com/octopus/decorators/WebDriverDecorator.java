@@ -913,11 +913,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void verifyTextFromElementIfExists(final String locator, final String regex, final int waitTime, final String ifExists) {
         try {
-            final String content = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+            final String content = getTextFromElementIfExists(locator, waitTime, ifExists);
 
             if (!Pattern.compile(regex).matcher(content).matches()) {
                 throw new ValidationException("The text content \"" + content + "\" does not match the regex \"" + regex + "\"");

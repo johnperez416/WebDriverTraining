@@ -262,7 +262,11 @@ public class FormTest {
             assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.populateElement(formTextBoxLocator, "test text", 10);
+            automatedBrowser.verifyTextFromElement(formTextBoxLocator, "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElement(messageLocator));
+
+            automatedBrowser.clear(formTextBoxLocator);
+            automatedBrowser.verifyTextFromElement(formTextBoxLocator, "");
 
             automatedBrowser.populateElement(formTextAreaLocator, "test text", 10);
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
@@ -272,6 +276,53 @@ public class FormTest {
 
             automatedBrowser.clickElement(formCheckboxLocator, 10);
             assertEquals("Checkbox Changed", automatedBrowser.getTextFromElement(messageLocator));
+
+            automatedBrowser.selectOptionByValueFromSelect("option22", formDropDownListLocator, 10);
+            assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
+    @Test
+    public void formTestWithSimpleByForceInteraction() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+
+        final String formButtonLocator = "button_element";
+
+        final String messageLocator = "message";
+
+        try {
+            automatedBrowser.init();
+
+            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+
+            automatedBrowser.clickElementIfExists("true", formButtonLocator, 10, null);
+            assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
+
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
+    @Test
+    public void windowInteraction() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+
+        final String formButtonLocator = "button_element";
+
+        final String messageLocator = "message";
+
+        try {
+            automatedBrowser.init();
+
+            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+
+            automatedBrowser.maximizeWindow();
+            automatedBrowser.setWindowSize(800, 600);
+            automatedBrowser.refresh();
+            automatedBrowser.verifyUrl(".*?form\\.html");
+
         } finally {
             automatedBrowser.destroy();
         }

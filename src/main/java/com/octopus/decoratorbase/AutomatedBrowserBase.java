@@ -645,20 +645,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @Override
-    public void clickElementIfExists(final String locator, final String ifExists) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementIfExists(getAliases().getOrDefault(locator, locator), ifExists);
-        }
-    }
-
-    @Override
-    public void clickElementIfExists(final String locator, final int waitTime, final String ifExists) {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().clickElementIfExists(getAliases().getOrDefault(locator, locator), waitTime, ifExists);
-        }
-    }
-
     @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
     @Override
     public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {

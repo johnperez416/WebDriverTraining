@@ -28,6 +28,8 @@ public interface AutomatedBrowser {
 
     void maximizeWindow();
 
+    default void setWindowSize(int width, int height) {setWindowSize(width + "", height + "");}
+
     void setWindowSize(String width, String height);
 
     void scrollDown(String distance);
