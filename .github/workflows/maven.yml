@@ -12,7 +12,7 @@ jobs:
     - name: Setup VM
       run: |
         sudo apt-get update
-        sudo apt-get install dbus-x11
+        sudo apt-get install -y dbus-x11 libgconf-2-4
         sudo /usr/bin/Xvfb :99 -screen 0 1024x768x24 &
         sudo apt-get install -y firefox
         sudo apt-get install -y libappindicator1 fonts-liberation
@@ -33,7 +33,7 @@ jobs:
     - name: Build with Maven
       run: mvn package -DskipTests
     - name: Test
-      run: sudo mvn test
+      run: mvn test
       env:
         DISPLAY: 99
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
