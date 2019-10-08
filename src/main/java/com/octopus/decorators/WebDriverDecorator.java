@@ -3,6 +3,7 @@ package com.octopus.decorators;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
+import com.octopus.exceptions.ValidationException;
 import com.octopus.exceptions.VideoException;
 import com.octopus.utils.S3Uploader;
 import com.octopus.utils.ScreenTransitions;
@@ -12,6 +13,7 @@ import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.ScreenTransitionsImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +32,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
@@ -833,5 +836,29 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     public void refresh() {
         getWebDriver().navigate().refresh();
+    }
+
+    @Override
+    public void verifyTextFromElementIfExists(final String locator, final String regex, final String ifExists) {
+        verifyTextFromElementIfExists(locator, regex, getDefaultExplicitWaitTime(), ifExists);
+    }
+
+    @Override
+    public void verifyTextFromElementIfExists(final String locator, final String regex, final int waitTime, final String ifExists) {
+        try {
+            final String content = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by)).getText();
+
+            if (!Pattern.compile(regex).matcher(content).matches()) {
+                throw new ValidationException("The text content \"" + content + "\" does not match the regex \"" + regex + "\"");
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
     }
 }

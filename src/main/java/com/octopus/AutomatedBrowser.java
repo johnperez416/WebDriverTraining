@@ -200,9 +200,13 @@ public interface AutomatedBrowser {
 
     String getRegexGroupFromElementIfExists(String group, String regex, String locator, int waitTime, String ifExists);
 
-    void verifyTextFromElement(String locator, String regex);
+    default void verifyTextFromElement(String locator, String regex) {verifyTextFromElementIfExists(locator, regex, null);}
 
-    void verifyTextFromElement(String locator, String regex, int waitTime);
+    default void verifyTextFromElement(String locator, String regex, int waitTime) {verifyTextFromElementIfExists(locator, regex, waitTime, null);}
+
+    void verifyTextFromElementIfExists(String locator, String regex, String ifExists);
+
+    void verifyTextFromElementIfExists(String locator, String regex, int waitTime, String ifExists);
 
     default void scrollElementIntoView(String locator, String offset) {
         scrollElementIntoViewIfExists(locator, offset, null);}

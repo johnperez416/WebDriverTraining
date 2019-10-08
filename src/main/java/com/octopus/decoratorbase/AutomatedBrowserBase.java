@@ -856,22 +856,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\"( if it exists)?$")
     @Override
-    public void verifyTextFromElement(final String locator, final String regex) {
+    public void verifyTextFromElementIfExists(final String locator, final String regex, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().verifyTextFromElement(
+            getAutomatedBrowser().verifyTextFromElementIfExists(
                     getAliases().getOrDefault(locator, locator),
-                    getAliases().getOrDefault(regex, regex));
+                    getAliases().getOrDefault(regex, regex),
+                    ifExists);
         }
     }
 
     @Then("^I verify the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* matches the regex \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void verifyTextFromElement(final String locator, final String regex, final int waitTime) {
+    public void verifyTextFromElementIfExists(final String locator, final String regex, final int waitTime, final String ifExists) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().verifyTextFromElement(
+            getAutomatedBrowser().verifyTextFromElementIfExists(
                     getAliases().getOrDefault(locator, locator),
                     getAliases().getOrDefault(regex, regex),
-                    waitTime);
+                    waitTime,
+                    ifExists);
         }
     }
 
