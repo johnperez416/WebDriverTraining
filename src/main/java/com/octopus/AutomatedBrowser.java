@@ -33,6 +33,12 @@ public interface AutomatedBrowser {
     void scrollDown(String distance);
 
     void scrollUp(String distance);
+
+    void verifyUrl(String regex);
+
+    void browserZoomIn();
+
+    void browserZoomOut();
     //</editor-fold>
 
     //<editor-fold desc="Aliases">

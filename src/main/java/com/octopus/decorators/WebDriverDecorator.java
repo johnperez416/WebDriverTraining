@@ -2,6 +2,7 @@ package com.octopus.decorators;
 
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.InteractionException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ValidationException;
 import com.octopus.exceptions.VideoException;
@@ -9,10 +10,8 @@ import com.octopus.utils.S3Uploader;
 import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.S3UploaderImpl;
-import com.octopus.utils.impl.ScreenTransitionsImpl;
-import com.octopus.utils.impl.SimpleByImpl;
-import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import com.octopus.utils.impl.*;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
@@ -25,11 +24,13 @@ import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -625,11 +626,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void clearIfExists(final String locator, final int waitTime, final String ifExists) {
         try {
-        SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
+            SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
         } catch (final TimeoutException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
@@ -649,6 +650,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void verifyUrl(final String regex) {
+        if (!Pattern.compile(regex).matcher(getWebDriver().getCurrentUrl()).matches()) {
+            throw new ValidationException("The URL " + getWebDriver().getCurrentUrl() + " does not match the regex " + regex);
+        }
+    }
+
+    @Override
     public String getTextFromElementIfExists(final String locator, final String ifExists) {
         return getTextFromElementIfExists(locator, getDefaultExplicitWaitTime(), ifExists);
     }
@@ -656,7 +664,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public String getTextFromElementIfExists(final String locator, final int waitTime, final String ifExists) {
         try {
-            final WebElement element =  SIMPLE_BY.getElement(
+            final WebElement element = SIMPLE_BY.getElement(
                     getWebDriver(),
                     locator,
                     waitTime,
@@ -679,6 +687,46 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void maximizeWindow() {
         webDriver.manage().window().maximize();
+    }
+
+    @Override
+    public void browserZoomIn() {
+        try {
+            final Robot robot = new Robot();
+            if (OSValidator.isMac()) {
+                robot.keyPress(KeyEvent.VK_META);
+                robot.keyPress(KeyEvent.VK_EQUALS);
+                robot.keyRelease(KeyEvent.VK_META);
+                robot.keyRelease(KeyEvent.VK_EQUALS);
+            } else {
+                robot.keyPress(KeyEvent.VK_CONTROL);
+                robot.keyPress(KeyEvent.VK_EQUALS);
+                robot.keyRelease(KeyEvent.VK_CONTROL);
+                robot.keyRelease(KeyEvent.VK_EQUALS);
+            }
+        } catch (final AWTException ex) {
+            throw new InteractionException(ex);
+        }
+    }
+
+    @Override
+    public void browserZoomOut() {
+        try {
+            final Robot robot = new Robot();
+            if (OSValidator.isMac()) {
+                robot.keyPress(KeyEvent.VK_META);
+                robot.keyPress(KeyEvent.VK_MINUS);
+                robot.keyRelease(KeyEvent.VK_META);
+                robot.keyRelease(KeyEvent.VK_MINUS);
+            } else {
+                robot.keyPress(KeyEvent.VK_CONTROL);
+                robot.keyPress(KeyEvent.VK_MINUS);
+                robot.keyRelease(KeyEvent.VK_CONTROL);
+                robot.keyRelease(KeyEvent.VK_MINUS);
+            }
+        } catch (final AWTException ex) {
+            throw new InteractionException(ex);
+        }
     }
 
     @Override

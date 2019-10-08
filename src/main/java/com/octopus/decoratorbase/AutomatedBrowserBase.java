@@ -18,7 +18,10 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -776,10 +779,34 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I scroll up \"([^\"]*)\" px$")
     @Override
-    public void scrollUp(String distance) {
+    public void scrollUp(final String distance) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().scrollUp(
                     getAliases().getOrDefault(distance, distance));
+        }
+    }
+
+    @Then("^I verify the (current )?URL matches the regex \"([^\"]*)\"$")
+    @Override
+    public void verifyUrl(final String regex) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyUrl(getAliases().getOrDefault(regex, regex));
+        }
+    }
+
+    @And("^I zoom the browser in$")
+    @Override
+    public void browserZoomIn() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().browserZoomIn();
+        }
+    }
+
+    @And("^I zoom the browser out$")
+    @Override
+    public void browserZoomOut() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().browserZoomOut();
         }
     }
 
