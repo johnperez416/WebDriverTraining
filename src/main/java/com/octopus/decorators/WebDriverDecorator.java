@@ -796,11 +796,20 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             }
 
             function getScrollTop(parent) {
+                // scrollTop is undefined on the window object
                 return parent.scrollTop !== undefined ? parent.scrollTop : parent.scrollY;
             }
 
             function getScrollingHeight(parent) {
                 return parent.scrollHeight !== undefined ? parent.scrollHeight : document.body.scrollHeight;
+            }
+
+            function scrollElement(parent, distance) {
+                if (parent.scrollTop !== undefined) {
+                    parent.scrollTop = distance
+                } else {
+                    parent.scrollTo(0, distance)
+                }
             }
 
             function doScrolling(element, offset, duration) {
@@ -827,7 +836,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     // It can cause bad-looking slow frames in browser performance tool, so be careful.
                     percent = easing(percent)
 
-                    parent.scrollTop = startingY + diff * percent
+                    scrollElement(parent, startingY + diff * percent)
 
                     // Proceed with animation as long as we wanted it to.
                     if (time < duration) {
