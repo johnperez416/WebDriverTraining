@@ -2,11 +2,15 @@ package com.octopus.stephandlers.impl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octopus.Constants;
 import com.octopus.stephandlers.ScreenshotUploader;
-import com.octopus.stephandlers.StepHandler;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-import io.cucumber.core.api.Scenario;
+import cucumber.api.HookTestStep;
+import cucumber.api.PickleStepTestStep;
+import cucumber.api.event.EventListener;
+import cucumber.api.event.EventPublisher;
+import cucumber.api.event.TestStepFinished;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -18,7 +22,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class SlackStepHandler implements StepHandler {
+public class SlackStepHandler implements EventListener {
     public static final String SLACK_HOOK_URL = "slackHookUrl";
     public static final String SLACK_HANDLER_ENABLED = "slackStepHandlerEnabled";
     public static final String SLACK_HANDLER_ERROR_ONLY = "slackStepHandlerErrorOnly";
@@ -27,13 +31,12 @@ public class SlackStepHandler implements StepHandler {
             new S3ScreenshotUploader()
     };
 
-    @Override
-    public void handleStep(final Scenario scenario) {
+    private void handleTestStepFinished(final TestStepFinished event) {
         if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ENABLED, false)) {
             return;
         }
 
-        if (!scenario.isFailed() && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
+        if (event.result.isOk(false) && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
             return;
         }
 
@@ -50,15 +53,17 @@ public class SlackStepHandler implements StepHandler {
                 .findFirst();
 
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
-            final SlackMessage message = SlackMessage.builder()
-                    .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(STEP_HANDLER_MESSAGE) +
-                            " Scenario " + scenario.getName() + " status " + scenario.getStatus().name())
+            final SlackMessage message = SlackMessage
+                    .builder()
+                    .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE) +
+                            " " + event.result.getStatus() +
+                            " " + getStepName(event))
                     .build();
 
             if (imageUrl.isPresent()) {
                 message.attachments = new Attachments[]{
-                        Attachments.builder()
-                                .text(scenario.getName())
+                        Attachments
+                                .builder()
                                 .imageUrl(imageUrl.get())
                                 .build()
                 };
@@ -75,6 +80,19 @@ public class SlackStepHandler implements StepHandler {
         } catch (final Exception ex) {
             System.out.println("Failed to send result to Slack.");
         }
+    }
+
+    @Override
+    public void setEventPublisher(final EventPublisher publisher) {
+        publisher.registerHandlerFor(TestStepFinished.class, this::handleTestStepFinished);
+    }
+
+    private String getStepName(final TestStepFinished event) {
+        if (event.testStep instanceof PickleStepTestStep) {
+            return ((PickleStepTestStep) event.testStep).getStepText();
+        }
+
+        return event.testStep.getCodeLocation();
     }
 }
 

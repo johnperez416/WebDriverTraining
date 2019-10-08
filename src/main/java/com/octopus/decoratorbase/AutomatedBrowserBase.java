@@ -6,22 +6,16 @@ import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
-import com.octopus.stephandlers.StepHandler;
-import com.octopus.stephandlers.impl.SlackStepHandler;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -36,9 +30,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
-    private static final StepHandler[] STEP_HANLDERS = new StepHandler[] {
-            new SlackStepHandler()
-    };
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -80,13 +71,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DUMP_ALIASES_ON_FAILURE, false)) {
                 dumpAliases();
             }
-        }
-    }
-
-    @AfterStep
-    public void afterStep(final Scenario scenario) {
-        for (final StepHandler stepHandler: STEP_HANLDERS) {
-            stepHandler.handleStep(scenario);
         }
     }
 

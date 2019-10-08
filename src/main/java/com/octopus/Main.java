@@ -25,6 +25,8 @@ public class Main {
             final ArrayList<String> options = new ArrayList<>() {{
                 add("--glue");
                 add("com.octopus.decoratorbase");
+                add("--plugin");
+                add("com.octopus.stephandlers.impl.SlackStepHandler");
                 add("--strict");
             }};
 
