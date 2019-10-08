@@ -506,7 +506,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                     ? ExpectedConditions.elementToBeClickable(by)
                                     : ExpectedConditions.presenceOfElementLocated(by)),
                     Constants.MOUSE_MOVE_TIME,
-                    Constants.MOUSE_MOVE_STEPS);
+                    Constants.MOUSE_MOVE_STEPS,
+                    force != null);
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().clickElementIfExists(
@@ -537,7 +538,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                     ? ExpectedConditions.elementToBeClickable(by)
                                     : ExpectedConditions.presenceOfElementLocated(by)),
                     Constants.MOUSE_MOVE_TIME,
-                    Constants.MOUSE_MOVE_STEPS);
+                    Constants.MOUSE_MOVE_STEPS,
+                    force != null);
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().clickElementIfExists(

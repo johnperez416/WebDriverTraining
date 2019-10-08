@@ -549,16 +549,6 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfExists(final String locator, final String ifExists) {
-        clickElementIfExists(null, locator, ifExists);
-    }
-
-    @Override
-    public void clickElementIfExists(final String locator, final int waitTime, final String ifExists) {
-        clickElementIfExists(null, locator, waitTime, ifExists);
-    }
-
-    @Override
     public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {
         selectOptionByTextFromSelectIfExists(optionText, locator, getDefaultExplicitWaitTime(), ifExists);
     }

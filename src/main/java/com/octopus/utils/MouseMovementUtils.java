@@ -35,10 +35,26 @@ public interface MouseMovementUtils {
 	 * @param element the callback to get the element
 	 * @param time The amount of time to take
 	 * @param steps The number of steps to use
+	 * @param force true if we are forcing interaction on the element
 	 */
 	void mouseGlide(WebDriver driver,
                     JavascriptExecutor javascriptExecutor,
 					GetElement element,
                     int time,
-                    int steps);
+                    int steps,
+					boolean force);
+
+	/**
+	 * Move the mouse from the current position to the new position
+	 * @param driver The WebDriver instance
+	 * @param javascriptExecutor The selenium javascript executor
+	 * @param element the callback to get the element
+	 * @param time The amount of time to take
+	 * @param steps The number of steps to use
+	 */
+	default void mouseGlide(WebDriver driver,
+					JavascriptExecutor javascriptExecutor,
+					GetElement element,
+					int time,
+					int steps) {mouseGlide(driver, javascriptExecutor, element, time, steps, false);}
 }

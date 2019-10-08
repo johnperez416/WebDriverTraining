@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,8 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
             final JavascriptExecutor javascriptExecutor,
             final GetElement element,
             final int time,
-            final int steps) {
+            final int steps,
+            final boolean force) {
 
         checkNotNull(element);
 
@@ -98,11 +100,21 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                 The element reference of <reference>> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
                 We retry here to allow the movement to complete if the source element disappears.
              */
-            RETRY_SERVICE.getTemplate(5, 100)
-                    .execute(context -> {
-                        new Actions(driver).moveToElement(element.getElement()).perform();
-                        return 1;
-                    });
+            try {
+                RETRY_SERVICE.getTemplate(5, 100)
+                        .execute(context -> {
+                            new Actions(driver).moveToElement(element.getElement()).perform();
+                            return 1;
+                        });
+            } catch (final MoveTargetOutOfBoundsException ex) {
+                /*
+                    We may be forcing a click on an element specifically to work around the fact that it is not
+                    something Selenium can reach. In this case, ignore the out of bounds exeception.
+                 */
+                if (!force) {
+                    throw ex;
+                }
+            }
 
         }
     }

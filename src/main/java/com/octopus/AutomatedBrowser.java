@@ -138,6 +138,7 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Simple Selection">
+
     void clickElementIfExists(String force, String locator, String ifExists);
 
     void clickElementIfExists(String force, String locator, int waitTime, String ifExists);
@@ -148,9 +149,9 @@ public interface AutomatedBrowser {
     default void clickElement(String locator, int waitTime) {
         clickElementIfExists(locator, waitTime,null);}
 
-    void clickElementIfExists(String locator, String ifExists);
+    default void clickElementIfExists(String locator, String ifExists) {clickElementIfExists(null, locator, ifExists);}
 
-    void clickElementIfExists(String locator, int waitTime, String ifExists);
+    default void clickElementIfExists(String locator, int waitTime, String ifExists) {clickElementIfExists(null, locator, waitTime, ifExists);}
 
     default void selectOptionByTextFromSelect(String optionText, String locator) {
         selectOptionByTextFromSelectIfExists(optionText, locator, null);}
