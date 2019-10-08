@@ -6,7 +6,6 @@ import com.octopus.Constants;
 import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-import cucumber.api.HookTestStep;
 import cucumber.api.PickleStepTestStep;
 import cucumber.api.event.EventListener;
 import cucumber.api.event.EventPublisher;
