@@ -86,9 +86,9 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
             final Long left = (Long) javascriptExecutor.executeScript(
                     "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
             final Long height = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
-            final Long width = (Long) javascriptExecutor.executeScript(
                     "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
+            final Long width = (Long) javascriptExecutor.executeScript(
+                    "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
             mouseGlide(
                     Math.min(d.width - 1, (int) ((left + width / 2) * zoom)),
                     Math.min(d.height - 1, (int) ((top + verticalOffset + height / 2) * zoom)),
