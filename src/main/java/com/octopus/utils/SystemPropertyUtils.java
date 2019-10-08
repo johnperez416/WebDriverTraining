@@ -74,6 +74,16 @@ public interface SystemPropertyUtils {
 
 	/**
 	 * Extracts system properties, either from their default name, or with the javaws prefix.
+	 * Treats null strings as empty. Appends a string to any non-empty properties.
+	 *
+	 * @param name The name of the system property
+	 * @param append A string to append to a non-empty property
+	 * @return The value of the system property
+	 */
+	String getPropertyNullAsEmpty(String name, String append);
+
+	/**
+	 * Extracts system properties, either from their default name, or with the javaws prefix.
 	 * Treats empty strings as empty optional.
 	 *
 	 * @param name The name of the system property

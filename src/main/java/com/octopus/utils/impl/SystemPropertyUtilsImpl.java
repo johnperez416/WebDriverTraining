@@ -99,7 +99,7 @@ public class SystemPropertyUtilsImpl implements SystemPropertyUtils {
     }
 
     @Override
-    public String getPropertyNullAsEmpty(String name) {
+    public String getPropertyNullAsEmpty(final String name) {
         checkArgument(StringUtils.isNotBlank(name));
 
         return SYSTEM_PROPERTY_PREFIXES.stream()
@@ -107,6 +107,16 @@ public class SystemPropertyUtilsImpl implements SystemPropertyUtils {
                 .filter(StringUtils::isNotBlank)
                 .findFirst()
                 .orElse("");
+    }
+
+    @Override
+    public String getPropertyNullAsEmpty(final String name, final String append) {
+        final String property = getPropertyNullAsEmpty(name);
+        if (StringUtils.isEmpty(property)) {
+            return property;
+        }
+
+        return property + append;
     }
 
     @Override

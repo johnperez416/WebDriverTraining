@@ -55,9 +55,8 @@ public class SlackStepHandler implements EventListener {
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
             final SlackMessage message = SlackMessage
                     .builder()
-                    .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE) +
-                            " " + event.result.getStatus() +
-                            " " + getStepName(event))
+                    .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE, " ") +
+                            event.result.getStatus() + " " + getStepName(event))
                     .build();
 
             if (imageUrl.isPresent()) {
