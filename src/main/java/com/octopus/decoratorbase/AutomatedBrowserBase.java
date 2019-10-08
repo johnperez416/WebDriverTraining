@@ -695,6 +695,29 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @Override
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                    getAliases().getOrDefault(optionValue, optionValue),
+                    getAliases().getOrDefault(locator, locator),
+                    ifExists);
+        }
+    }
+
+    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                    getAliases().getOrDefault(optionValue, optionValue),
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime,
+                    ifExists);
+        }
+    }
+
     // A hack to match multiple regexes
     // https://github.com/cucumber/cucumber-jvm/issues/1341#issuecomment-379521254
     @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")

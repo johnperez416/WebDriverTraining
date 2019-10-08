@@ -156,6 +156,16 @@ public interface AutomatedBrowser {
 
     void selectOptionByTextFromSelectIfExists(String optionText, String locator, int waitTime, String ifExists);
 
+    default void selectOptionByValueFromSelect(String optionValue, String locator) {
+        selectOptionByValueFromSelectIfExists(optionValue, locator, null);}
+
+    default void selectOptionByValueFromSelect(String optionValue, String locator, int waitTime) {
+        selectOptionByValueFromSelectIfExists(optionValue, locator, waitTime, null);}
+
+    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, String ifExists);
+
+    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExists);
+
     default void populateElement(String locator, String text) {populateElement(locator, text, null);}
 
     default void populateElement(String locator, String text, int waitTime) {populateElement(locator, text, waitTime, null);}

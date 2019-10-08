@@ -578,6 +578,26 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExists) {
+        selectOptionByTextFromSelectIfExists(optionValue, locator, getDefaultExplicitWaitTime(), ifExists);
+    }
+
+    @Override
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExists) {
+        try {
+            new Select(SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    by -> ExpectedConditions.elementToBeClickable(by))).selectByValue(optionValue);
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
+    }
+
+    @Override
     public void populateElement(final String locator, final String text, final String ifExists) {
         populateElement(locator, text, getDefaultExplicitWaitTime(), ifExists);
     }
