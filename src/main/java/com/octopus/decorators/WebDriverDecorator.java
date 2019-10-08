@@ -827,7 +827,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     // It can cause bad-looking slow frames in browser performance tool, so be careful.
                     percent = easing(percent)
 
-                    parent.scrollTo(0, startingY + diff * percent)
+                    parent.scrollTop = startingY + diff * percent
 
                     // Proceed with animation as long as we wanted it to.
                     if (time < duration) {
