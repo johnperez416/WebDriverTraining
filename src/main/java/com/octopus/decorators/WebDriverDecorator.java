@@ -579,7 +579,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExists) {
-        selectOptionByTextFromSelectIfExists(optionValue, locator, getDefaultExplicitWaitTime(), ifExists);
+        selectOptionByValueFromSelectIfExists(optionValue, locator, getDefaultExplicitWaitTime(), ifExists);
     }
 
     @Override
