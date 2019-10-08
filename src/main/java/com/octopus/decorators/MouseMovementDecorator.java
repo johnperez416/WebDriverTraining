@@ -16,6 +16,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MouseMovementDecorator extends AutomatedBrowserBase {
@@ -599,6 +600,35 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
                         optionText,
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                                ? 0 : waitTime,
+                        ifExists);
+            }
+        } catch (final TimeoutException ex) {
+            if (StringUtils.isEmpty(ifExists)) {
+                throw ex;
+            }
+        }
+    }
+
+    @Override
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExists) {
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> ExpectedConditions.elementToBeClickable(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
+
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                        optionValue,
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : waitTime,
