@@ -36,8 +36,10 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         options.setHeadless(headless);
         // https://bugs.chromium.org/p/chromedriver/issues/detail?id=795
         // A random user-data dir can fix issues with multiple tests opening and closing Chrome
-        if (userData != null)
+        if (userData != null) {
             options.addArguments("--user-data-dir=" + userData.getAbsolutePath());
+        }
+        options.addArguments("--disable-dev-shm-usage");
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
