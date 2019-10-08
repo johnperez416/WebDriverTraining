@@ -1,5 +1,6 @@
 package com.octopus.utils.impl;
 
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.ExpectedConditionCallback;
 import com.octopus.utils.SimpleBy;
@@ -10,9 +11,10 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class SimpleByImpl implements SimpleBy {
-
+    static final Logger LOGGER = Logger.getLogger(SimpleByImpl.class.toString());
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_SLICE = 100;
 
@@ -47,13 +49,13 @@ public class SimpleByImpl implements SimpleBy {
 
                     final List<WebElement> matched = webDriver.findElements(by);
                     if (matched.size() > 1) {
-                        System.out.println("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
-                        matched.stream().forEach(e -> System.out.println(
+                        LOGGER.info("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
+                        matched.stream().forEach(e -> LOGGER.info(
                                 e.getTagName() +
                                         " X: " + e.getLocation().x +
                                         " Y: " + e.getLocation().y));
-                        System.out.println(locator);
-                        System.out.println("Consider fixing the locator to be specific to a single element.");
+                        LOGGER.info(locator);
+                        LOGGER.info("Consider fixing the locator to be specific to a single element.");
                     }
 
                     return element;

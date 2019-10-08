@@ -10,15 +10,21 @@ import io.vavr.control.Try;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import static com.octopus.Constants.BROWSER_CLEANUP;
 
 public class Main {
-    private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
-            new EnvironmentAliasesProcessorImpl();
+    private static final Logger LOGGER = Logger.getLogger(Main.class.toString());
+    private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR = new EnvironmentAliasesProcessorImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     public static void main(String[] args) {
+
+        LOGGER.info("Options:");
+        LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
+        LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
+        LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
 
         try {
             int retValue = 0;

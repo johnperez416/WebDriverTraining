@@ -3,6 +3,7 @@ package com.octopus.stephandlers.impl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octopus.Constants;
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
@@ -20,8 +21,10 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class SlackStepHandler implements EventListener {
+    private static final Logger LOGGER = Logger.getLogger(SlackStepHandler.class.toString());
     public static final String SLACK_HOOK_URL = "slackHookUrl";
     public static final String SLACK_HANDLER_ENABLED = "slackStepHandlerEnabled";
     public static final String SLACK_HANDLER_ERROR_ONLY = "slackStepHandlerErrorOnly";
@@ -40,7 +43,7 @@ public class SlackStepHandler implements EventListener {
         }
 
         if (!SYSTEM_PROPERTY_UTILS.hasProperty(SLACK_HOOK_URL)) {
-            System.out.println("The " + SLACK_HOOK_URL +
+            LOGGER.info("The " + SLACK_HOOK_URL +
                     " system property must be defined to return the results via Slack");
             return;
         }
@@ -76,7 +79,7 @@ public class SlackStepHandler implements EventListener {
                 }
             }
         } catch (final Exception ex) {
-            System.out.println("Failed to send result to Slack.");
+            LOGGER.info("Failed to send result to Slack.");
         }
     }
 

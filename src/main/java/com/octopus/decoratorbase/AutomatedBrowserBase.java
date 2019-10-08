@@ -3,6 +3,7 @@ package com.octopus.decoratorbase;
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
+import com.octopus.Main;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
@@ -25,8 +26,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class AutomatedBrowserBase implements AutomatedBrowser {
+    private static final Logger LOGGER = Logger.getLogger(AutomatedBrowserBase.class.toString());
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -56,11 +59,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Before
     public void reuseSharedBrowser() {
         automatedBrowser = sharedAutomatedBrowser;
-
-        System.out.println("Options:");
-        System.out.println("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
-        System.out.println("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
-        System.out.println("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
     }
 
     @After
@@ -261,8 +259,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @And("^I dump the aliases$")
     @Override
     public void dumpAliases() {
-        System.out.println("\nStart of alias dump");
-        getAliases().entrySet().forEach(entrySet -> System.out.println(entrySet.getKey() + ": " + entrySet.getValue()));
+        LOGGER.info("\nStart of alias dump");
+        getAliases().entrySet().forEach(entrySet -> LOGGER.info(entrySet.getKey() + ": " + entrySet.getValue()));
     }
 
     @And("^I write the value of the alias \"([^\"]*)\" to the file \"([^\"]*)\"$")

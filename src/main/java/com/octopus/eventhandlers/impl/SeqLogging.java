@@ -1,5 +1,6 @@
 package com.octopus.eventhandlers.impl;
 
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -13,8 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class SeqLogging implements EventHandler {
+    private static final Logger LOGGER = Logger.getLogger(SeqLogging.class.toString());
     public static final String SEQ_API_KEY = "Seq-Api-Key";
     public static final String SEQ_MESSAGE = "Seq-Message";
     public static final String SEQ_URL = "Seq-Url";
@@ -34,7 +37,7 @@ public class SeqLogging implements EventHandler {
         if (!headers.containsKey(SEQ_API_KEY) ||
                 !headers.containsKey(SEQ_MESSAGE) ||
                 !headers.containsKey(SEQ_URL)) {
-            System.out.println("The " + SEQ_API_KEY + ", " + SEQ_MESSAGE + " and " + SEQ_URL +
+            LOGGER.info("The " + SEQ_API_KEY + ", " + SEQ_MESSAGE + " and " + SEQ_URL +
                     " headers must be defined to return the results via Seq");
             return previousResults;
         }
@@ -62,7 +65,7 @@ public class SeqLogging implements EventHandler {
                     }
                 }
             } catch (final Exception ex) {
-                System.out.println("Failed to send result to Seq.");
+                LOGGER.info("Failed to send result to Seq.");
             }
         }
 

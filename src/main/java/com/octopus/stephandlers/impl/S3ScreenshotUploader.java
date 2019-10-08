@@ -2,18 +2,17 @@ package com.octopus.stephandlers.impl;
 
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.stephandlers.ScreenshotUploader;
-import com.octopus.utils.S3Uploader;
 import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.S3UploaderImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class S3ScreenshotUploader implements ScreenshotUploader {
+    static final Logger LOGGER = Logger.getLogger(S3ScreenshotUploader.class.toString());
     private static final String S3_UPLOADING_ENABLED = "screenshotS3Enabled";
     private static final String SCREENSHOT_S3_BUCKET = "screenshotS3Bucket";
-    private static final S3Uploader S_3_UPLOADER = new S3UploaderImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     @Override
@@ -22,7 +21,7 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
             return Optional.empty();
 
         if (!SYSTEM_PROPERTY_UTILS.hasProperty(SCREENSHOT_S3_BUCKET)) {
-            System.out.println("The " + SCREENSHOT_S3_BUCKET + " system property must be set");
+            LOGGER.info("The " + SCREENSHOT_S3_BUCKET + " system property must be set");
             return Optional.empty();
         }
 

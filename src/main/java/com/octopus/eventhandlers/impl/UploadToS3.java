@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.AutoDeletingTempFile;
@@ -16,8 +17,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class UploadToS3 implements EventHandler {
+    private static final Logger LOGGER = Logger.getLogger(UploadToS3.class.toString());
     private static final int MAX_ID_LENGTH = 50;
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
     public static final String S3_REPORT_URL = "S3-Report-Url";
@@ -34,7 +37,7 @@ public class UploadToS3 implements EventHandler {
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!(headers.containsKey(BUCKET_NAME) && headers.containsKey(CLIENT_REGION))) {
-            System.out.println("The " + BUCKET_NAME + " and " + CLIENT_REGION +
+            LOGGER.info("The " + BUCKET_NAME + " and " + CLIENT_REGION +
                     " headers must be defined to upload the results to S3.");
             return previousResults;
         }
@@ -62,7 +65,7 @@ public class UploadToS3 implements EventHandler {
                 request.setMetadata(metadata);
                 s3Client.putObject(request);
 
-                System.out.println("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
+                LOGGER.info("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
                         " to s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
 
                 return new HashMap<>() {{
@@ -70,7 +73,7 @@ public class UploadToS3 implements EventHandler {
                     this.put(S3_REPORT_URL, "s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
                 }};
             } catch (final Exception ex) {
-                System.out.println("The report file " + fileObjKeyName + " was not uploaded to S3. Error message: " + ex.toString());
+                LOGGER.info("The report file " + fileObjKeyName + " was not uploaded to S3. Error message: " + ex.toString());
             }
         }
 

@@ -11,8 +11,6 @@ import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.*;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +22,6 @@ import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,9 +30,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
+    private static final Logger LOGGER = Logger.getLogger(WebDriverDecorator.class.toString());
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -82,7 +81,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         }
 
         try {
-            System.out.println("Starting video recording");
+            LOGGER.info("Starting video recording");
 
             // set the graphics configuration
             final GraphicsConfiguration gc = GraphicsEnvironment
@@ -119,7 +118,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public static void staticStopScreenRecording() {
         try {
             if (screenRecorder != null) {
-                System.out.println("Stopping video recording");
+                LOGGER.info("Stopping video recording");
                 screenRecorder.stop();
             }
             screenRecorder = null;
