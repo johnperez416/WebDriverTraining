@@ -6,21 +6,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class ChromeHeadlessLambdaDecorator extends AutomatedBrowserBase
+public class ChromeLambdaDecorator extends AutomatedBrowserBase
 {
-    public ChromeHeadlessLambdaDecorator(final AutomatedBrowser automatedBrowser) {
+    private final boolean headless;
+
+    public ChromeLambdaDecorator(final boolean headless , final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
+        this.headless = headless;
     }
 
     @Override
     public void init() {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().init();
-        }
-
         final ChromeOptions options = new ChromeOptions();
+        if (headless) {
+            options.addArguments("--headless");
+        }
         options.addArguments("--disable-gpu");
-        options.addArguments("--headless");
         options.addArguments("--window-size=1366,768");
         options.addArguments("--single-process");
         options.addArguments("--no-sandbox");

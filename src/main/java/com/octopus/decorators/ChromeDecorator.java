@@ -33,10 +33,6 @@ public class ChromeDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().init();
-        }
-
         final ChromeOptions options = new ChromeOptions();
         options.setHeadless(headless);
         // https://bugs.chromium.org/p/chromedriver/issues/detail?id=795

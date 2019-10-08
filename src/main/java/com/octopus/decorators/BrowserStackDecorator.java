@@ -20,10 +20,6 @@ public class BrowserStackDecorator extends AutomatedBrowserBase {
 
     @Override
     public void init() {
-        if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().init();
-        }
-
         try {
             final String url = "https://" +
                     System.getenv(USERNAME_ENV) + ":" +

@@ -50,12 +50,15 @@ public class AutomatedBrowserFactory {
             return getBrowserStackAndroidNoImplicitWait();
         }
 
+        if ("ChromeHeadlessNoImplicitWaitLambda".equalsIgnoreCase(browser)) {
+            return getChromeBrowserNoImplicitWaitLambda(true);
+        }
+
         if ("ChromeNoImplicitWaitLambda".equalsIgnoreCase(browser)) {
-            return getChromeBrowserNoImplicitWaitLambda();
+            return getChromeBrowserNoImplicitWaitLambda(false);
         }
 
         throw new IllegalArgumentException("Unknown browser " + browser);
-
     }
 
     private AutomatedBrowser getChromeBrowser(final boolean headless) {
@@ -172,8 +175,8 @@ public class AutomatedBrowserFactory {
         );
     }
 
-    private AutomatedBrowser getChromeBrowserNoImplicitWaitLambda() {
-        return new ChromeHeadlessLambdaDecorator(
+    private AutomatedBrowser getChromeBrowserNoImplicitWaitLambda(final boolean headless) {
+        return new ChromeLambdaDecorator(headless,
                 new MouseMovementDecorator(
                         new HighlightDecorator(
                                 new WebDriverDecorator()
