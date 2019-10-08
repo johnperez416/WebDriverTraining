@@ -37,6 +37,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <version>2.22.2</version>
                 <configuration>
                     <argLine>--enable-preview -Djava.util.logging.config.file=logging.properties</argLine>
+                    <forkCount>1</forkCount>
                 </configuration>
             </plugin>
             <plugin>
