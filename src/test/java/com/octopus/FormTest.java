@@ -269,7 +269,11 @@ public class FormTest {
             automatedBrowser.verifyTextFromElement(formTextBoxLocator, "");
 
             automatedBrowser.populateElement(formTextAreaLocator, "test text", 10);
+            automatedBrowser.verifyTextFromElement(formTextAreaLocator, "test text");
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
+
+            automatedBrowser.clear(formTextAreaLocator);
+            automatedBrowser.verifyTextFromElement(formTextAreaLocator, "");
 
             automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
@@ -306,7 +310,7 @@ public class FormTest {
     }
 
     @Test
-    public void windowInteraction() throws URISyntaxException {
+    public void formTestWithSimpleByMoveTo() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
 
         final String formButtonLocator = "button_element";
@@ -318,8 +322,27 @@ public class FormTest {
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
+            automatedBrowser.mouseOver(formButtonLocator, 10);
+            assertEquals("Button Mouse Over", automatedBrowser.getTextFromElement(messageLocator));
+
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
+    @Test
+    public void windowInteraction() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+
+        try {
+            automatedBrowser.init();
+
+            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+
             automatedBrowser.maximizeWindow();
             automatedBrowser.setWindowSize(800, 600);
+            automatedBrowser.browserZoomIn();
+            automatedBrowser.browserZoomOut();
             automatedBrowser.refresh();
             automatedBrowser.verifyUrl(".*?form\\.html");
 
