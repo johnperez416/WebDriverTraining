@@ -153,7 +153,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void takeScreenshot(final String file, boolean force) {
-        if (!force && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false)) {
+        if (!force && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) || webDriver == null) {
             return;
         }
 
