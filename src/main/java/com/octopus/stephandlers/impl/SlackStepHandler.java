@@ -8,6 +8,7 @@ import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import cucumber.api.PickleStepTestStep;
+import cucumber.api.Result;
 import cucumber.api.event.EventListener;
 import cucumber.api.event.EventPublisher;
 import cucumber.api.event.TestStepFinished;
@@ -39,6 +40,10 @@ public class SlackStepHandler implements EventListener {
         }
 
         if (event.result.isOk(false) && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
+            return;
+        }
+
+        if (event.result.getStatus() == Result.Type.SKIPPED) {
             return;
         }
 

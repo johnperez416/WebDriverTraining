@@ -2,10 +2,7 @@ package com.octopus.decorators;
 
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
-import com.octopus.exceptions.InteractionException;
-import com.octopus.exceptions.SaveException;
-import com.octopus.exceptions.ValidationException;
-import com.octopus.exceptions.VideoException;
+import com.octopus.exceptions.*;
 import com.octopus.utils.S3Uploader;
 import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
@@ -544,7 +541,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         waitTime,
                         by -> ExpectedConditions.elementToBeClickable(by)).click();
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -564,7 +561,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     by -> ExpectedConditions.elementToBeClickable(by))).selectByVisibleText(optionText);
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -584,7 +581,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     by -> ExpectedConditions.elementToBeClickable(by))).selectByValue(optionValue);
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -604,7 +601,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(text);
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -624,7 +621,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -668,7 +665,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             }
 
             return element.getText();
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -843,7 +840,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     Integer.parseInt(offset == null ? "0" : offset),
                     scrollTime);
             Try.run(() -> Thread.sleep(scrollTime));
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }
@@ -921,7 +918,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             if (!Pattern.compile(regex).matcher(content).matches()) {
                 throw new ValidationException("The text content \"" + content + "\" does not match the regex \"" + regex + "\"");
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
             }

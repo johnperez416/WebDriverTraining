@@ -45,6 +45,8 @@ public class FormTest {
 
             automatedBrowser.clickElementWithId("div_element");
             assertEquals("Div Clicked", automatedBrowser.getTextFromElementWithId("message"));
+
+            automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
         } finally {
             automatedBrowser.destroy();
         }
