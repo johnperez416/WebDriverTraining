@@ -390,6 +390,7 @@ public class FormTest {
     }
 
     @Test
+    @Retry
     public void browserStackTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
@@ -434,6 +435,7 @@ public class FormTest {
     }
 
     @Test
+    @Retry
     public void browserStackEdgeTest() {
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
                 StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
