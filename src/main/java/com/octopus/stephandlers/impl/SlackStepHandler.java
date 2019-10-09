@@ -79,7 +79,7 @@ public class SlackStepHandler implements EventListener {
                 }
             }
         } catch (final Exception ex) {
-            LOGGER.info("Failed to send result to Slack.");
+            LOGGER.warning("Failed to send result to Slack.");
         }
     }
 
