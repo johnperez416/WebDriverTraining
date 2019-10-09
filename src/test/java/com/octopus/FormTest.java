@@ -45,8 +45,6 @@ public class FormTest {
 
             automatedBrowser.clickElementWithId("div_element");
             assertEquals("Div Clicked", automatedBrowser.getTextFromElementWithId("message"));
-
-            automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
         } finally {
             automatedBrowser.destroy();
         }
@@ -286,6 +284,8 @@ public class FormTest {
 
             automatedBrowser.selectOptionByValueFromSelect("option22", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
+
+            automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
         } finally {
             automatedBrowser.destroy();
         }
