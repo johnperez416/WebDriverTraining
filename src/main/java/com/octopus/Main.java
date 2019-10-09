@@ -10,6 +10,7 @@ import io.vavr.control.Try;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import static com.octopus.Constants.BROWSER_CLEANUP;
@@ -20,6 +21,8 @@ public class Main {
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     public static void main(String[] args) {
+
+        Try.run(() -> LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.properties")));
 
         LOGGER.info("Options:");
         LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
