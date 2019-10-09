@@ -54,6 +54,11 @@ public class Constants {
     public static final String DISABLE_SCREENSHOTS = "disableScreenshots";
 
     /**
+     * The system property that can be used to disable any browser zooming
+     */
+    public static final String DISABLE_ZOOM = "disableBrowserZoom";
+
+    /**
      * A value to add to the vertical position of elements to account for message bars
      * like the one in chrome when being run as part of an automated test
      */

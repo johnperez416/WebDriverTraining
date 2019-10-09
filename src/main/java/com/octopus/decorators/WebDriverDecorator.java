@@ -681,6 +681,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void browserZoomIn() {
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_ZOOM, true)) {
+            return;
+        }
+
         try {
             final Robot robot = new Robot();
             if (OSValidator.isMac()) {
@@ -701,6 +705,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void browserZoomOut() {
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_ZOOM, true)) {
+            return;
+        }
+
         try {
             final Robot robot = new Robot();
             if (OSValidator.isMac()) {
