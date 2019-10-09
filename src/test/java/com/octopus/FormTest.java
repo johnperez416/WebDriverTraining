@@ -353,7 +353,7 @@ public class FormTest {
     }
 
     @Test
-    public void captureHarFile() throws URISyntaxException {
+    public void captureHarFile() {
         final AutomatedBrowser automatedBrowser =
                  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
 
@@ -371,7 +371,7 @@ public class FormTest {
     }
 
     @Test
-    public void captureCompleteHarFile() throws URISyntaxException {
+    public void captureCompleteHarFile() {
 
         final AutomatedBrowser automatedBrowser =
                  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
