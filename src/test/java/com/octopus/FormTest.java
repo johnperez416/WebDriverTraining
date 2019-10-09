@@ -1,5 +1,6 @@
 package com.octopus;
 
+import com.kevinmost.junit_retry_rule.Retry;
 import com.octopus.decorators.BrowserStackDecorator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -479,6 +480,7 @@ public class FormTest {
     }
 
     @Test
+    @Retry
     public void browserStackAndroidTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
