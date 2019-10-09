@@ -26,9 +26,14 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
         }
 
         final String filename = "screenshot" + UUID.randomUUID() + ".png";
-        AutomatedBrowserBase.getInstance().takeScreenshot(
-                "s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename,
-                true);
-        return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
+        try {
+            AutomatedBrowserBase.getInstance().takeScreenshot(
+                    "s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename,
+                    true);
+            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
+        } catch (final Exception ex) {
+            LOGGER.warning("Failed to upload screenshot. " + ex.toString());
+            return Optional.empty();
+        }
     }
 }

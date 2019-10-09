@@ -75,11 +75,12 @@ public class SlackStepHandler implements EventListener {
             httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
             try (final CloseableHttpResponse response = client.execute(httpPost)) {
                 if (response.getStatusLine().getStatusCode() != 200) {
-                    throw new Exception("Failed to post to slack");
+                    throw new Exception("Failed to post to slack - response code was " +
+                            response.getStatusLine().getStatusCode());
                 }
             }
         } catch (final Exception ex) {
-            LOGGER.warning("Failed to send result to Slack.");
+            LOGGER.warning("Failed to send result to Slack. " + ex.toString());
         }
     }
 
