@@ -3,8 +3,10 @@ package com.octopus.decorators;
 import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.utils.RetryService;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +22,7 @@ import java.util.Map;
 public class HighlightDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
     private Map<String, String> originalStyles = new HashMap<>();
 
     public HighlightDecorator() {
@@ -44,27 +47,32 @@ public class HighlightDecorator extends AutomatedBrowserBase {
 
             final int offsetValue = NumberUtils.toInt(offset, 10);
 
-            final WebElement element = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            // This will catch StaleElementReferenceException exceptions and attempt to apply the highlight again
+            RETRY_SERVICE.getTemplate(3, 100).execute(context -> {
+                final WebElement element = SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime / 3,
+                        by -> ExpectedConditions.presenceOfElementLocated(by));
 
-            originalStyles.put(locator, element.getAttribute("style"));
+                originalStyles.put(locator, element.getAttribute("style"));
 
-            if (StringUtils.equals(StringUtils.trim(location), "inside")) {
-                ((JavascriptExecutor) getWebDriver()).executeScript(
-                        "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
-                        element);
-            } else {
-                ((JavascriptExecutor) getWebDriver()).executeScript(
-                        """
-                        arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
-                        arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
-                        arguments[0].style['outline-style'] = 'solid';
-                        """,
-                        element);
-            }
+                if (StringUtils.equals(StringUtils.trim(location), "inside")) {
+                    ((JavascriptExecutor) getWebDriver()).executeScript(
+                            "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
+                            element);
+                } else {
+                    ((JavascriptExecutor) getWebDriver()).executeScript(
+                            """
+                            arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
+                            arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
+                            arguments[0].style['outline-style'] = 'solid';
+                            """,
+                            element);
+                }
+
+                return 0;
+            });
         } catch (final TimeoutException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;

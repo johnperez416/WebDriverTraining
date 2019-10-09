@@ -101,7 +101,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                 We retry here to allow the movement to complete if the source element disappears.
              */
             try {
-                RETRY_SERVICE.getTemplate(5, 100)
+                RETRY_SERVICE.getTemplate()
                         .execute(context -> {
                             new Actions(driver).moveToElement(element.getElement()).perform();
                             return 1;
