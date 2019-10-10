@@ -1090,4 +1090,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getAliases().getOrDefault(duration, duration));
         }
     }
+
+    @And("^I run the following JavaScript:$")
+    @Override
+    public void runJavascript(final String code) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().runJavascript(
+                    getAliases().getOrDefault(code, code));
+        }
+    }
 }

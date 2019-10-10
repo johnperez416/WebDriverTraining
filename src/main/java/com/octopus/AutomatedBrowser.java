@@ -279,4 +279,8 @@ public interface AutomatedBrowser {
 
     void displayNote(String text, String duration);
     //</editor-fold>
+
+    //<editor-fold desc="Raw JavaScript">
+    void runJavascript(String code);
+    //</editor-fold>
 }

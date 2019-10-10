@@ -963,4 +963,9 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             }
         }
     }
+
+    @Override
+    public void runJavascript(final String code) {
+        ((JavascriptExecutor) getWebDriver()).executeScript(code);
+    }
 }
