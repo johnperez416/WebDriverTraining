@@ -534,14 +534,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        by -> ExpectedConditions.presenceOfElementLocated(by));
+                        ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
             } else {
                 SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
-                        by -> ExpectedConditions.elementToBeClickable(by)).click();
+                        ExpectedConditions::elementToBeClickable).click();
             }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
@@ -562,7 +562,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.elementToBeClickable(by))).selectByVisibleText(optionText);
+                    ExpectedConditions::elementToBeClickable)).selectByVisibleText(optionText);
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
@@ -582,7 +582,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.elementToBeClickable(by))).selectByValue(optionValue);
+                    ExpectedConditions::elementToBeClickable)).selectByValue(optionValue);
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
@@ -602,7 +602,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(text);
+                    ExpectedConditions::elementToBeClickable).sendKeys(text);
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
@@ -622,7 +622,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by)).clear();
+                    ExpectedConditions::presenceOfElementLocated).clear();
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExists)) {
                 throw ex;
@@ -660,7 +660,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
+                    ExpectedConditions::presenceOfElementLocated);
 
             if (StringUtils.isNotBlank(element.getAttribute("value"))) {
                 return element.getAttribute("value");
@@ -692,7 +692,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by));
+                ExpectedConditions::presenceOfElementLocated);
     }
 
 
@@ -758,7 +758,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
+                    ExpectedConditions::presenceOfElementLocated);
             ((JavascriptExecutor) getWebDriver()).executeScript("""
             var getScrollParent = function () {
                 var regex = /(auto|scroll)/;
