@@ -1045,6 +1045,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I press the enter key on the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void pressEnter(String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressEnter(getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @And("^I press the enter key on the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void pressEnter(String locator, int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressEnter(getAliases().getOrDefault(locator, locator), waitTime);
+        }
+    }
+
     @Then("^I clear the transition$")
     @Override
     public void clearTransition() {

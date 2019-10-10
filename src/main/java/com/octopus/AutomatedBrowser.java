@@ -53,6 +53,10 @@ public interface AutomatedBrowser {
     void pressEscape(String locator);
 
     void pressEscape(String locator, int waitTime);
+
+    void pressEnter(String locator);
+
+    void pressEnter(String locator, int waitTime);
     //</editor-fold>
 
     //<editor-fold desc="Screenshots and Recording">

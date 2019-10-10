@@ -8,6 +8,7 @@ import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.*;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
@@ -882,7 +883,21 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 getWebDriver(),
                 locator,
                 waitTime,
-                by -> ExpectedConditions.presenceOfElementLocated(by)).sendKeys(Keys.ESCAPE);
+                ExpectedConditions::presenceOfElementLocated).sendKeys(Keys.ESCAPE);
+    }
+
+    @Override
+    public void pressEnter(final String locator) {
+        pressEnter(locator, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void pressEnter(final String locator, final int waitTime) {
+        SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                ExpectedConditions::presenceOfElementLocated).sendKeys(Keys.ENTER);
     }
 
     @Override
