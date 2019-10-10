@@ -45,4 +45,18 @@ public class StepTest {
         }
     }
 
+    @Test
+    public void javascriptTest() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+
+        try {
+            automatedBrowser.init();
+            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.runJavascript(" document.getElementById('message').textContent = 'Raw JavaScript';");
+            assertEquals("Raw JavaScript", automatedBrowser.getTextFromElementWithId("message"));
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
 }
