@@ -286,6 +286,8 @@ public class FormTest {
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
+
+            automatedBrowser.verifyElementExists(formTextBoxLocator);
         } finally {
             automatedBrowser.destroy();
         }
@@ -327,27 +329,6 @@ public class FormTest {
 
             automatedBrowser.mouseOver(formButtonLocator, 10);
             assertEquals("Button Mouse Over", automatedBrowser.getTextFromElement(messageLocator));
-
-        } finally {
-            automatedBrowser.destroy();
-        }
-    }
-
-    @Test
-    public void windowInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
-
-        try {
-            automatedBrowser.init();
-
-            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
-
-            automatedBrowser.maximizeWindow();
-            automatedBrowser.setWindowSize(800, 600);
-            automatedBrowser.browserZoomIn();
-            automatedBrowser.browserZoomOut();
-            automatedBrowser.refresh();
-            automatedBrowser.verifyUrl(".*?form\\.html");
 
         } finally {
             automatedBrowser.destroy();

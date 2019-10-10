@@ -1029,7 +1029,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I press the escape key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEscape(final String locator) {
         if (getAutomatedBrowser() != null) {
@@ -1037,7 +1037,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I press the escape key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
     public void pressEscape(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
@@ -1045,7 +1045,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I press the enter key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEnter(final String locator) {
         if (getAutomatedBrowser() != null) {
@@ -1053,7 +1053,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I press the enter key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
     public void pressEnter(final String locator, int waitTime) {
         if (getAutomatedBrowser() != null) {
