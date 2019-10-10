@@ -34,12 +34,12 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlightIfExists(final String location, final String locator, final String offset, final String ifExists) {
-        this.elementHighlightIfExists(location, locator, offset, getDefaultExplicitWaitTime(), ifExists);
+    public void elementHighlightIfExists(final String location, final String locator, final String offset, final String ifExistsOption) {
+        this.elementHighlightIfExists(location, locator, offset, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void elementHighlightIfExists(final String location, final String locator, final String offset, final int waitTime, final String ifExists) {
+    public void elementHighlightIfExists(final String location, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
         try {
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
                 return;
@@ -74,7 +74,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                 return 0;
             });
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }

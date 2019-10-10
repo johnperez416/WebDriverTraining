@@ -492,7 +492,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfExists(final String force, final String locator, final String ifExists) {
+    public void clickElementIfExists(final String force, final String locator, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -514,17 +514,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : getDefaultExplicitWaitTime(),
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExists) {
+    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -546,17 +546,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : waitTime,
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExists) {
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -575,17 +575,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : getDefaultExplicitWaitTime(),
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExists) {
+    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -604,17 +604,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : waitTime,
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExists) {
+    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -633,17 +633,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : waitTime,
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final String ifExists) {
+    public void populateElement(final String locator, final String text, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -662,17 +662,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         text,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : getDefaultExplicitWaitTime(),
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final int waitTime, final String ifExists) {
+    public void populateElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -691,17 +691,17 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         text,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                                 ? 0 : waitTime,
-                        ifExists);
+                        ifExistsOption);
             }
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void mouseOverIfExists(final String locator, final String ifExists) {
+    public void mouseOverIfExists(final String locator, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -723,14 +723,14 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     by -> ExpectedConditions.presenceOfElementLocated(by));
             action.moveToElement(element).perform();
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }
     }
 
     @Override
-    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExists) {
+    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExistsOption) {
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -752,7 +752,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     by -> ExpectedConditions.presenceOfElementLocated(by));
             action.moveToElement(element).perform();
         } catch (final TimeoutException ex) {
-            if (StringUtils.isEmpty(ifExists)) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
         }

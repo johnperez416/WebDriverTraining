@@ -145,9 +145,9 @@ public interface AutomatedBrowser {
 
     //<editor-fold desc="Simple Selection">
 
-    void clickElementIfExists(String force, String locator, String ifExists);
+    void clickElementIfExists(String force, String locator, String ifExistsOption);
 
-    void clickElementIfExists(String force, String locator, int waitTime, String ifExists);
+    void clickElementIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
     default void clickElement(String locator) {
         clickElementIfExists(locator, null);}
@@ -155,9 +155,9 @@ public interface AutomatedBrowser {
     default void clickElement(String locator, int waitTime) {
         clickElementIfExists(locator, waitTime,null);}
 
-    default void clickElementIfExists(String locator, String ifExists) {clickElementIfExists(null, locator, ifExists);}
+    default void clickElementIfExists(String locator, String ifExistsOption) {clickElementIfExists(null, locator, ifExistsOption);}
 
-    default void clickElementIfExists(String locator, int waitTime, String ifExists) {clickElementIfExists(null, locator, waitTime, ifExists);}
+    default void clickElementIfExists(String locator, int waitTime, String ifExistsOption) {clickElementIfExists(null, locator, waitTime, ifExistsOption);}
 
     default void selectOptionByTextFromSelect(String optionText, String locator) {
         selectOptionByTextFromSelectIfExists(optionText, locator, null);}
@@ -165,9 +165,9 @@ public interface AutomatedBrowser {
     default void selectOptionByTextFromSelect(String optionText, String locator, int waitTime) {
         selectOptionByTextFromSelectIfExists(optionText, locator, waitTime, null);}
 
-    void selectOptionByTextFromSelectIfExists(String optionText, String locator, String ifExists);
+    void selectOptionByTextFromSelectIfExists(String optionText, String locator, String ifExistsOption);
 
-    void selectOptionByTextFromSelectIfExists(String optionText, String locator, int waitTime, String ifExists);
+    void selectOptionByTextFromSelectIfExists(String optionText, String locator, int waitTime, String ifExistsOption);
 
     default void selectOptionByValueFromSelect(String optionValue, String locator) {
         selectOptionByValueFromSelectIfExists(optionValue, locator, null);}
@@ -175,17 +175,17 @@ public interface AutomatedBrowser {
     default void selectOptionByValueFromSelect(String optionValue, String locator, int waitTime) {
         selectOptionByValueFromSelectIfExists(optionValue, locator, waitTime, null);}
 
-    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, String ifExists);
+    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, String ifExistsOption);
 
-    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExists);
+    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExistsOption);
 
     default void populateElement(String locator, String text) {populateElement(locator, text, null);}
 
     default void populateElement(String locator, String text, int waitTime) {populateElement(locator, text, waitTime, null);}
 
-    void populateElement(String locator, String text, String ifExists);
+    void populateElement(String locator, String text, String ifExistsOption);
 
-    void populateElement(String locator, String text, int waitTime, String ifExists);
+    void populateElement(String locator, String text, int waitTime, String ifExistsOption);
 
     default void clear(String locator) {
         clearIfExists(locator, null);}
@@ -193,9 +193,9 @@ public interface AutomatedBrowser {
     default void clear(String locator, int waitTime) {
         clearIfExists(locator, waitTime, null);}
 
-    void clearIfExists(String locator, String ifExists);
+    void clearIfExists(String locator, String ifExistsOption);
 
-    void clearIfExists(String locator, int waitTime, String ifExists);
+    void clearIfExists(String locator, int waitTime, String ifExistsOption);
 
     default void mouseOver(String locator) {
         mouseOverIfExists(locator, null);}
@@ -203,33 +203,33 @@ public interface AutomatedBrowser {
     default void mouseOver(String locator, int waitTime) {
         mouseOverIfExists(locator, waitTime, null);}
 
-    void mouseOverIfExists(String locator, String ifExists);
+    void mouseOverIfExists(String locator, String ifExistsOption);
 
-    void mouseOverIfExists(String locator, int waitTime, String ifExists);
+    void mouseOverIfExists(String locator, int waitTime, String ifExistsOption);
 
     default String getTextFromElement(String locator) {return getTextFromElementIfExists(locator, null);}
 
     default String getTextFromElement(String locator, int waitTime) {return getTextFromElementIfExists(locator, waitTime, null);}
 
-    String getTextFromElementIfExists(String locator, String ifExists);
+    String getTextFromElementIfExists(String locator, String ifExistsOption);
 
-    String getTextFromElementIfExists(String locator, int waitTime, String ifExists);
+    String getTextFromElementIfExists(String locator, int waitTime, String ifExistsOption);
 
     default String getRegexGroupFromElement(String group, String regex, String locator) {return getRegexGroupFromElementIfExists(group, regex, locator, null);}
 
     default String getRegexGroupFromElement(String group, String regex, String locator, int waitTime) {return getRegexGroupFromElementIfExists(group, regex, locator, waitTime, null);}
 
-    String getRegexGroupFromElementIfExists(String group, String regex, String locator, String ifExists);
+    String getRegexGroupFromElementIfExists(String group, String regex, String locator, String ifExistsOption);
 
-    String getRegexGroupFromElementIfExists(String group, String regex, String locator, int waitTime, String ifExists);
+    String getRegexGroupFromElementIfExists(String group, String regex, String locator, int waitTime, String ifExistsOption);
 
     default void verifyTextFromElement(String locator, String regex) {verifyTextFromElementIfExists(locator, regex, null);}
 
     default void verifyTextFromElement(String locator, String regex, int waitTime) {verifyTextFromElementIfExists(locator, regex, waitTime, null);}
 
-    void verifyTextFromElementIfExists(String locator, String regex, String ifExists);
+    void verifyTextFromElementIfExists(String locator, String regex, String ifExistsOption);
 
-    void verifyTextFromElementIfExists(String locator, String regex, int waitTime, String ifExists);
+    void verifyTextFromElementIfExists(String locator, String regex, int waitTime, String ifExistsOption);
 
     default void scrollElementIntoView(String locator, String offset) {
         scrollElementIntoViewIfExists(locator, offset, null);}
@@ -237,9 +237,9 @@ public interface AutomatedBrowser {
     default void scrollElementIntoView(String locator, String offset, int waitTime) {
         scrollElementIntoViewIfExists(locator, offset, waitTime, null);}
 
-    void scrollElementIntoViewIfExists(String locator, String offset, String ifExists);
+    void scrollElementIntoViewIfExists(String locator, String offset, String ifExistsOption);
 
-    void scrollElementIntoViewIfExists(String locator, String offset, int waitTime, String ifExists);
+    void scrollElementIntoViewIfExists(String locator, String offset, int waitTime, String ifExistsOption);
 
     default void elementHighlight(String location, String locator, final String offset) {
         elementHighlightIfExists(location, locator, offset, null);}
@@ -247,9 +247,9 @@ public interface AutomatedBrowser {
     default void elementHighlight(String location, String locator, final String offset, int waitTime) {
         elementHighlightIfExists(location, locator, offset, waitTime, null);}
 
-    void elementHighlightIfExists(String location, String locator, final String offset, String ifExists);
+    void elementHighlightIfExists(String location, String locator, final String offset, String ifExistsOption);
 
-    void elementHighlightIfExists(String location, String locator, final String offset, int waitTime, String ifExists);
+    void elementHighlightIfExists(String location, String locator, final String offset, int waitTime, String ifExistsOption);
 
     void removeElementHighlight(String locator);
 
