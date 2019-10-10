@@ -1045,7 +1045,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I press the enter key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I press the enter key (on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEnter(final String locator) {
         if (getAutomatedBrowser() != null) {
