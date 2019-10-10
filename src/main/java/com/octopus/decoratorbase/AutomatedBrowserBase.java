@@ -3,7 +3,6 @@ package com.octopus.decoratorbase;
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
-import com.octopus.Main;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.exceptions.ScriptException;
@@ -1009,6 +1008,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void removeElementHighlight(final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().removeElementHighlight(getAliases().getOrDefault(locator, locator), waitTime);
+        }
+    }
+
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is present$")
+    @Override
+    public void verifyElementExists(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementExists(getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is present waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void verifyElementExists(final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementExists(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
         }
     }
 

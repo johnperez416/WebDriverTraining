@@ -250,6 +250,10 @@ public interface AutomatedBrowser {
     void removeElementHighlight(String locator);
 
     void removeElementHighlight(String locator, int waitTime);
+
+    void verifyElementExists(String locator);
+
+    void verifyElementExists(String locator, int waitTime);
     //</editor-fold>
 
     //<editor-fold desc="Network Alter and Capture">

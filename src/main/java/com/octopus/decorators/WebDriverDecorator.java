@@ -8,6 +8,7 @@ import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.*;
+import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -678,6 +679,21 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void maximizeWindow() {
         webDriver.manage().window().maximize();
     }
+
+    @Override
+    public void verifyElementExists(final String locator) {
+        verifyElementExists(locator, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void verifyElementExists(final String locator, final int waitTime) {
+        SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                by -> ExpectedConditions.presenceOfElementLocated(by));
+    }
+
 
     @Override
     public void browserZoomIn() {
