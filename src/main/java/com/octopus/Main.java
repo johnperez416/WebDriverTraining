@@ -20,19 +20,16 @@ public class Main {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR = new EnvironmentAliasesProcessorImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
+        configureLogging();
+        dumpOptions();
+        final int retValue = runCucumber(args);
+        System.exit(retValue);
+    }
 
-        Try.run(() -> LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.properties")));
-
-        LOGGER.info("Options:");
-        LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
-        LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
-        LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
-
-        int retValue = 0;
-
+    private static int runCucumber(final String[] args) {
         try {
-
+            int retValue = 0;
             final ArrayList<String> options = new ArrayList<>() {{
                 add("--glue");
                 add("com.octopus.decoratorbase");
@@ -56,6 +53,7 @@ public class Main {
 
                 Try.run(() -> Thread.sleep(Constants.RETRY_DELAY));
             }
+            return retValue;
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(BROWSER_CLEANUP, true)) {
@@ -64,7 +62,16 @@ public class Main {
                 }
             }
         }
+    }
 
-        System.exit(retValue);
+    private static void configureLogging() {
+        Try.run(() -> LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.properties")));
+    }
+
+    private static void dumpOptions() {
+        LOGGER.info("Options:");
+        LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
+        LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
+        LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
     }
 }
