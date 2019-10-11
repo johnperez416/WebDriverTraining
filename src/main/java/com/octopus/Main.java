@@ -29,8 +29,10 @@ public class Main {
         LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
         LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
 
+        int retValue = 0;
+
         try {
-            int retValue = 0;
+
             final ArrayList<String> options = new ArrayList<>() {{
                 add("--glue");
                 add("com.octopus.decoratorbase");
@@ -54,8 +56,6 @@ public class Main {
 
                 Try.run(() -> Thread.sleep(Constants.RETRY_DELAY));
             }
-
-            System.exit(retValue);
         } finally {
             WebDriverDecorator.staticStopScreenRecording();
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(BROWSER_CLEANUP, true)) {
@@ -64,5 +64,7 @@ public class Main {
                 }
             }
         }
+
+        System.exit(retValue);
     }
 }
