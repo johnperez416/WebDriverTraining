@@ -3,6 +3,7 @@ package com.octopus.decorators;
 import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.RetryService;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
@@ -12,7 +13,6 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -73,7 +73,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
 
                 return 0;
             });
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
