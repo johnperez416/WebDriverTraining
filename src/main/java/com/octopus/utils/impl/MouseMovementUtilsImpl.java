@@ -97,7 +97,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
 
             /*
                 This can fail with the error:
-                The element reference of <reference>> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
+                The element reference of <reference> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
                 We retry here to allow the movement to complete if the source element disappears.
              */
             try {
