@@ -3,9 +3,11 @@ package com.octopus.stephandlers.impl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octopus.Constants;
-import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.NetworkException;
 import com.octopus.stephandlers.ScreenshotUploader;
+import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import cucumber.api.PickleStepTestStep;
 import cucumber.api.Result;
@@ -19,6 +21,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -26,6 +30,7 @@ import java.util.logging.Logger;
 
 public class SlackStepHandler implements EventListener {
     private static final Logger LOGGER = Logger.getLogger(SlackStepHandler.class.toString());
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
     public static final String SLACK_HOOK_URL = "slackHookUrl";
     public static final String SLACK_HANDLER_ENABLED = "slackStepHandlerEnabled";
     public static final String SLACK_HANDLER_ERROR_ONLY = "slackStepHandlerErrorOnly";
@@ -75,15 +80,18 @@ public class SlackStepHandler implements EventListener {
                 };
             }
 
-            final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
-            httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
-            try (final CloseableHttpResponse response = client.execute(httpPost)) {
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    throw new Exception("Failed to post to slack - response code was " +
-                            response.getStatusLine().getStatusCode());
+            RETRY_SERVICE.getTemplate().execute((RetryCallback<Object, Exception>) context -> {
+                final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
+                httpPost.setHeader("Content-Type", "application/json");
+                httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
+                try (final CloseableHttpResponse response = client.execute(httpPost)) {
+                    if (response.getStatusLine().getStatusCode() != 200) {
+                        throw new NetworkException("Failed to post to slack - response code was " +
+                                response.getStatusLine().getStatusCode());
+                    }
                 }
-            }
+                return null;
+            });
         } catch (final Exception ex) {
             LOGGER.warning("Failed to send result to Slack. " + ex.toString());
         }
