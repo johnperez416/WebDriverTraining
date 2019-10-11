@@ -8,8 +8,6 @@ import com.octopus.utils.ScreenTransitions;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.*;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +78,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         }
 
         if (screenRecorder != null) {
-            throw new VideoException("The screen is already recording!");
+            LOGGER.warning("The screen is already recording!");
         }
 
         try {
