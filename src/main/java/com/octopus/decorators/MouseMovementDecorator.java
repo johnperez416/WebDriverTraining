@@ -3,6 +3,7 @@ package com.octopus.decorators;
 import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.MouseMovementUtils;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
@@ -12,7 +13,6 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -516,7 +516,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : getDefaultExplicitWaitTime(),
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -548,7 +548,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : waitTime,
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -577,7 +577,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : getDefaultExplicitWaitTime(),
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -606,7 +606,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : waitTime,
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -635,7 +635,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : waitTime,
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -664,7 +664,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : getDefaultExplicitWaitTime(),
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -693,7 +693,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                                 ? 0 : waitTime,
                         ifExistsOption);
             }
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -722,7 +722,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                             ? 0 : getDefaultExplicitWaitTime(),
                     by -> ExpectedConditions.presenceOfElementLocated(by));
             action.moveToElement(element).perform();
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
@@ -751,7 +751,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                             ? 0 : waitTime,
                     by -> ExpectedConditions.presenceOfElementLocated(by));
             action.moveToElement(element).perform();
-        } catch (final TimeoutException ex) {
+        } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
             }
