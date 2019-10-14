@@ -75,6 +75,7 @@ public class SlackStepHandler implements EventListener {
                 message.attachments = new Attachments[]{
                         Attachments
                                 .builder()
+                                .color(event.result.getStatus() == Result.Type.PASSED ? "good" : "danger")
                                 .imageUrl(imageUrl.get())
                                 .build()
                 };
@@ -122,6 +123,8 @@ class SlackMessage {
 @Builder
 class Attachments {
     public String text;
+
+    public String color;
 
     @JsonProperty("image_url")
     public String imageUrl;
