@@ -59,9 +59,9 @@ public class SlackStepHandler implements EventListener {
         }
 
         final Optional<String> imageUrl = Arrays.stream(SCREENSHOT_UPLOADER)
-                .map(x -> x.takeAndUploadScreenshot())
-                .filter(x -> x.isPresent())
-                .map(x -> x.get())
+                .map(ScreenshotUploader::takeAndUploadScreenshot)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .findFirst();
 
         try (final CloseableHttpClient client = HttpClients.createDefault()) {
