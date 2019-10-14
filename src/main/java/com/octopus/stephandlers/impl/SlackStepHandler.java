@@ -22,7 +22,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.retry.RetryCallback;
-import org.springframework.retry.RetryContext;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -71,15 +70,15 @@ public class SlackStepHandler implements EventListener {
                             event.result.getStatus() + " " + getStepName(event))
                     .build();
 
-            if (imageUrl.isPresent()) {
-                message.attachments = new Attachments[]{
+            imageUrl.ifPresent(s ->
+                    message.attachments = new Attachments[]{
                         Attachments
                                 .builder()
                                 .color(event.result.getStatus() == Result.Type.PASSED ? "good" : "danger")
-                                .imageUrl(imageUrl.get())
+                                .imageUrl(s)
                                 .build()
-                };
-            }
+                    }
+            );
 
             RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, Exception>) context -> {
                 final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
