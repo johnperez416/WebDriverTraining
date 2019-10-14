@@ -915,7 +915,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void displayNote(final String text, final String duration) {
         final int fadeOut = 1;
-        final String style = "z-index: 999999; position: absolute; bottom: 50px; height: 100px; line-height: 100px; left: 50px; right: 50px; text-align: center; background: rgba(0, 0, 0, 1); color: white; font-family: Arial, Helvetica, sans-serif; font-size: 2em; opacity: 0.7; transition: opacity " + fadeOut + "s linear;";
+        final String style = "z-index: 999999; position: fixed; bottom: 50px; height: 100px; line-height: 100px; left: 50px; right: 50px; text-align: center; background: rgba(0, 0, 0, 1); color: white; font-family: Arial, Helvetica, sans-serif; font-size: 2em; opacity: 0.7; transition: opacity " + fadeOut + "s linear;";
         ((JavascriptExecutor) getWebDriver()).executeScript(
                 "const div = document.createElement('div'); " +
                         "div.setAttribute('id', 'webdriver-note'); " +
