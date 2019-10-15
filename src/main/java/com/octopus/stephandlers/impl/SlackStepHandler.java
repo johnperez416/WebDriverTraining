@@ -80,7 +80,7 @@ public class SlackStepHandler implements EventListener {
                     }
             );
 
-            RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, Exception>) context -> {
+            RETRY_SERVICE.getTemplate(5, 1000).execute((RetryCallback<Void, Exception>) context -> {
                 final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
                 httpPost.setHeader("Content-Type", "application/json");
                 httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
