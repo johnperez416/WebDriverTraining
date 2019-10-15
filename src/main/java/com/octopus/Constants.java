@@ -78,4 +78,21 @@ public class Constants {
      * The number of steps to use when moving the mouse across the screen
      */
     public static final int MOUSE_MOVE_STEPS = 100;
+
+    /**
+     * The system property defining the number of reties to make when sending messages to slack
+     */
+    public static final String SLACK_RETRIES = "slackRetries";
+    /**
+     * The default slack retry count
+     */
+    public static final int DEFAULT_SLACK_RETRIES = 5;
+    /**
+     * The system property defining the backoff between slack api requests
+     */
+    public static final String SLACK_BACKOFF = "slackBackoff";
+    /**
+     * The default slack backoff period
+     */
+    public static final int DEFAULT_SLACK_BACKOFF = 1000;
 }
