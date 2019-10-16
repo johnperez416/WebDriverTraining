@@ -18,11 +18,7 @@ import java.util.logging.Logger;
 public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     static final Logger LOGGER = Logger.getLogger(ScreenRecorderServiceImpl.class.toString());
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
-    private static final int FPS = 15;
-    private static final int MOUSE_FPS = 30;
-    private static final int KEYFRAME_INTERVAL = 120;
-    private static final int COLOUR_DEPTH = 16;
-    private static final int MAX_RECORDING_TIME = 30000;
+
     private ScreenRecorder screenRecorder;
 
     @Override
@@ -48,16 +44,19 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
             screenRecorder = new org.monte.screenrecorder.ScreenRecorder(gc,
                     gc.getBounds(),
                     new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.FILE, FormatKeys.MimeTypeKey, FormatKeys.MIME_AVI),
-                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO,
+                            FormatKeys.EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
                             VideoFormatKeys.CompressorNameKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                            VideoFormatKeys.DepthKey, COLOUR_DEPTH,
-                            VideoFormatKeys.FrameRateKey, Rational.valueOf(FPS),
+                            VideoFormatKeys.DepthKey, Constants.DEFAULT_SCREEN_RECORDING_COLOUR_DEPTH,
+                            VideoFormatKeys.FrameRateKey, Rational.valueOf(SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_FPS, Constants.DEFAULT_SCREEN_RECORDING_FPS)),
                             VideoFormatKeys.QualityKey, 1.0f,
-                            VideoFormatKeys.KeyFrameIntervalKey, KEYFRAME_INTERVAL),
-                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, "black", FormatKeys.FrameRateKey, Rational.valueOf(MOUSE_FPS)),
+                            VideoFormatKeys.KeyFrameIntervalKey, SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_KEYFRAME_INTERVAL, Constants.DEFAULT_SCREEN_RECORDING_KEYFRAME_INTERVAL)),
+                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO,
+                            FormatKeys.EncodingKey, "black",
+                            FormatKeys.FrameRateKey, Rational.valueOf(SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_MOUSE_FPS, Constants.DEFAULT_SCREEN_RECORDING_MOUSE_FPS))),
                     null,
                     file);
-            screenRecorder.setMaxRecordingTime(MAX_RECORDING_TIME);
+            screenRecorder.setMaxRecordingTime(SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_MAX_TIME, Constants.DEFAULT_SCREEN_RECORDING_MAX_TIME));
             screenRecorder.start();
         } catch (final Exception ex) {
             throw new VideoException("Failed to set up screen recording", ex);

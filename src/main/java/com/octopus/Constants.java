@@ -95,4 +95,45 @@ public class Constants {
      * The default slack backoff period
      */
     public static final int DEFAULT_SLACK_BACKOFF = 1000;
+    /**
+     * The system property setting the maximum time for an individual screen recording video file. Smaller values
+     * save memory.
+     */
+    public static final String SCREEN_RECORDING_MAX_TIME = "screenRecordingMaxTime";
+    /**
+     * Limit video files to 30 seconds by default
+     */
+    public static final int DEFAULT_SCREEN_RECORDING_MAX_TIME = 30000;
+    /**
+     * The system property that defines the screen recording fps
+     */
+    public static final String SCREEN_RECORDING_FPS = "screenRecordingFps";
+    /**
+     * The default screen recording FPS
+     */
+    public static final int DEFAULT_SCREEN_RECORDING_FPS = 15;
+    /**
+     * The system property that defines the screen recording mouse fps
+     */
+    public static final String SCREEN_RECORDING_MOUSE_FPS = "screenRecordingMouseFps";
+    /**
+     * The default screen recording mouse FPS
+     */
+    public static final int DEFAULT_SCREEN_RECORDING_MOUSE_FPS = 30;
+    /**
+     * The system property that defines the screen recording keyframe interval
+     */
+    public static final String SCREEN_RECORDING_KEYFRAME_INTERVAL = "screenRecordingKeyframeInterval";
+    /**
+     * The default screen recording keyframe interval
+     */
+    public static final int DEFAULT_SCREEN_RECORDING_KEYFRAME_INTERVAL = 120;
+    /**
+     * The system property that defines the screen recording colour depth
+     */
+    public static final String SCREEN_RECORDING_COLOUR_DEPTH = "screenRecordingColourDepth";
+    /**
+     * The default screen recording colour depth
+     */
+    public static final int DEFAULT_SCREEN_RECORDING_COLOUR_DEPTH = 16;
 }
