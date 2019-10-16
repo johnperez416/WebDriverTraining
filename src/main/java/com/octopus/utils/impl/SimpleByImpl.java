@@ -4,11 +4,17 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.ExpectedConditionCallback;
 import com.octopus.utils.SimpleBy;
+import io.vavr.control.Try;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -50,10 +56,16 @@ public class SimpleByImpl implements SimpleBy {
                     final List<WebElement> matched = webDriver.findElements(by);
                     if (matched.size() > 1) {
                         LOGGER.info("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
-                        matched.stream().forEach(e -> LOGGER.info(
-                                e.getTagName() +
-                                        " X: " + e.getLocation().x +
-                                        " Y: " + e.getLocation().y));
+                        matched.stream().forEach(e -> {
+                            LOGGER.info(e.getTagName() +
+                                            " X: " + e.getLocation().x +
+                                            " Y: " + e.getLocation().y);
+                            Try.run(() -> {
+                                final Path temp = Files.createTempFile("element", ".png");
+                                FileUtils.copyFile(e.getScreenshotAs(OutputType.FILE), temp.toFile());
+                                LOGGER.info(temp.toFile().getCanonicalPath());
+                            });
+                        });
                         LOGGER.info(locator);
                         LOGGER.info("Consider fixing the locator to be specific to a single element.");
                     }
