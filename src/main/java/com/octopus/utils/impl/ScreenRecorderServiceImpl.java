@@ -22,6 +22,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     private static final int MOUSE_FPS = 30;
     private static final int KEYFRAME_INTERVAL = 120;
     private static final int COLOUR_DEPTH = 16;
+    private static final int MAX_RECORDING_TIME = 30000;
     private ScreenRecorder screenRecorder;
 
     @Override
@@ -56,6 +57,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
                     new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, "black", FormatKeys.FrameRateKey, Rational.valueOf(MOUSE_FPS)),
                     null,
                     file);
+            screenRecorder.setMaxRecordingTime(MAX_RECORDING_TIME);
             screenRecorder.start();
         } catch (final Exception ex) {
             throw new VideoException("Failed to set up screen recording", ex);
