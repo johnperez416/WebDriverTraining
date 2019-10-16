@@ -11,10 +11,10 @@ public class RetryServiceImpl implements RetryService {
         final SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
         retryPolicy.setMaxAttempts(retries);
 
-        FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
+        final FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
         backOffPolicy.setBackOffPeriod(backoff); // 1.5 seconds
 
-        RetryTemplate template = new RetryTemplate();
+        final RetryTemplate template = new RetryTemplate();
         template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 

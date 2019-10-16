@@ -86,7 +86,7 @@ public class Constants {
     /**
      * The default slack retry count
      */
-    public static final int DEFAULT_SLACK_RETRIES = 5;
+    public static final int DEFAULT_SLACK_RETRIES = 10;
     /**
      * The system property defining the backoff between slack api requests
      */
@@ -94,7 +94,7 @@ public class Constants {
     /**
      * The default slack backoff period
      */
-    public static final int DEFAULT_SLACK_BACKOFF = 1000;
+    public static final int DEFAULT_SLACK_BACKOFF = 2000;
     /**
      * The system property setting the maximum time for an individual screen recording video file. Smaller values
      * save memory.
