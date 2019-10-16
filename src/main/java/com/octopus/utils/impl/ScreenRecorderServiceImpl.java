@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     static final Logger LOGGER = Logger.getLogger(ScreenRecorderServiceImpl.class.toString());
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
-    private static final int FPS = 20;
-    private static final int MOUSE_FPS = 60;
+    private static final int FPS = 15;
+    private static final int MOUSE_FPS = 30;
     private static final int KEYFRAME_INTERVAL = 120;
     private static final int COLOUR_DEPTH = 16;
     private ScreenRecorder screenRecorder;
@@ -43,15 +43,6 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
                     .getLocalGraphicsEnvironment()
                     .getDefaultScreenDevice()
                     .getDefaultConfiguration();
-
-            // initialize the screen recorder:
-            // - default graphics configuration
-            // - full screen recording
-            // - record in AVI format
-            // - 15 frames per second
-            // - black mouse pointer
-            // - no audio
-            // - save capture to predefined location
 
             screenRecorder = new org.monte.screenrecorder.ScreenRecorder(gc,
                     gc.getBounds(),
