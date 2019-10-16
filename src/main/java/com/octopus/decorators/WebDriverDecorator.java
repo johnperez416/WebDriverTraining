@@ -3,10 +3,7 @@ package com.octopus.decorators;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.*;
-import com.octopus.utils.S3Uploader;
-import com.octopus.utils.ScreenTransitions;
-import com.octopus.utils.SimpleBy;
-import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
@@ -36,7 +33,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final S3Uploader S_3_UPLOADER = new S3UploaderImpl();
-    private static ScreenRecorder screenRecorder;
+    private static final ScreenRecorderService SCREEN_RECORDER_SERVICE = new ScreenRecorderServiceImpl();
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
@@ -73,59 +70,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void startScreenRecording(final String file) {
-        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false)) {
-            return;
-        }
-
-        if (screenRecorder != null) {
-            LOGGER.warning("The screen is already recording!");
-        }
-
-        try {
-            LOGGER.info("Starting video recording");
-
-            // set the graphics configuration
-            final GraphicsConfiguration gc = GraphicsEnvironment
-                    .getLocalGraphicsEnvironment()
-                    .getDefaultScreenDevice()
-                    .getDefaultConfiguration();
-
-            // initialize the screen recorder:
-            // - default graphics configuration
-            // - full screen recording
-            // - record in AVI format
-            // - 15 frames per second
-            // - black mouse pointer
-            // - no audio
-            // - save capture to predefined location
-
-            screenRecorder = new ScreenRecorder(gc,
-                    gc.getBounds(),
-                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.FILE, FormatKeys.MimeTypeKey, FormatKeys.MIME_AVI),
-                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                            VideoFormatKeys.CompressorNameKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                            VideoFormatKeys.DepthKey, 24, VideoFormatKeys.FrameRateKey, Rational.valueOf(30),
-                            VideoFormatKeys.QualityKey, 1.0f,
-                            VideoFormatKeys.KeyFrameIntervalKey, 30 * 60),
-                    new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, "black", FormatKeys.FrameRateKey, Rational.valueOf(60)),
-                    null,
-                    new File(file));
-            screenRecorder.start();
-        } catch (final Exception ex) {
-            throw new VideoException("Failed to set up screen recording", ex);
-        }
+        SCREEN_RECORDER_SERVICE.start(new File(file));
     }
 
     public static void staticStopScreenRecording() {
-        try {
-            if (screenRecorder != null) {
-                LOGGER.info("Stopping video recording");
-                screenRecorder.stop();
-            }
-            screenRecorder = null;
-        } catch (final IOException ex) {
-            throw new VideoException("Failed to stop screen recording", ex);
-        }
+        SCREEN_RECORDER_SERVICE.stop();
     }
 
     @Override
