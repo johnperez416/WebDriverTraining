@@ -21,6 +21,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     private static final int FPS = 20;
     private static final int MOUSE_FPS = 60;
     private static final int KEYFRAME_INTERVAL = 120;
+    private static final int COLOUR_DEPTH = 16;
     private ScreenRecorder screenRecorder;
 
     @Override
@@ -57,7 +58,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
                     new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.FILE, FormatKeys.MimeTypeKey, FormatKeys.MIME_AVI),
                     new Format(FormatKeys.MediaTypeKey, FormatKeys.MediaType.VIDEO, FormatKeys.EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
                             VideoFormatKeys.CompressorNameKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-                            VideoFormatKeys.DepthKey, 24,
+                            VideoFormatKeys.DepthKey, COLOUR_DEPTH,
                             VideoFormatKeys.FrameRateKey, Rational.valueOf(FPS),
                             VideoFormatKeys.QualityKey, 1.0f,
                             VideoFormatKeys.KeyFrameIntervalKey, KEYFRAME_INTERVAL),
