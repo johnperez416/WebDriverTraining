@@ -619,7 +619,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void clickElementIfExists(final String force, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -642,7 +642,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -665,7 +665,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -714,7 +714,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void clearIfExists(final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -777,7 +777,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?")
+    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?")
     @Override
     public void mouseOverIfExists(final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -796,7 +796,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public String getTextFromElementIfExists(final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -827,7 +827,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I get group \"([^\"]*)\" from the regex \"([^\"]*)\" applied to text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public String getRegexGroupFromElementIfExists(
             final String group,
@@ -970,7 +970,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
     @Override
     public void elementHighlightIfExists(final String position, final String locator, final String offset, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
@@ -982,7 +982,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
     public void elementHighlightIfExists(final String position, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {

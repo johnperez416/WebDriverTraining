@@ -15,6 +15,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.springframework.retry.RetryCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,12 +49,12 @@ public class HighlightDecorator extends AutomatedBrowserBase {
             final int offsetValue = NumberUtils.toInt(offset, 10);
 
             // This will catch StaleElementReferenceException exceptions and attempt to apply the highlight again
-            RETRY_SERVICE.getTemplate(3, 100).execute(context -> {
+            RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, WebElementException>)  context -> {
                 final WebElement element = SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime / 3,
-                        by -> ExpectedConditions.presenceOfElementLocated(by));
+                        ExpectedConditions::presenceOfElementLocated);
 
                 originalStyles.put(locator, element.getAttribute("style"));
 
@@ -71,7 +72,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                             element);
                 }
 
-                return 0;
+                return null;
             });
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
