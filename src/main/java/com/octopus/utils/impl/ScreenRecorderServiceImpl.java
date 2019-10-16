@@ -56,7 +56,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
                             FormatKeys.FrameRateKey, Rational.valueOf(SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_MOUSE_FPS, Constants.DEFAULT_SCREEN_RECORDING_MOUSE_FPS))),
                     null,
                     file);
-            screenRecorder.setMaxRecordingTime(SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SCREEN_RECORDING_MAX_TIME, Constants.DEFAULT_SCREEN_RECORDING_MAX_TIME));
+            screenRecorder.setMaxRecordingTime(SYSTEM_PROPERTY_UTILS.getPropertyAsLong(Constants.SCREEN_RECORDING_MAX_TIME, Constants.DEFAULT_SCREEN_RECORDING_MAX_TIME));
             screenRecorder.start();
         } catch (final Exception ex) {
             throw new VideoException("Failed to set up screen recording", ex);

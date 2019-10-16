@@ -103,7 +103,7 @@ public class Constants {
     /**
      * Limit video files to 30 seconds by default
      */
-    public static final int DEFAULT_SCREEN_RECORDING_MAX_TIME = 30000;
+    public static final long DEFAULT_SCREEN_RECORDING_MAX_TIME = 3600000L;
     /**
      * The system property that defines the screen recording fps
      */

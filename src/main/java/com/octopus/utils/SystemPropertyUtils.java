@@ -55,6 +55,14 @@ public interface SystemPropertyUtils {
 	int getPropertyAsInt(String name, int defaultValue);
 
 	/**
+	 * Gets a system property as a long
+	 * @param name The name of the property
+	 * @param defaultValue The default value if the property is empty or null
+	 * @return the boolean value of the system property, or the default value if the system property is empty
+	 */
+	long getPropertyAsLong(String name, long defaultValue);
+
+	/**
 	 * Extracts system properties, either from their default name, or with the javaws prefix.
 	 * Treats empty strings as null.
 	 *
