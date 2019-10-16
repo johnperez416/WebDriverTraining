@@ -90,13 +90,13 @@ public class SlackStepHandler implements EventListener {
                 try (final CloseableHttpResponse response = client.execute(httpPost)) {
                     if (response.getStatusLine().getStatusCode() != 200) {
                         throw new NetworkException("Failed to post to slack - response code was " +
-                                response.getStatusLine().getStatusCode());
+                                response.getStatusLine().getStatusCode() + ". Will retry after a short delay...");
                     }
                 }
                 return null;
             });
         } catch (final Exception ex) {
-            LOGGER.warning("Failed to send result to Slack. " + ex.toString());
+            LOGGER.warning("Failed to send post to Slack. " + ex.toString());
         }
     }
 
