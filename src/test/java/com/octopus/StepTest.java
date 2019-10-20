@@ -59,4 +59,16 @@ public class StepTest {
         }
     }
 
+    @Test
+    public void verifyDoesNotExist() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+
+        try {
+            automatedBrowser.init();
+            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.verifyElementDoesNotExist("thisdoesnotexist", 2);
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
 }

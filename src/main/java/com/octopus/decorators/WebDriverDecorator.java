@@ -644,6 +644,28 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 ExpectedConditions::presenceOfElementLocated);
     }
 
+    @Override
+    public void verifyElementDoesNotExist(final String locator) {
+        verifyElementDoesNotExist(locator, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void verifyElementDoesNotExist(String locator, int waitTime) {
+        final long startTime = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() < startTime + waitTime * 1000) {
+            if (Try.of(() -> SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    0,
+                    ExpectedConditions::presenceOfElementLocated)).isFailure()) {
+                return;
+            }
+        }
+
+        throw new WebElementException("Element located by " + locator + " was still present after " + waitTime + " seconds");
+    }
+
 
     @Override
     public void browserZoomIn() {

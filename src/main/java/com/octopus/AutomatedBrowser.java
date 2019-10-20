@@ -261,6 +261,10 @@ public interface AutomatedBrowser {
     void verifyElementExists(String locator);
 
     void verifyElementExists(String locator, int waitTime);
+
+    void verifyElementDoesNotExist(String locator);
+
+    void verifyElementDoesNotExist(String locator, int waitTime);
     //</editor-fold>
 
     //<editor-fold desc="Network Alter and Capture">

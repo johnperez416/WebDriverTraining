@@ -1034,6 +1034,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is not present$")
+    @Override
+    public void verifyElementDoesNotExist(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementDoesNotExist(
+                    getAliases().getOrDefault(locator, locator));
+        }
+    }
+
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is not present waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void verifyElementDoesNotExist(final String locator, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementDoesNotExist(
+                    getAliases().getOrDefault(locator, locator),
+                    waitTime);
+        }
+    }
+
     @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEscape(final String locator) {
