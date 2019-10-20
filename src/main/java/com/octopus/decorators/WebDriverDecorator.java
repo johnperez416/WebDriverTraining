@@ -2,18 +2,16 @@ package com.octopus.decorators;
 
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
-import com.octopus.exceptions.*;
+import com.octopus.exceptions.InteractionException;
+import com.octopus.exceptions.SaveException;
+import com.octopus.exceptions.ValidationException;
+import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.monte.media.Format;
-import org.monte.media.FormatKeys;
-import org.monte.media.VideoFormatKeys;
-import org.monte.media.math.Rational;
-import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,6 +22,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -88,19 +88,19 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void takeScreenshot(final String directory, final String filename) {
-        takeScreenshot(directory + File.separator + filename);
+    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename) {
+        return takeScreenshot(directory + File.separator + filename);
     }
 
     @Override
-    public void takeScreenshot(final String file) {
-        takeScreenshot(file, false);
+    public CompletableFuture<Void> takeScreenshot(final String file) {
+        return takeScreenshot(file, false);
     }
 
     @Override
-    public void takeScreenshot(final String file, boolean force) {
+    public CompletableFuture<Void> takeScreenshot(final String file, boolean force) {
         if (!force && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) || webDriver == null) {
-            return;
+            return CompletableFuture.completedFuture(null);
         }
 
         try {
@@ -108,7 +108,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 final String[] urlParts = file.split("/");
                 if (urlParts.length >= 4) {
                     final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-                    S_3_UPLOADER.uploadFileToS3(
+                    // The file uploading is done in a thread in the background
+                    return S_3_UPLOADER.uploadFileToS3(
                             urlParts[2],
                             file.substring(5 + urlParts[2].length() + 1),
                             screenshot,
@@ -119,6 +120,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             } else {
                 final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
                 FileUtils.copyFile(screenshot, new File(file));
+                return CompletableFuture.completedFuture(null);
             }
         } catch (final IOException ex) {
             throw new SaveException("Failed to copy the screenshot to " + file, ex);

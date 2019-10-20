@@ -25,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 public class AutomatedBrowserBase implements AutomatedBrowser {
@@ -276,28 +278,31 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    public void takeScreenshot(final String filename, boolean force) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().takeScreenshot(filename, force);
+            return getAutomatedBrowser().takeScreenshot(filename, force);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @And("^I save a screenshot to \"([^\"]*)\"$")
     @Override
-    public void takeScreenshot(final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String filename) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().takeScreenshot(getAliases().getOrDefault(filename, filename));
+            return getAutomatedBrowser().takeScreenshot(getAliases().getOrDefault(filename, filename));
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"$")
     @Override
-    public void takeScreenshot(final String directory, final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().takeScreenshot(
+            return getAutomatedBrowser().takeScreenshot(
                     getAliases().getOrDefault(directory, directory),
                     getAliases().getOrDefault(filename, filename));
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @And("^I set the window size to \"([^\"]*)\" x \"([^\"]*)\"$")

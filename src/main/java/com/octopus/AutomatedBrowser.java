@@ -3,6 +3,9 @@ package com.octopus;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
 public interface AutomatedBrowser {
 
     void setDefaultExplicitWaitTime(int waitTime);
@@ -64,11 +67,11 @@ public interface AutomatedBrowser {
 
     void stopScreenRecording();
 
-    void takeScreenshot(String filename, boolean force);
+    CompletableFuture<Void> takeScreenshot(String filename, boolean force);
 
-    void takeScreenshot(String filename);
+    CompletableFuture<Void> takeScreenshot(String filename);
 
-    void takeScreenshot(String directory, String filename);
+    CompletableFuture<Void> takeScreenshot(String directory, String filename);
     //</editor-fold>
 
     //<editor-fold desc="ID Selection">

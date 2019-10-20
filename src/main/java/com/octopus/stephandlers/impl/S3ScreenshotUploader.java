@@ -7,6 +7,8 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 public class S3ScreenshotUploader implements ScreenshotUploader {
@@ -16,7 +18,7 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     @Override
-    public Optional<String> takeAndUploadScreenshot() {
+    public Optional<CompletableFuture<String>> takeAndUploadScreenshot() {
         if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(S3_UPLOADING_ENABLED, false) || AutomatedBrowserBase.getInstance() == null)
             return Optional.empty();
 
@@ -27,10 +29,12 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
 
         final String filename = "screenshot" + UUID.randomUUID() + ".png";
         try {
-            AutomatedBrowserBase.getInstance().takeScreenshot(
+            final CompletableFuture<Void> screenshot = AutomatedBrowserBase.getInstance().takeScreenshot(
                     "s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename,
                     true);
-            return Optional.of("https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename);
+            return Optional.of(screenshot.thenCompose(s ->
+                    CompletableFuture.supplyAsync(() ->
+                            "https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename)));
         } catch (final Exception ex) {
             LOGGER.warning("Failed to upload screenshot. " + ex.toString());
             return Optional.empty();

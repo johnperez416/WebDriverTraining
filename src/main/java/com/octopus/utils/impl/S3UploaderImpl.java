@@ -10,23 +10,32 @@ import com.octopus.utils.S3Uploader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class S3UploaderImpl implements S3Uploader {
-    @Override
-    public void uploadFileToS3(final String region, final String bucket, final String filename, final File file, final boolean publicAcl) {
-        final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withRegion(region)
-                .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
-                .build();
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);
 
-        final PutObjectRequest request = new PutObjectRequest(bucket, filename, file)
-                .withCannedAcl(publicAcl ? CannedAccessControlList.PublicRead : CannedAccessControlList.Private);
-        s3Client.putObject(request);
+    @Override
+    public CompletableFuture<Void> uploadFileToS3(final String region, final String bucket, final String filename, final File file, final boolean publicAcl) {
+        return CompletableFuture.supplyAsync(() -> {
+            final AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withRegion(region)
+                    .withCredentials(DefaultAWSCredentialsProviderChain.getInstance())
+                    .build();
+
+            final PutObjectRequest request = new PutObjectRequest(bucket, filename, file)
+                    .withCannedAcl(publicAcl ? CannedAccessControlList.PublicRead : CannedAccessControlList.Private);
+            s3Client.putObject(request);
+            return null;
+        }, EXECUTOR_SERVICE);
     }
 
     @Override
-    public void uploadFileToS3(final String bucket, final String filename, final File file, final boolean publicAcl) {
-        uploadFileToS3(
+    public CompletableFuture<Void> uploadFileToS3(final String bucket, final String filename, final File file, final boolean publicAcl) {
+        return uploadFileToS3(
                 StringUtils.defaultIfBlank(System.getenv("AWS_DEFAULT_REGION"), Regions.DEFAULT_REGION.getName()),
                 bucket,
                 filename,

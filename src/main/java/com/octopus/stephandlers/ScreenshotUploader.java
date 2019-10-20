@@ -1,7 +1,8 @@
 package com.octopus.stephandlers;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public interface ScreenshotUploader {
-    Optional<String> takeAndUploadScreenshot();
+    Optional<CompletableFuture<String>> takeAndUploadScreenshot();
 }
