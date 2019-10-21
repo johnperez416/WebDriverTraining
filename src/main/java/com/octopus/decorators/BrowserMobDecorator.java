@@ -17,14 +17,10 @@ import org.apache.http.HttpHeaders;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.EnumSet;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.regex.Pattern;
 
 public class BrowserMobDecorator extends AutomatedBrowserBase {

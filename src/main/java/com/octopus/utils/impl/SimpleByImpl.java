@@ -1,6 +1,5 @@
 package com.octopus.utils.impl;
 
-import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.ExpectedConditionCallback;
 import com.octopus.utils.SimpleBy;
@@ -12,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;

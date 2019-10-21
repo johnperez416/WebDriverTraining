@@ -8,7 +8,6 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 public class S3ScreenshotUploader implements ScreenshotUploader {

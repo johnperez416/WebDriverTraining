@@ -2,7 +2,6 @@ package com.octopus.utils;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 /**
  * Defines a service that can be used to move the mouse on the screen

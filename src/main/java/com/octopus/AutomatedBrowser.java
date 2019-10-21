@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 public interface AutomatedBrowser {
 

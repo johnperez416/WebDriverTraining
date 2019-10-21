@@ -13,7 +13,6 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class S3UploaderImpl implements S3Uploader {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);
