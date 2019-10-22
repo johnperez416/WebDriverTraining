@@ -30,10 +30,8 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         this.headless = headless;
 
         if (StringUtils.isBlank(SYSTEM_PROPERTY_UTILS.getProperty("webdriver.firefox.logfile"))) {
-            logFile = Try.of(() -> File.createTempFile("firefoxlogfile", ".log")).getOrNull();
-            if (logFile != null) {
-                System.setProperty("webdriver.firefox.logfile", logFile.getAbsolutePath());
-            }
+            Try.of(() -> File.createTempFile("firefoxlogfile", ".log"))
+                    .andFinally(() -> System.setProperty("webdriver.firefox.logfile", logFile.getAbsolutePath()));
         }
     }
 
