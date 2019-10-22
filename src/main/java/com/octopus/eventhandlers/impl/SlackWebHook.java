@@ -7,7 +7,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import java.text.DecimalFormat;
 import java.util.Map;
 
 public class SlackWebHook implements EventHandler {

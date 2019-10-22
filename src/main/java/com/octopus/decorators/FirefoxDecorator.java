@@ -44,6 +44,8 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         myprofile.setPreference("network.negotiate-auth.delegation-uris", "localhost");
         myprofile.setPreference("network.negotiate-auth.trusted-uris", "localhost");
         myprofile.setPreference("network.automatic-ntlm-auth.allow-non-fqdn", "true");
+        myprofile.setPreference("browser.cache.memory.enable", false);
+        myprofile.setPreference("browser.cache.memory.capacity", 0);
 
         final FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(headless);

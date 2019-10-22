@@ -1,7 +1,6 @@
 package com.octopus.pages.ticketmonster;
 
 import com.octopus.AutomatedBrowser;
-
 import com.octopus.pages.BasePage;
 
 import java.util.regex.Matcher;
