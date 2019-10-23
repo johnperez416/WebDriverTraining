@@ -257,9 +257,11 @@ public interface AutomatedBrowser {
 
     void removeElementHighlight(String locator, int waitTime);
 
-    void verifyElementExists(String locator);
+    default void verifyElementExists(String locator) {verifyElementExists(locator, null);}
 
-    void verifyElementExists(String locator, int waitTime);
+    void verifyElementExists(String locator, String ifExistsOption);
+
+    void verifyElementExists(String locator, int waitTime, String ifExistsOption);
 
     void verifyElementDoesNotExist(String locator);
 

@@ -630,17 +630,23 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void verifyElementExists(final String locator) {
-        verifyElementExists(locator, getDefaultExplicitWaitTime());
+    public void verifyElementExists(final String locator, final String ifExistsOption) {
+        verifyElementExists(locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void verifyElementExists(final String locator, final int waitTime) {
-        SIMPLE_BY.getElement(
-                getWebDriver(),
-                locator,
-                waitTime,
-                ExpectedConditions::presenceOfElementLocated);
+    public void verifyElementExists(final String locator, final int waitTime, final String ifExistsOption) {
+        try {
+            SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    ExpectedConditions::presenceOfElementLocated);
+        } catch (final WebElementException ex) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
+                throw ex;
+            }
+        }
     }
 
     @Override
