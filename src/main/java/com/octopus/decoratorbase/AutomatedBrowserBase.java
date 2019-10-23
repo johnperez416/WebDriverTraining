@@ -279,7 +279,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public CompletableFuture<Void> takeScreenshot(final String filename, boolean force) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().takeScreenshot(filename, force);
+            return getAutomatedBrowser().takeScreenshot(
+                    getAliases().getOrDefault(filename, filename),
+                    force);
         }
         return CompletableFuture.completedFuture(null);
     }
