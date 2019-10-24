@@ -22,6 +22,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     private static final MouseMovementUtils MOUSE_MOVEMENT_UTILS = new MouseMovementUtilsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    private int interactionCount = 0;
 
     private WebElement getElementById(final String id, final int waitTime) {
         if (waitTime <= 0) {
@@ -69,6 +70,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithId(final String id) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -86,6 +89,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithId(final String id, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -103,6 +108,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -121,6 +128,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithId(final String optionText, final String id, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -139,6 +148,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithId(final String id, final String text) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -157,6 +168,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithId(final String id, final String text, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -175,6 +188,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithXPath(final String xpath) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -192,6 +207,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithXPath(final String xpath, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -209,6 +226,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -227,6 +246,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithXPath(final String optionText, final String xpath, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -245,6 +266,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithXPath(final String xpath, final String text) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -263,6 +286,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithXPath(final String xpath, final String text, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -281,6 +306,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithCSSSelector(final String cssSelector) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -298,6 +325,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithCSSSelector(final String cssSelector, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -315,6 +344,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -333,6 +364,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithCSSSelector(final String optionText, final String cssSelector, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -351,6 +384,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithCSSSelector(final String cssSelector, final String text) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -369,6 +404,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithCSSSelector(final String cssSelector, final String text, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -387,6 +424,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithName(final String name) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -404,6 +443,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementWithName(final String name, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -421,6 +462,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithName(final String optionText, final String name) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -439,6 +482,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectWithName(final String optionText, final String name, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -457,6 +502,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithName(final String name, final String text) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -475,6 +522,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElementWithName(final String name, final String text, final int waitTime) {
+        ++interactionCount;
+
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -493,6 +542,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementIfExists(final String force, final String locator, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -525,6 +576,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -557,6 +610,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -586,6 +641,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -615,6 +672,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -644,6 +703,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElement(final String locator, final String text, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -673,6 +734,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -702,6 +765,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void mouseOverIfExists(final String locator, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -731,6 +796,8 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
     @Override
     public void mouseOverIfExists(final String locator, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
         try {
             MOUSE_MOVEMENT_UTILS.mouseGlide(
                     getWebDriver(),
@@ -756,5 +823,9 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                 throw ex;
             }
         }
+    }
+
+    public int getInteractionCount() {
+        return interactionCount;
     }
 }

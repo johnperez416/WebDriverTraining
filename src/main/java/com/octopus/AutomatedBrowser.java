@@ -291,4 +291,8 @@ public interface AutomatedBrowser {
     //<editor-fold desc="Raw JavaScript">
     void runJavascript(String code);
     //</editor-fold>
+
+    //<editor-fold desc="Statistics">
+    int getInteractionCount();
+    //</editor-fold>
 }

@@ -70,6 +70,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                 dumpAliases();
             }
         }
+
+        LOGGER.info("Recorded " + getInteractionCount() + " interactions for the scenario");
     }
 
     private Map<String, String> getAliases() {
@@ -1126,5 +1128,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().runJavascript(
                     getAliases().getOrDefault(code, code));
         }
+    }
+
+    public int getInteractionCount() {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getInteractionCount();
+        }
+        return -1;
     }
 }
