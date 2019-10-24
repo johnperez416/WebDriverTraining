@@ -1142,6 +1142,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getInteractionCount();
         }
-        return -1;
+        return 0;
     }
 }
