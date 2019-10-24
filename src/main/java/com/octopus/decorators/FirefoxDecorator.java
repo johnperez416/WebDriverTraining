@@ -18,7 +18,6 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     final boolean headless;
-    File logFile;
 
     public FirefoxDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
@@ -31,7 +30,8 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
         if (StringUtils.isBlank(SYSTEM_PROPERTY_UTILS.getProperty("webdriver.firefox.logfile"))) {
             Try.of(() -> File.createTempFile("firefoxlogfile", ".log"))
-                    .andFinally(() -> System.setProperty("webdriver.firefox.logfile", logFile.getAbsolutePath()));
+                    .peek(logfile -> logfile.deleteOnExit())
+                    .andThen(logfile -> System.setProperty("webdriver.firefox.logfile", logfile.getAbsolutePath()));
         }
     }
 
@@ -58,10 +58,6 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
     public void destroy() {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().destroy();
-        }
-
-        if (logFile != null) {
-            FileUtils.deleteQuietly(logFile);
         }
     }
 }
