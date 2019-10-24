@@ -20,8 +20,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
     final boolean headless;
 
     public FirefoxDecorator(final AutomatedBrowser automatedBrowser) {
-        super(automatedBrowser);
-        this.headless = false;
+        this(false, automatedBrowser);
     }
 
     public FirefoxDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
@@ -30,7 +29,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
 
         if (StringUtils.isBlank(SYSTEM_PROPERTY_UTILS.getProperty("webdriver.firefox.logfile"))) {
             Try.of(() -> File.createTempFile("firefoxlogfile", ".log"))
-                    .peek(logfile -> logfile.deleteOnExit())
+                    .peek(File::deleteOnExit)
                     .andThen(logfile -> System.setProperty("webdriver.firefox.logfile", logfile.getAbsolutePath()));
         }
     }
