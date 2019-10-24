@@ -17,8 +17,7 @@ public class ChromeDecorator extends AutomatedBrowserBase {
     File userData;
 
     public ChromeDecorator(final AutomatedBrowser automatedBrowser) {
-        super(automatedBrowser);
-        this.headless = false;
+        this(false, automatedBrowser);
     }
 
     public ChromeDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
