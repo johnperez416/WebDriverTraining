@@ -61,6 +61,7 @@ public class SystemPropertyUtilsImpl implements SystemPropertyUtils {
         return Optional.ofNullable(SYSTEM_PROPERTY_UTILS.getProperty(name))
                 .map(String::toLowerCase)
                 .map(String::trim)
+                .filter(StringUtils::isNotBlank)
                 .map(Boolean::parseBoolean)
                 .orElse(defaultValue);
     }
