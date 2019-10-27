@@ -546,11 +546,13 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void populateElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
         try {
-            SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    ExpectedConditions::elementToBeClickable).sendKeys(text);
+            populateElementWithText(
+                    text,
+                    SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        ExpectedConditions::elementToBeClickable));
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
@@ -962,5 +964,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void runJavascript(final String code) {
         ((JavascriptExecutor) getWebDriver()).executeScript(code);
+    }
+
+    private void populateElementWithText(final String text, final WebElement element) {
+        text.chars().forEach(c -> {
+            element.sendKeys(String.valueOf((char) c));
+            Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
+        });
     }
 }

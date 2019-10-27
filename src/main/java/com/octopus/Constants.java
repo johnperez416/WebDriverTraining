@@ -136,4 +136,8 @@ public class Constants {
      * The default screen recording colour depth
      */
     public static final int DEFAULT_SCREEN_RECORDING_COLOUR_DEPTH = 16;
+    /**
+     * The default amount of time to delay simulated keystrokes
+     */
+    public static final int DEFAULT_INPUT_DELAY = 100;
 }
