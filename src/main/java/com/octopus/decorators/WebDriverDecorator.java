@@ -921,6 +921,25 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void refreshIfExists(final String locator, final String doesNotExist) {
+        refreshIfExists(locator, doesNotExist, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void refreshIfExists(final String locator, final String doesNotExist, final int waitTime) {
+        final Try element = Try.run(() -> SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                ExpectedConditions::presenceOfElementLocated));
+
+        if ((StringUtils.isNotBlank(doesNotExist) && element.isFailure()) ||
+                StringUtils.isBlank(doesNotExist) && element.isSuccess()) {
+            refresh();
+        }
+    }
+
+    @Override
     public void verifyTextFromElementIfExists(final String locator, final String regex, final String ifExistsOption) {
         verifyTextFromElementIfExists(locator, regex, getDefaultExplicitWaitTime(), ifExistsOption);
     }

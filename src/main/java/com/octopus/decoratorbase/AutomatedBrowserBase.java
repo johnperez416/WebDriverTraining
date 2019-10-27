@@ -242,6 +242,27 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I refresh the page if the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (does not )?exists?$")
+    @Override
+    public void refreshIfExists(final String locator, final String doesNotExist) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().refreshIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    doesNotExist);
+        }
+    }
+
+    @And("^I refresh the page if the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (does not )?exists? waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void refreshIfExists(final String locator, final String doesNotExist, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().refreshIfExists(
+                    getAliases().getOrDefault(locator, locator),
+                    doesNotExist,
+                    waitTime);
+        }
+    }
+
     @And("^I start recording the screen to the directory \"([^\"]*)\"$")
     @Override
     public void startScreenRecording(final String file) {

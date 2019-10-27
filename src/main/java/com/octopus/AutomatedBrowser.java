@@ -28,6 +28,10 @@ public interface AutomatedBrowser {
 
     void refresh();
 
+    void refreshIfExists(String locator, String doesNotExist);
+
+    void refreshIfExists(String locator, String doesNotExist, int waitTime);
+
     void maximizeWindow();
 
     default void setWindowSize(int width, int height) {setWindowSize(width + "", height + "");}
