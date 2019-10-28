@@ -19,6 +19,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <aws.lambda.version>1.2.0</aws.lambda.version>
         <aws.sdk.version>1.11.656</aws.sdk.version>
         <commons.io.version>2.6</commons.io.version>
+        <commons.text.version>1.8</commons.text.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
         <slf4jjdk14.version>1.7.28</slf4jjdk14.version>
         <vavr.version>0.9.2</vavr.version>
@@ -133,6 +134,11 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-ses</artifactId>
             <version>${aws.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons.text.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
