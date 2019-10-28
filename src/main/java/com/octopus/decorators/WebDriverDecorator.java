@@ -539,12 +539,12 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final String ifExistsOption) {
-        populateElement(locator, text, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
+        populateElement(locator, keystrokeDelay, text, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void populateElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateElement(final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
         try {
             populateElementWithText(
                     text,
@@ -552,7 +552,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        ExpectedConditions::elementToBeClickable));
+                        ExpectedConditions::presenceOfElementLocated),
+                    NumberUtils.toInt(keystrokeDelay, Constants.DEFAULT_INPUT_DELAY));
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
@@ -966,10 +967,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         ((JavascriptExecutor) getWebDriver()).executeScript(code);
     }
 
-    private void populateElementWithText(final String text, final WebElement element) {
-        text.chars().forEach(c -> {
-            element.sendKeys(String.valueOf((char) c));
-            Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
-        });
+    private void populateElementWithText(final String text, final WebElement element, final int keystrokeDelay) {
+        if (keystrokeDelay <= 0) {
+            element.sendKeys(text);
+        } else {
+            text.chars().forEach(c -> {
+                element.sendKeys(String.valueOf((char) c));
+                Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
+            });
+        }
     }
 }

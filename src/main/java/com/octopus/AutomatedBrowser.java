@@ -185,13 +185,17 @@ public interface AutomatedBrowser {
 
     void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExistsOption);
 
-    default void populateElement(String locator, String text) {populateElement(locator, text, null);}
+    default void populateElement(String locator, String text) {populateElement(locator, "0", text, null);}
 
-    default void populateElement(String locator, String text, int waitTime) {populateElement(locator, text, waitTime, null);}
+    default void populateElement(String locator, String text, int waitTime) {populateElement(locator, "0", text, waitTime, null);}
 
-    void populateElement(String locator, String text, String ifExistsOption);
+    default void populateElement(String locator, String keystrokeDelay, String text) {populateElement(locator, keystrokeDelay, text, null);}
 
-    void populateElement(String locator, String text, int waitTime, String ifExistsOption);
+    default void populateElement(String locator, String keystrokeDelay, String text, int waitTime) {populateElement(locator, keystrokeDelay, text, waitTime, null);}
+
+    void populateElement(String locator, String keystrokeDelay, String text, String ifExistsOption);
+
+    void populateElement(String locator, String keystrokeDelay, String text, int waitTime, String ifExistsOption);
 
     default void clear(String locator) {
         clearIfExists(locator, null);}

@@ -15,7 +15,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -719,34 +718,37 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of (\"([^\"]*)\") )?with(?: the text)? \"([^\"]*)\"( if it exists)?$")
     @Override
-    public void populateElement(final String locator, final String text, final String ifExistsOption) {
+    public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
                     getSubstitutedString(locator),
+                    getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
                     ifExistsOption);
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)?:$")
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)?:$")
     @Override
-    public void populateElement(final String locator, final String text) {
+    public void populateElement(final String locator, final String keystrokeDelay, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
                     getSubstitutedString(locator),
+                    getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
                     null);
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void populateElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateElement(final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
                     getSubstitutedString(locator),
+                    getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
                     waitTime,
                     ifExistsOption);
