@@ -1,6 +1,16 @@
 package com.octopus;
 
+import java.util.ArrayList;
+
 public class Constants {
+    public static final ArrayList<String> DEFAULT_CUCUMBER_OPTIONS = new ArrayList<>() {{
+        add("--glue");
+        add("com.octopus.decoratorbase");
+        add("--plugin");
+        add("com.octopus.stephandlers.impl.SlackStepHandler");
+        add("--strict");
+    }};
+
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**

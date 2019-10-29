@@ -5,8 +5,9 @@ import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
-import com.octopus.exceptions.ScriptException;
+import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.JavaLauncherUtilsImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
@@ -21,10 +22,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -34,6 +33,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -88,48 +88,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I run the feature \"([^\"]*)\"$")
     public void executeFeature(final String featureFile) {
-        try {
-            // java binary
-            final String java = System.getProperty("java.home") + "/bin/java";
-            // vm arguments
-            final List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
-            final StringBuffer vmArgsOneLine = new StringBuffer();
-            for (final String arg : vmArguments) {
-                // if it's the agent argument : we ignore it otherwise the
-                // address of the old application and the new one will be in conflict
-                if (!arg.contains("-agentlib")) {
-                    vmArgsOneLine.append(arg);
-                    vmArgsOneLine.append(" ");
-                }
-            }
-            // init the command to execute, add the vm args
-            final StringBuffer cmd = new StringBuffer("\"" + java + "\" " + vmArgsOneLine);
-            // program main and program arguments (be careful a sun property. might not be supported by all JVM)
+        if (new File(featureFile).exists()) {
+            JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {featureFile});
+        } else {
             final String[] mainCommand = System.getProperty("sun.java.command").split(" ");
-            // program main is a jar
-            if (mainCommand[0].endsWith(".jar")) {
-                // if it's a jar, add -jar mainJar
-                cmd.append("-jar " + new File(mainCommand[0]).getPath());
-            } else {
-                // else it's a .class, add the classpath and mainClass
-                cmd.append("-cp \"" + System.getProperty("java.class.path") + "\" " + mainCommand[0]);
-            }
-
-            // First see if the supplied file is an absolute path, otherwise assume it is in the same directory as the current feature file
-            cmd.append(" ");
-            if (new File(featureFile).exists()) {
-                cmd.append(featureFile);
-            } else {
-                final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
-                cmd.append(new File(featurePath, featureFile).getAbsolutePath());
-            }
-
-            final int result = Runtime.getRuntime().exec(cmd.toString()).waitFor();
-            if (result != 0) {
-                throw new ScriptException("Nested feature fiule did not return 0");
-            }
-        } catch (final IOException | InterruptedException ex) {
-            throw new ScriptException("Failed to run nested feature file.", ex);
+            final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
+            JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, featureFile).getAbsolutePath())});
         }
     }
 

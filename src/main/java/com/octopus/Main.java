@@ -30,14 +30,7 @@ public class Main {
     private static int runCucumber(final String[] args) {
         try {
             int retValue = 0;
-            final ArrayList<String> options = new ArrayList<>() {{
-                add("--glue");
-                add("com.octopus.decoratorbase");
-                add("--plugin");
-                add("com.octopus.stephandlers.impl.SlackStepHandler");
-                add("--strict");
-            }};
-
+            final ArrayList<String> options = new ArrayList<>(Constants.DEFAULT_CUCUMBER_OPTIONS);
             Collections.addAll(options, args);
 
             ENVIRONMENT_ALIASES_PROCESSOR.addSystemPropVarsAsAliases();
