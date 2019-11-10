@@ -60,7 +60,10 @@ public class HighlightDecorator extends AutomatedBrowserBase {
 
                 if (StringUtils.equals(StringUtils.trim(location), "inside")) {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
-                            "arguments[0].style.border = '5px solid rgb(0, 204, 101)';",
+                            """
+                            arguments[0].style.border = '5px solid rgb(0, 204, 101)';
+                            arguments[0].style['z-index'] = 999999;
+                            """,
                             element);
                 } else {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
@@ -68,6 +71,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                             arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
                             arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
                             arguments[0].style['outline-style'] = 'solid';
+                            arguments[0].style['z-index'] = 999999
                             """,
                             element);
                 }
