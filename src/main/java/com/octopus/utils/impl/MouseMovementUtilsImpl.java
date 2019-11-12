@@ -7,6 +7,7 @@ import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
@@ -112,6 +113,14 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     something Selenium can reach. In this case, ignore the out of bounds exeception.
                  */
                 if (!force) {
+                    throw ex;
+                }
+            } catch (final WebDriverException ex) {
+                /*
+                    Working with hidden elements (a common example here is a hidden file input type) means there is
+                    nothing to move the mouse to, so we ignore it and move on.
+                 */
+                if (!ex.getMessage().contains("rect is undefined")) {
                     throw ex;
                 }
             }
