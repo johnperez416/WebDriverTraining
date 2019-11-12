@@ -197,6 +197,10 @@ public interface AutomatedBrowser {
 
     void populateElement(String locator, String keystrokeDelay, String text, int waitTime, String ifExistsOption);
 
+    void populateHiddenElement(final String locator, final String text, final int waitTime, final String ifExistsOption);
+
+    void populateHiddenElement(final String locator, final String text, final String ifExistsOption);
+
     default void clear(String locator) {
         clearIfExists(locator, null);}
 

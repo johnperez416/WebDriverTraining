@@ -719,6 +719,29 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")
+    @Override
+    public void populateHiddenElement(final String locator, final String text, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().populateHiddenElement(
+                    getSubstitutedString(locator),
+                    getSubstitutedString(text),
+                    ifExistsOption);
+        }
+    }
+
+    @And("^I populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @Override
+    public void populateHiddenElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().populateHiddenElement(
+                    getSubstitutedString(locator),
+                    getSubstitutedString(text),
+                    waitTime,
+                    ifExistsOption);
+        }
+    }
+
     @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void clearIfExists(final String locator, final String ifExistsOption) {
