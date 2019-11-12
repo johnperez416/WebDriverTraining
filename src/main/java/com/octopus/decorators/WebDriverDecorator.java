@@ -552,7 +552,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        ExpectedConditions::presenceOfElementLocated),
+                        ExpectedConditions::elementToBeClickable),
                     NumberUtils.toInt(keystrokeDelay, Constants.DEFAULT_INPUT_DELAY));
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
