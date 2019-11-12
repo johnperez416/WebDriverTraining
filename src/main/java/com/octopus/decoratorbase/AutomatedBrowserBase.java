@@ -975,24 +975,26 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
+    @And("^I highlight( outside| inside)?( and lift)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
     @Override
-    public void elementHighlightIfExists(final String position, final String locator, final String offset, final String ifExistsOption) {
+    public void elementHighlightIfExists(final String position, final String lift, final String locator, final String offset, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().elementHighlightIfExists(
                     position,
+                    lift,
                     getSubstitutedString(locator),
                     getSubstitutedString(offset),
                     ifExistsOption);
         }
     }
 
-    @And("^I highlight( outside| inside)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I highlight( outside| inside)?( and lift)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")? waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void elementHighlightIfExists(final String position, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
+    public void elementHighlightIfExists(final String position, final String lift, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().elementHighlightIfExists(
                     position,
+                    lift,
                     getSubstitutedString(locator),
                     getSubstitutedString(offset),
                     waitTime,

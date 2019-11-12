@@ -251,15 +251,15 @@ public interface AutomatedBrowser {
 
     void scrollElementIntoViewIfExists(String locator, String offset, int waitTime, String ifExistsOption);
 
-    default void elementHighlight(String location, String locator, final String offset) {
-        elementHighlightIfExists(location, locator, offset, null);}
+    default void elementHighlight(String location, String lift, String locator, final String offset) {
+        elementHighlightIfExists(location, lift, locator, offset, null);}
 
-    default void elementHighlight(String location, String locator, final String offset, int waitTime) {
-        elementHighlightIfExists(location, locator, offset, waitTime, null);}
+    default void elementHighlight(String location, String lift, String locator, final String offset, int waitTime) {
+        elementHighlightIfExists(location, lift, locator, offset, waitTime, null);}
 
-    void elementHighlightIfExists(String location, String locator, final String offset, String ifExistsOption);
+    void elementHighlightIfExists(String location, String lift, String locator, final String offset, String ifExistsOption);
 
-    void elementHighlightIfExists(String location, String locator, final String offset, int waitTime, String ifExistsOption);
+    void elementHighlightIfExists(String location, String lift, String locator, String offset, int waitTime, String ifExistsOption);
 
     void removeElementHighlight(String locator);
 

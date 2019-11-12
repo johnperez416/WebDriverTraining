@@ -35,12 +35,12 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void elementHighlightIfExists(final String location, final String locator, final String offset, final String ifExistsOption) {
-        this.elementHighlightIfExists(location, locator, offset, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void elementHighlightIfExists(final String location, final String lift, final String locator, final String offset, final String ifExistsOption) {
+        this.elementHighlightIfExists(location, lift, locator, offset, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void elementHighlightIfExists(final String location, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
+    public void elementHighlightIfExists(final String location, final String lift, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
         try {
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
                 return;
@@ -62,8 +62,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
                             """
                             arguments[0].style.border = '5px solid rgb(0, 204, 101)';
-                            arguments[0].style['z-index'] = 999999;
-                            """,
+                            """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
                             element);
                 } else {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
@@ -71,8 +70,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                             arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
                             arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
                             arguments[0].style['outline-style'] = 'solid';
-                            arguments[0].style['z-index'] = 999999;
-                            """,
+                            """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
                             element);
                 }
 
