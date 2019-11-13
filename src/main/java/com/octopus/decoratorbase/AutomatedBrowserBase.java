@@ -256,7 +256,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void writeAliasValueToFile(final String alias, final String filename) {
         try {
             FileUtils.write(
-                    new File(filename),
+                    new File(getSubstitutedString(filename)),
                     getSubstitutedString(alias),
                     StandardCharsets.UTF_8);
         } catch (final IOException ex) {
