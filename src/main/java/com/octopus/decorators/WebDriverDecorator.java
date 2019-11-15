@@ -11,6 +11,7 @@ import com.octopus.utils.impl.*;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
@@ -33,6 +34,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final S3Uploader S_3_UPLOADER = new S3UploaderImpl();
     private static final ScreenRecorderService SCREEN_RECORDER_SERVICE = new ScreenRecorderServiceImpl();
+    private static final OSUtils OS_UTILS = new OSUtilsImpl();
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
@@ -69,7 +71,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void startScreenRecording(final String file) {
-        SCREEN_RECORDER_SERVICE.start(new File(file));
+        SCREEN_RECORDER_SERVICE.start(new File(OS_UTILS.fixFileName(file)));
     }
 
     public static void staticStopScreenRecording() {
@@ -118,7 +120,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 }
             } else {
                 final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-                FileUtils.copyFile(screenshot, new File(file));
+                FileUtils.copyFile(screenshot, new File(OS_UTILS.fixFileName(file)));
                 return CompletableFuture.completedFuture(null);
             }
         } catch (final IOException ex) {

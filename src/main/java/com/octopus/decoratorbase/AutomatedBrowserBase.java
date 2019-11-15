@@ -6,8 +6,10 @@ import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.utils.JavaLauncherUtils;
+import com.octopus.utils.OSUtils;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.JavaLauncherUtilsImpl;
+import com.octopus.utils.impl.OSUtilsImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
@@ -34,6 +36,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
+    private static final OSUtils OS_UTILS = new OSUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
@@ -256,7 +259,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public void writeAliasValueToFile(final String alias, final String filename) {
         try {
             FileUtils.write(
-                    new File(getSubstitutedString(filename)),
+                    new File(OS_UTILS.fixFileName(getSubstitutedString(filename))),
                     getSubstitutedString(alias),
                     StandardCharsets.UTF_8);
         } catch (final IOException ex) {

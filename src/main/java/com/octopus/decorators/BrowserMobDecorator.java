@@ -4,7 +4,9 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.SaveException;
+import com.octopus.utils.OSUtils;
 import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.impl.OSUtilsImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
@@ -26,6 +28,7 @@ import java.util.regex.Pattern;
 public class BrowserMobDecorator extends AutomatedBrowserBase {
 
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    private static final OSUtils OS_UTILS = new OSUtilsImpl();
 
     private BrowserMobProxy proxy;
 
@@ -85,7 +88,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     @Override
     public void saveHarFile(final String file) {
         try {
-            proxy.getHar().writeTo(new File(file));
+            proxy.getHar().writeTo(new File(OS_UTILS.fixFileName(file)));
         } catch (final IOException ex) {
             throw new SaveException(ex);
         }
