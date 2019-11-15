@@ -7,7 +7,7 @@ public class OSUtilsImpl implements OSUtils {
     @Override
     public String fixFileName(String file) {
         return SystemUtils.IS_OS_WINDOWS ?
-                file.replaceAll("/", "\\") :
+                file.replaceAll("/", "\\\\") :
                 file;
     }
 }
