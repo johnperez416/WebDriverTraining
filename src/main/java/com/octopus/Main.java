@@ -8,6 +8,7 @@ import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.vavr.control.Try;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.LogManager;
@@ -66,5 +67,6 @@ public class Main {
         LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
         LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
         LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
+        LOGGER.info("Headless Environment " + GraphicsEnvironment.isHeadless());
     }
 }
