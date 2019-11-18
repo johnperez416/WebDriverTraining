@@ -616,6 +616,52 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? exists$")
+    @Override
+    public void clickElementIfOtherExists(final String force, final String locator, final String ifOtherExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementIfOtherExists(
+                    force,
+                    getSubstitutedString(locator),
+                    getSubstitutedString(ifOtherExists));
+        }
+    }
+
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? waiting up to \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? exists$")
+    @Override
+    public void clickElementIfOtherExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementIfOtherExists(
+                    force,
+                    getSubstitutedString(locator),
+                    waitTime,
+                    getSubstitutedString(ifOtherExists));
+        }
+    }
+
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? does not exist$")
+    @Override
+    public void clickElementIfOtherNotExists(final String force, final String locator, final String ifOtherExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementIfOtherNotExists(
+                    force,
+                    getSubstitutedString(locator),
+                    getSubstitutedString(ifOtherExists));
+        }
+    }
+
+    @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? waiting up to \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? does not exist$")
+    @Override
+    public void clickElementIfOtherNotExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().clickElementIfOtherNotExists(
+                    force,
+                    getSubstitutedString(locator),
+                    waitTime,
+                    getSubstitutedString(ifOtherExists));
+        }
+    }
+
     @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void clickElementIfExists(final String force, final String locator, final String ifExistsOption) {

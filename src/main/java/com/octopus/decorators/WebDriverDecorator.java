@@ -11,7 +11,6 @@ import com.octopus.utils.impl.*;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
@@ -472,6 +471,36 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void clickElementIfOtherExists(final String force, final String locator, final String ifOtherExists) {
+        clickElementIfOtherExists(force, locator, getDefaultExplicitWaitTime(), ifOtherExists);
+    }
+
+    @Override
+    public void clickElementIfOtherExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+        Try.of(() -> SIMPLE_BY.getElement(
+                getWebDriver(),
+                ifOtherExists,
+                waitTime,
+                ExpectedConditions::presenceOfElementLocated))
+                .onSuccess(e -> clickElementIfExists(force, locator, waitTime, null));
+    }
+
+    @Override
+    public void clickElementIfOtherNotExists(final String force, final String locator, final String ifOtherExists) {
+        clickElementIfOtherNotExists(force, locator, getDefaultExplicitWaitTime(), ifOtherExists);
+    }
+
+    @Override
+    public void clickElementIfOtherNotExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+        Try.of(() -> SIMPLE_BY.getElement(
+                getWebDriver(),
+                ifOtherExists,
+                waitTime,
+                ExpectedConditions::presenceOfElementLocated))
+                .onFailure(ex -> clickElementIfExists(force, locator, waitTime, null));
+    }
+
+    @Override
     public void clickElementIfExists(final String force, final String locator, final String ifExistsOption) {
         clickElementIfExists(force, locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
@@ -551,10 +580,10 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             populateElementWithText(
                     text,
                     SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        ExpectedConditions::elementToBeClickable),
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            ExpectedConditions::elementToBeClickable),
                     NumberUtils.toInt(keystrokeDelay, Constants.DEFAULT_INPUT_DELAY));
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
@@ -764,107 +793,107 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     waitTime,
                     ExpectedConditions::presenceOfElementLocated);
             ((JavascriptExecutor) getWebDriver()).executeScript("""
-            var getScrollParent = function () {
-                var regex = /(auto|scroll)/;
+                            var getScrollParent = function () {
+                                var regex = /(auto|scroll)/;
 
-                var parents = function (node, ps) {
-                    if (node.parentNode === null) { return ps; }
-                    return parents(node.parentNode, ps.concat([node]));
-                };
+                                var parents = function (node, ps) {
+                                    if (node.parentNode === null) { return ps; }
+                                    return parents(node.parentNode, ps.concat([node]));
+                                };
 
-                var style = function (node, prop) {
-                    return getComputedStyle(node, null).getPropertyValue(prop);
-                };
+                                var style = function (node, prop) {
+                                    return getComputedStyle(node, null).getPropertyValue(prop);
+                                };
 
-                var overflow = function (node) {
-                    return style(node, "overflow") + style(node, "overflow-y") + style(node, "overflow-x");
-                };
+                                var overflow = function (node) {
+                                    return style(node, "overflow") + style(node, "overflow-y") + style(node, "overflow-x");
+                                };
 
-                var scroll = function (node) {
-                    return regex.test(overflow(node));
-                };
+                                var scroll = function (node) {
+                                    return regex.test(overflow(node));
+                                };
 
-                var windowInsteadOfHtml = function (node) {
-                    return node === document.documentElement || node === document.body
-                            ? window
-                            : node;
-                }
+                                var windowInsteadOfHtml = function (node) {
+                                    return node === document.documentElement || node === document.body
+                                            ? window
+                                            : node;
+                                }
 
-                var scrollParent = function (node) {
-                    if (!(node instanceof HTMLElement || node instanceof SVGElement)) {
-                        return ;
-                    }
+                                var scrollParent = function (node) {
+                                    if (!(node instanceof HTMLElement || node instanceof SVGElement)) {
+                                        return ;
+                                    }
 
-                    var ps = parents(node.parentNode, []);
+                                    var ps = parents(node.parentNode, []);
 
-                    for (var i = 0; i < ps.length; i += 1) {
-                        if (scroll(ps[i])) {
-                            return windowInsteadOfHtml(ps[i]);
-                        }
-                    }
+                                    for (var i = 0; i < ps.length; i += 1) {
+                                        if (scroll(ps[i])) {
+                                            return windowInsteadOfHtml(ps[i]);
+                                        }
+                                    }
 
-                    return windowInsteadOfHtml(document.scrollingElement || document.documentElement);
-                };
+                                    return windowInsteadOfHtml(document.scrollingElement || document.documentElement);
+                                };
 
-                return scrollParent;
-            }();
+                                return scrollParent;
+                            }();
 
-            function getElementY(element) {
-                var parent = getScrollParent(element)
-                return getScrollTop(parent) + element.getBoundingClientRect().top
-            }
+                            function getElementY(element) {
+                                var parent = getScrollParent(element)
+                                return getScrollTop(parent) + element.getBoundingClientRect().top
+                            }
 
-            function getScrollTop(parent) {
-                // scrollTop is undefined on the window object
-                return parent.scrollTop !== undefined ? parent.scrollTop : parent.scrollY;
-            }
+                            function getScrollTop(parent) {
+                                // scrollTop is undefined on the window object
+                                return parent.scrollTop !== undefined ? parent.scrollTop : parent.scrollY;
+                            }
 
-            function getScrollingHeight(parent) {
-                return parent.scrollHeight !== undefined ? parent.scrollHeight : document.body.scrollHeight;
-            }
+                            function getScrollingHeight(parent) {
+                                return parent.scrollHeight !== undefined ? parent.scrollHeight : document.body.scrollHeight;
+                            }
 
-            function scrollElement(parent, distance) {
-                if (parent.scrollTop !== undefined) {
-                    parent.scrollTop = distance
-                } else {
-                    parent.scrollTo(0, distance)
-                }
-            }
+                            function scrollElement(parent, distance) {
+                                if (parent.scrollTop !== undefined) {
+                                    parent.scrollTop = distance
+                                } else {
+                                    parent.scrollTo(0, distance)
+                                }
+                            }
 
-            function doScrolling(element, offset, duration) {
-                var parent = getScrollParent(element)
-                var startingY = getScrollTop(parent)
-                var elementY = getElementY(element) + offset
-                // If element is close to page's bottom then parent will scroll only to some position above the element.
-                var targetY = getScrollingHeight(parent) - elementY < parent.innerHeight ? getScrollingHeight(parent) - parent.innerHeight : elementY
-                var diff = targetY - startingY
-                // Easing function: easeInOutCubic
-                // From: https://gist.github.com/gre/1650294
-                var easing = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
-                var start
+                            function doScrolling(element, offset, duration) {
+                                var parent = getScrollParent(element)
+                                var startingY = getScrollTop(parent)
+                                var elementY = getElementY(element) + offset
+                                // If element is close to page's bottom then parent will scroll only to some position above the element.
+                                var targetY = getScrollingHeight(parent) - elementY < parent.innerHeight ? getScrollingHeight(parent) - parent.innerHeight : elementY
+                                var diff = targetY - startingY
+                                // Easing function: easeInOutCubic
+                                // From: https://gist.github.com/gre/1650294
+                                var easing = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
+                                var start
 
-                if (!diff) return
-                // Bootstrap our animation - it will get called right before next frame shall be rendered.
-                window.requestAnimationFrame(function step(timestamp) {
-                    if (!start) start = timestamp
-                    // Elapsed milliseconds since start of scrolling.
-                    var time = timestamp - start
-                    // Get percent of completion in range [0, 1].
-                    var percent = Math.min(time / duration, 1)
-                    // Apply the easing.
-                    // It can cause bad-looking slow frames in browser performance tool, so be careful.
-                    percent = easing(percent)
+                                if (!diff) return
+                                // Bootstrap our animation - it will get called right before next frame shall be rendered.
+                                window.requestAnimationFrame(function step(timestamp) {
+                                    if (!start) start = timestamp
+                                    // Elapsed milliseconds since start of scrolling.
+                                    var time = timestamp - start
+                                    // Get percent of completion in range [0, 1].
+                                    var percent = Math.min(time / duration, 1)
+                                    // Apply the easing.
+                                    // It can cause bad-looking slow frames in browser performance tool, so be careful.
+                                    percent = easing(percent)
 
-                    scrollElement(parent, startingY + diff * percent)
+                                    scrollElement(parent, startingY + diff * percent)
 
-                    // Proceed with animation as long as we wanted it to.
-                    if (time < duration) {
-                        window.requestAnimationFrame(step)
-                    }
-                })
-            }
-            doScrolling(arguments[0], arguments[1], arguments[2]);
-            """,
+                                    // Proceed with animation as long as we wanted it to.
+                                    if (time < duration) {
+                                        window.requestAnimationFrame(step)
+                                    }
+                                })
+                            }
+                            doScrolling(arguments[0], arguments[1], arguments[2]);
+                            """,
                     element,
                     Integer.parseInt(offset == null ? "0" : offset),
                     scrollTime);
