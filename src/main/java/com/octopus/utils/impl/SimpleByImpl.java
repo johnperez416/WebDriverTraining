@@ -72,7 +72,7 @@ public class SimpleByImpl implements SimpleBy {
 
     private void saveMultipleElements(final WebDriver webDriver, final By by, final String locator) {
         final List<WebElement> matched = webDriver.findElements(by);
-        if (matched.size() < 1) {
+        if (matched.size() <= 1) {
             return;
         }
 
