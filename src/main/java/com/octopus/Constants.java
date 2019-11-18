@@ -150,4 +150,10 @@ public class Constants {
      * The default amount of time to delay simulated keystrokes
      */
     public static final int DEFAULT_INPUT_DELAY = 100;
+
+    /**
+     * The system property that can be set to save screenshots of elements that were matched
+     * by the "simple by" lookup
+     */
+    public static final String SAVE_SCREENSHOTS_OF_MATCHED_ELEMENTS = "saveScreenshotsOfMatchedMethods";
 }
