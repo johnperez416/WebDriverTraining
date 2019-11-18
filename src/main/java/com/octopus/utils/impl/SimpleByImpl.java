@@ -71,26 +71,27 @@ public class SimpleByImpl implements SimpleBy {
     }
 
     private void saveMultipleElements(final WebDriver webDriver, final By by, final String locator) {
-        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.SAVE_SCREENSHOTS_OF_MATCHED_ELEMENTS, false)) {
+        final List<WebElement> matched = webDriver.findElements(by);
+        if (matched.size() < 1) {
             return;
         }
 
-        final List<WebElement> matched = webDriver.findElements(by);
-        if (matched.size() > 1) {
+        LOGGER.info("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
+        LOGGER.info(locator);
+        matched.stream().forEach(e -> {
+            LOGGER.info(e.getTagName() +
+                    " X: " + e.getLocation().x +
+                    " Y: " + e.getLocation().y);
 
-            LOGGER.info("\nMatched " + matched.size() + " elements with the locator on the page " + webDriver.getCurrentUrl());
-            matched.stream().forEach(e -> {
-                LOGGER.info(e.getTagName() +
-                        " X: " + e.getLocation().x +
-                        " Y: " + e.getLocation().y);
+            if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.SAVE_SCREENSHOTS_OF_MATCHED_ELEMENTS, false)) {
                 Try.run(() -> {
                     final Path temp = Files.createTempFile("element", ".png");
                     FileUtils.copyFile(e.getScreenshotAs(OutputType.FILE), temp.toFile());
                     LOGGER.info(temp.toFile().getCanonicalPath());
                 });
-            });
-            LOGGER.info(locator);
-            LOGGER.info("Consider fixing the locator to be specific to a single element.");
-        }
+            }
+        });
+        LOGGER.info("Consider fixing the locator to be specific to a single element.");
+
     }
 }
