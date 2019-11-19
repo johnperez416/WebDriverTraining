@@ -101,29 +101,29 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Given("^I set the following aliases:$")
-    public void setAliases(Map<String, String> aliases) {
+    public void setAliases(final Map<String, String> aliases) {
         this.aliases.putAll(aliases);
     }
 
     @Override
     @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds?$")
-    public void sleep(String seconds) {
+    public void sleep(final String seconds) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().sleep(getSubstitutedString(seconds));
         }
     }
 
     @Given("^I open the( shared)? browser \"([^\"]*)\"$")
-    public void openBrowser(String shared, String browser) {
+    public void openBrowser(final String shared, final String browser) {
         if (sharedAutomatedBrowser != null) {
             throw new BrowserException("Can not open a browser with an existing shared browser.");
         }
 
         if (shared != null) {
-            automatedBrowser = sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser = sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(getSubstitutedString(browser));
             automatedBrowser.init();
         } else {
-            automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(getSubstitutedString(browser));
             automatedBrowser.init();
         }
     }
