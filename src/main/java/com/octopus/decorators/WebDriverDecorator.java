@@ -627,7 +627,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     getWebDriver(),
                     locator,
                     waitTime,
-                    ExpectedConditions::presenceOfElementLocated).clear();
+                    ExpectedConditions::elementToBeClickable).clear();
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
