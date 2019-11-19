@@ -1074,7 +1074,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
+    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public void removeElementHighlight(final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
