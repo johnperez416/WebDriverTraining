@@ -140,7 +140,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
     @Override
-    public void setDefaultExplicitWaitTime(int waitTime) {
+    public void setDefaultExplicitWaitTime(final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setDefaultExplicitWaitTime(waitTime);
         }
@@ -196,7 +196,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I open the URL \"([^\"]*)\"$")
     @Override
-    public void goTo(String url) {
+    public void goTo(final String url) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().goTo(getSubstitutedString(url));
         }
