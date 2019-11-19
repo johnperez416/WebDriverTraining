@@ -281,9 +281,9 @@ public interface AutomatedBrowser {
 
     void elementHighlightIfExists(String location, String lift, String locator, String offset, int waitTime, String ifExistsOption);
 
-    void removeElementHighlight(String locator);
+    void removeElementHighlight(String locator, final String ifExistsOption);
 
-    void removeElementHighlight(String locator, int waitTime);
+    void removeElementHighlight(String locator, int waitTime, final String ifExistsOption);
 
     default void verifyElementExists(String locator) {verifyElementExists(locator, null);}
 

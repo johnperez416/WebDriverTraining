@@ -84,28 +84,34 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void removeElementHighlight(final String locator) {
-        removeElementHighlight(locator, getDefaultExplicitWaitTime());
+    public void removeElementHighlight(final String locator, final String ifExistsOption) {
+        removeElementHighlight(locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void removeElementHighlight(final String locator, final int waitTime) {
+    public void removeElementHighlight(final String locator, final int waitTime, final String ifExistsOption) {
         if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
             return;
         }
 
-        if (originalStyles.containsKey(locator)) {
-            final WebElement element = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    by -> ExpectedConditions.presenceOfElementLocated(by));
+        try {
+            if (originalStyles.containsKey(locator)) {
+                final WebElement element = SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        by -> ExpectedConditions.presenceOfElementLocated(by));
 
-            ((JavascriptExecutor) getWebDriver()).executeScript(
-                    "arguments[0].setAttribute('style', '" + originalStyles.get(locator) + "');",
-                    element);
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].setAttribute('style', '" + originalStyles.get(locator) + "');",
+                        element);
 
-            originalStyles.remove(locator);
+                originalStyles.remove(locator);
+            }
+        } catch (final WebElementException ex) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
+                throw ex;
+            }
         }
     }
 }

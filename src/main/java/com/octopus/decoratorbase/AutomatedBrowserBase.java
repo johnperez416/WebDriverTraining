@@ -1074,19 +1074,19 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*( if it exists)?$")
     @Override
-    public void removeElementHighlight(final String locator) {
+    public void removeElementHighlight(final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().removeElementHighlight(getSubstitutedString(locator));
+            getAutomatedBrowser().removeElementHighlight(getSubstitutedString(locator), ifExistsOption);
         }
     }
 
-    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I remove the highlight from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds( if it exists)?$")
     @Override
-    public void removeElementHighlight(final String locator, final int waitTime) {
+    public void removeElementHighlight(final String locator, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().removeElementHighlight(getSubstitutedString(locator), waitTime);
+            getAutomatedBrowser().removeElementHighlight(getSubstitutedString(locator), waitTime, ifExistsOption);
         }
     }
 
