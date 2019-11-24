@@ -840,6 +840,81 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         }
     }
 
+    @Override
+    public void focusIfExists(final String force, final String locator, final String ifExistsOption) {
+        ++interactionCount;
+
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            getDefaultExplicitWaitTime(),
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
+
+            final Actions action = new Actions(getWebDriver());
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                            ? 0 : getDefaultExplicitWaitTime(),
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+            if (StringUtils.isNotBlank(force)) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].dispatchEvent(new Event('focus', { bubbles: true }))",
+                        element);
+            } else {
+                action.moveToElement(element).perform();
+            }
+        } catch (final WebElementException ex) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
+                throw ex;
+            }
+        }
+    }
+
+    @Override
+    public void focusIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+        ++interactionCount;
+
+        try {
+            MOUSE_MOVEMENT_UTILS.mouseGlide(
+                    getWebDriver(),
+                    (JavascriptExecutor) getWebDriver(),
+                    () -> SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            by -> ExpectedConditions.presenceOfElementLocated(by)),
+                    Constants.MOUSE_MOVE_TIME,
+                    Constants.MOUSE_MOVE_STEPS);
+
+            final Actions action = new Actions(getWebDriver());
+            final WebElement element = SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
+                            ? 0 : waitTime,
+                    by -> ExpectedConditions.presenceOfElementLocated(by));
+
+            if (StringUtils.isNotBlank(force)) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].dispatchEvent(new Event('focus', { bubbles: true }))",
+                        element);
+            } else {
+                action.moveToElement(element).perform();
+            }
+        } catch (final WebElementException ex) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
+                throw ex;
+            }
+        }
+    }
+
     public int getInteractionCount() {
         return interactionCount;
     }

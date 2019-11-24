@@ -237,6 +237,16 @@ public interface AutomatedBrowser {
 
     void mouseOverIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
+    default void focus(String locator) {
+        focusIfExists(null, locator, null);}
+
+    default void focus(String locator, int waitTime) {
+        focusIfExists(null, locator, waitTime, null);}
+
+    void focusIfExists(String force, String locator, String ifExistsOption);
+
+    void focusIfExists(String force, String locator, int waitTime, String ifExistsOption);
+
     default String getTextFromElement(String locator) {return getTextFromElementIfExists(locator, null);}
 
     default String getTextFromElement(String locator, int waitTime) {return getTextFromElementIfExists(locator, waitTime, null);}

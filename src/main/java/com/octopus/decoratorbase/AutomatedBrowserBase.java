@@ -877,6 +877,29 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I( force)? focus(?: on) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?")
+    @Override
+    public void focusIfExists(final String force, final String locator, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().focusIfExists(
+                    force,
+                    getSubstitutedString(locator),
+                    ifExistsOption);
+        }
+    }
+
+    @And("^I( force)? focus(?: on) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?")
+    @Override
+    public void focusIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().focusIfExists(
+                    force,
+                    getSubstitutedString(locator),
+                    waitTime,
+                    ifExistsOption);
+        }
+    }
+
     @And("^I get the text from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
     public String getTextFromElementIfExists(final String locator, final String ifExistsOption) {
