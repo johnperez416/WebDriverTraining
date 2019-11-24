@@ -766,7 +766,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void mouseOverIfExists(final String locator, final String ifExistsOption) {
+    public void mouseOverIfExists(final String force, final String locator, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -788,7 +788,13 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                             ? 0 : getDefaultExplicitWaitTime(),
                     by -> ExpectedConditions.presenceOfElementLocated(by));
-            action.moveToElement(element).perform();
+            if (StringUtils.isNotBlank(force)) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].dispatchEvent(new Event('mouseover', { bubbles: true }))",
+                        element);
+            } else {
+                action.moveToElement(element).perform();
+            }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
@@ -797,7 +803,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExistsOption) {
+    public void mouseOverIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -819,7 +825,14 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                     SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.MOVE_CURSOR_TO_ELEMENT, false)
                             ? 0 : waitTime,
                     by -> ExpectedConditions.presenceOfElementLocated(by));
-            action.moveToElement(element).perform();
+
+            if (StringUtils.isNotBlank(force)) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].dispatchEvent(new Event('mouseover', { bubbles: true }))",
+                        element);
+            } else {
+                action.moveToElement(element).perform();
+            }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;

@@ -228,14 +228,14 @@ public interface AutomatedBrowser {
     void clearIfExists(String locator, int waitTime, String ifExistsOption);
 
     default void mouseOver(String locator) {
-        mouseOverIfExists(locator, null);}
+        mouseOverIfExists(null, locator, null);}
 
     default void mouseOver(String locator, int waitTime) {
-        mouseOverIfExists(locator, waitTime, null);}
+        mouseOverIfExists(null, locator, waitTime, null);}
 
-    void mouseOverIfExists(String locator, String ifExistsOption);
+    void mouseOverIfExists(String force, String locator, String ifExistsOption);
 
-    void mouseOverIfExists(String locator, int waitTime, String ifExistsOption);
+    void mouseOverIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
     default String getTextFromElement(String locator) {return getTextFromElementIfExists(locator, null);}
 
