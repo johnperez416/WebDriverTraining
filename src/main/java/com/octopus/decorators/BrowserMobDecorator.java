@@ -75,6 +75,9 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         }
 
         if (proxy != null) {
+            if (proxy.getHar() != null) {
+                proxy.endHar();
+            }
             proxy.stop();
         }
     }
