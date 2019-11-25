@@ -31,6 +31,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <spring.retry.version>1.2.4.RELEASE</spring.retry.version>
     </properties>
     <build>
+        <finalName>${project.name}.${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
