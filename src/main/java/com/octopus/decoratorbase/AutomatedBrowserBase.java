@@ -78,7 +78,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             }
         }
 
-        LOGGER.info("Recorded " + getInteractionCount() + " interactions for the browser session");
+        LOGGER.info("\nRecorded " + getInteractionCount() + " interactions for the browser session");
     }
 
     private Map<String, String> getAliases() {
