@@ -59,6 +59,11 @@ public class Constants {
     public static final String DISABLE_HIGHLIGHTS = "disableHighlights";
 
     /**
+     * The system property that can be used to disable any Octopus service messages
+     */
+    public static final String DISABLE_SERVICEMESSAGES = "disableOctopusServiceMessages";
+
+    /**
      * The system property that can be used to disable any video recording
      */
     public static final String DISABLE_VIDEO_RECORDING = "disableVideoRecording";

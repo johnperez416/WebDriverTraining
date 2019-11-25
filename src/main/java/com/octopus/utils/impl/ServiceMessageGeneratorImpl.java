@@ -1,6 +1,8 @@
 package com.octopus.utils.impl;
 
+import com.octopus.Constants;
 import com.octopus.utils.ServiceMessageGenerator;
+import com.octopus.utils.SystemPropertyUtils;
 import org.apache.commons.text.WordUtils;
 
 import java.io.File;
@@ -11,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ServiceMessageGeneratorImpl implements ServiceMessageGenerator {
     private static final Logger LOGGER = Logger.getLogger(ServiceMessageGeneratorImpl.class.toString());
+    private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     @Override
     public void newArtifact(final String path, final String name) {
@@ -21,6 +24,10 @@ public class ServiceMessageGeneratorImpl implements ServiceMessageGenerator {
     public void newArtifact(final File pathFile, final String name) {
         checkNotNull(pathFile);
         checkNotNull(name);
+
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SERVICEMESSAGES, false)) {
+            return;
+        }
 
         try {
             final String fullPath = pathFile.getCanonicalPath();
@@ -39,6 +46,13 @@ public class ServiceMessageGeneratorImpl implements ServiceMessageGenerator {
 
     @Override
     public void setProgress(final Integer percent, final String message) {
+        checkNotNull(percent);
+        checkNotNull(message);
+
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SERVICEMESSAGES, false)) {
+            return;
+        }
+
         LOGGER.info("\n##octopus[progress percentage='" +
                 Base64.getEncoder().encodeToString(percent.toString().getBytes()) +
                 "' message='" +
@@ -48,6 +62,14 @@ public class ServiceMessageGeneratorImpl implements ServiceMessageGenerator {
 
     @Override
     public void newVariable(final String variable, final String value, final Boolean sensitive) {
+        checkNotNull(variable);
+        checkNotNull(value);
+        checkNotNull(sensitive);
+
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SERVICEMESSAGES, false)) {
+            return;
+        }
+
         LOGGER.info("\n##octopus[setVariable name='"+
                 Base64.getEncoder().encodeToString(variable.getBytes()) +
                 "' value='"+
