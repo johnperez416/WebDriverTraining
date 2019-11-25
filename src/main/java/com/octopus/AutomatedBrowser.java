@@ -1,8 +1,10 @@
 package com.octopus;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface AutomatedBrowser {
@@ -316,6 +318,8 @@ public interface AutomatedBrowser {
     void blockRequestTo(String url, int responseCode);
 
     void alterResponseFrom(String url, int responseCode, String responseBody);
+
+    List<Pair<String, Integer>> getErrors();
     //</editor-fold>
 
     //<editor-fold desc="Transitions and Annotations">

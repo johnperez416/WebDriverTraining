@@ -4,6 +4,7 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
+import com.octopus.exceptions.NetworkException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.OSUtils;
@@ -18,6 +19,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -1045,7 +1048,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I block the request to \"([^\"]*)\" returning the HTTP code \"\\d+\"$")
+    @And("^I block the request to \"([^\"]*)\" returning the HTTP code \"(\\d+)\"$")
     @Override
     public void blockRequestTo(final String url, final int responseCode) {
         if (getAutomatedBrowser() != null) {
@@ -1055,7 +1058,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I alter the response from \"([^\"]*)\" returning the HTTP code \"\\d+\" and the response body:$")
+    @And("^I alter the response from \"([^\"]*)\" returning the HTTP code \"(\\d+)\" and the response body:$")
     @Override
     public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
         if (getAutomatedBrowser() != null) {
@@ -1063,6 +1066,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(url),
                     responseCode,
                     getSubstitutedString(responseBody));
+        }
+    }
+
+    @Override
+    public List<Pair<String, Integer>> getErrors() {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getErrors();
+        }
+
+        return List.of();
+    }
+
+    @And("^I verify there were no network errors$")
+    public void verifyNoErrorsInHar() {
+        final var errors = getErrors();
+
+        if (!errors.isEmpty()) {
+            errors.forEach(e -> LOGGER.warning("Request to " + e.getKey() + " returned " + e.getRight()));
+            throw new NetworkException("Errors found in the HAR file");
         }
     }
 
