@@ -1272,6 +1272,26 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I write the value of the alias \"([^\"]*)\" to the Octopus variable \"([^\"]*)\"$")
+    @Override
+    public void writeAliasValueToOctopusVariable(final String alias, final String variable) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().writeAliasValueToOctopusVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable));
+        }
+    }
+
+    @And("^I write the value of the alias \"([^\"]*)\" to the Octopus sensitive variable \"([^\"]*)\"$")
+    @Override
+    public void writeAliasValueToOctopusSensitiveVariable(final String alias, final String variable) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().writeAliasValueToOctopusSensitiveVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable));
+        }
+    }
+
     private String getSubstitutedString(final String string) {
         if (StringUtils.isEmpty(string)) {
             return string;

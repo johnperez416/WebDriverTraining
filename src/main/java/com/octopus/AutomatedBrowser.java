@@ -339,6 +339,10 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Octopus">
-    void setOctopusPercent(String precent, String message);
+    void setOctopusPercent(String percent, String message);
+
+    void writeAliasValueToOctopusVariable(String alias, String variable);
+
+    void writeAliasValueToOctopusSensitiveVariable(String alias, String variable);
     //</editor-fold>
 }

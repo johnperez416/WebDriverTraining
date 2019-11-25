@@ -8,6 +8,7 @@ import com.octopus.exceptions.ValidationException;
 import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
+import io.cucumber.java.en.And;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1031,6 +1032,16 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void setOctopusPercent(final String percent, final String message) {
         SERVICE_MESSAGE_GENERATOR.setProgress(NumberUtils.toInt(percent, 0), message);
+    }
+
+    @Override
+    public void writeAliasValueToOctopusVariable(final String alias, final String variable) {
+        SERVICE_MESSAGE_GENERATOR.newVariable(alias, variable);
+    }
+
+    @Override
+    public void writeAliasValueToOctopusSensitiveVariable(final String alias, final String variable) {
+        SERVICE_MESSAGE_GENERATOR.newVariable(alias, variable, true);
     }
 
     @Override
