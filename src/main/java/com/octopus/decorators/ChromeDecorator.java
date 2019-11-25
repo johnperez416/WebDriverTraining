@@ -39,6 +39,9 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         if (userData != null) {
             options.addArguments("--user-data-dir=" + userData.getAbsolutePath());
         }
+        if (System.getProperty("chrome.binary") != null) {
+            options.setBinary(System.getProperty("chrome.binary"));
+        }
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
