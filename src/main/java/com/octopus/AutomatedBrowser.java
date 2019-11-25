@@ -306,6 +306,8 @@ public interface AutomatedBrowser {
     void verifyElementDoesNotExist(String locator);
 
     void verifyElementDoesNotExist(String locator, int waitTime);
+
+    String getTitle();
     //</editor-fold>
 
     //<editor-fold desc="Network Alter and Capture">

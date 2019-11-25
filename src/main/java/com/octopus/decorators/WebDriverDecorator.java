@@ -741,6 +741,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         throw new WebElementException("Element located by " + locator + " was still present after " + waitTime + " seconds");
     }
 
+    @Override
+    public String getTitle() {
+        return getWebDriver().getTitle();
+    }
+
 
     @Override
     public void browserZoomIn() {

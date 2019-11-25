@@ -1184,6 +1184,17 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I get the text from the page title$")
+    @Override
+    public String getTitle() {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getTitle();
+            aliases.put(LastReturn, text);
+            return text;
+        }
+        return null;
+    }
+
     @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEscape(final String locator) {
