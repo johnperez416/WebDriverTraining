@@ -1,6 +1,7 @@
 package com.octopus.utils.impl;
 
 import com.octopus.utils.ServiceMessageGenerator;
+import org.apache.commons.text.WordUtils;
 
 import java.io.File;
 import java.util.Base64;
@@ -34,5 +35,30 @@ public class ServiceMessageGeneratorImpl implements ServiceMessageGenerator {
         } catch (final Exception ex) {
             LOGGER.severe("Failed to process the artifact at " + pathFile.getPath() + ". " + ex);
         }
+    }
+
+    @Override
+    public void setProgress(final Integer percent, final String message) {
+        LOGGER.info("\n##octopus[progress percentage='" +
+                Base64.getEncoder().encodeToString(percent.toString().getBytes()) +
+                "' message='" +
+                Base64.getEncoder().encodeToString(message.getBytes()) +
+                "']");
+    }
+
+    @Override
+    public void newVariable(final String variable, final String value, final Boolean sensitive) {
+        LOGGER.info("\n##octopus[setVariable name='"+
+                Base64.getEncoder().encodeToString(variable.getBytes()) +
+                "' value='"+
+                Base64.getEncoder().encodeToString(value.getBytes()) +
+                "' sensitive='" +
+                Base64.getEncoder().encodeToString(WordUtils.capitalize(sensitive.toString()).getBytes()) +
+                "']");
+    }
+
+    @Override
+    public void newVariable(final String variable, final String value) {
+        newVariable(variable, value, false);
     }
 }

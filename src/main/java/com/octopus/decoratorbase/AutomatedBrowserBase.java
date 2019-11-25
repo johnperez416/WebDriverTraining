@@ -1262,6 +1262,16 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return 0;
     }
 
+    @And("^I set the Octopus step percentage to \"([^\"]*)\" with the message \"([^\"]*)\"$")
+    @Override
+    public void setOctopusPercent(final String percent, final String message) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setOctopusPercent(
+                    getSubstitutedString(percent),
+                    getSubstitutedString(message));
+        }
+    }
+
     private String getSubstitutedString(final String string) {
         if (StringUtils.isEmpty(string)) {
             return string;

@@ -337,4 +337,8 @@ public interface AutomatedBrowser {
     //<editor-fold desc="Statistics">
     int getInteractionCount();
     //</editor-fold>
+
+    //<editor-fold desc="Octopus">
+    void setOctopusPercent(String precent, String message);
+    //</editor-fold>
 }

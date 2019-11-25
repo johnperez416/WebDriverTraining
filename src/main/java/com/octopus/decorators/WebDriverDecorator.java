@@ -1029,6 +1029,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void setOctopusPercent(final String percent, final String message) {
+        SERVICE_MESSAGE_GENERATOR.setProgress(NumberUtils.toInt(percent, 0), message);
+    }
+
+    @Override
     public void runJavascript(final String code) {
         ((JavascriptExecutor) getWebDriver()).executeScript(code);
     }
