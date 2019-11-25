@@ -15,6 +15,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import static com.octopus.Constants.BROWSER_CLEANUP;
+import static com.octopus.Constants.DUMP_OPTIONS;
 
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.toString());
@@ -63,10 +64,11 @@ public class Main {
     }
 
     private static void dumpOptions() {
-        LOGGER.info("Options:");
-        LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
-        LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
-        LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
-        LOGGER.info("Headless Environment " + GraphicsEnvironment.isHeadless());
+        if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(DUMP_OPTIONS, false)) {
+            LOGGER.info("Video recording " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false) ? "disabled" : "enabled"));
+            LOGGER.info("Screenshots " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) ? "disabled" : "enabled"));
+            LOGGER.info("Highlights " + (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false) ? "disabled" : "enabled"));
+            LOGGER.info("Headless Environment " + GraphicsEnvironment.isHeadless());
+        }
     }
 }

@@ -11,6 +11,11 @@ public class Constants {
         add("--strict");
     }};
 
+    /**
+     * Show the state of various options enabling and disabling features at startup
+     */
+    public static final String DUMP_OPTIONS = "dumpOptions";
+
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**
