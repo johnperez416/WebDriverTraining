@@ -28,6 +28,8 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         } catch (IOException e) {
             this.userData = null;
         }
+        // Disable the logging to System.err
+        System.setProperty("webdriver.chrome.silentOutput", "true");
     }
 
     @Override

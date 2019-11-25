@@ -13,6 +13,7 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
     public ChromeLambdaDecorator(final boolean headless , final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;
+        System.setProperty("webdriver.chrome.silentOutput", "true");
     }
 
     @Override
