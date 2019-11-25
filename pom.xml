@@ -17,7 +17,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <cucumber.version>4.7.4</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.0</aws.lambda.version>
-        <aws.sdk.version>1.11.662</aws.sdk.version>
+        <aws.sdk.version>1.11.681</aws.sdk.version>
         <commons.io.version>2.6</commons.io.version>
         <commons.text.version>1.8</commons.text.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
