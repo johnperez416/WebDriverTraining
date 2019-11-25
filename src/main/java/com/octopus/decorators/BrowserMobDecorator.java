@@ -145,7 +145,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
                 .map(HarLog::getEntries)
                 .orElse(List.of())
                 .stream()
-                .filter(s -> Range.between(400, 500).contains(s.getResponse().getStatus()))
+                .filter(s -> Range.between(400, 599).contains(s.getResponse().getStatus()))
                 .map(s -> Pair.of(s.getRequest().getUrl(), s.getResponse().getStatus()))
                 .collect(Collectors.toList());
     }
