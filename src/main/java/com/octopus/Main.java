@@ -61,6 +61,8 @@ public class Main {
 
     private static void configureLogging() {
         Try.run(() -> LogManager.getLogManager().readConfiguration(Main.class.getClassLoader().getResourceAsStream("logging.properties")));
+        // Disable some logs from BrowserMob
+        System.setProperty("io.netty.leakDetection.level", "DISABLED");
     }
 
     private static void dumpOptions() {
