@@ -38,7 +38,6 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
 
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
-    private int errorCount = 0;
 
     private BrowserMobProxy proxy;
 
