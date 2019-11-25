@@ -72,11 +72,11 @@ public interface AutomatedBrowser {
 
     void stopScreenRecording();
 
-    CompletableFuture<Void> takeScreenshot(String filename, boolean force);
+    CompletableFuture<Void> takeScreenshot(String filename, boolean force, String captureArtifact);
 
-    CompletableFuture<Void> takeScreenshot(String filename);
+    CompletableFuture<Void> takeScreenshot(String filename, String captureArtifact);
 
-    CompletableFuture<Void> takeScreenshot(String directory, String filename);
+    CompletableFuture<Void> takeScreenshot(String directory, String filename, String captureArtifact);
     //</editor-fold>
 
     //<editor-fold desc="ID Selection">

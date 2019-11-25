@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -271,31 +272,35 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().takeScreenshot(
                     getSubstitutedString(filename),
-                    force);
+                    force,
+                    captureArtifact);
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    @And("^I save a screenshot to \"([^\"]*)\"$")
+    @And("^I save a screenshot to \"([^\"]*)\"(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().takeScreenshot(getSubstitutedString(filename));
+            return getAutomatedBrowser().takeScreenshot(
+                    getSubstitutedString(filename),
+                    getSubstitutedString(captureArtifact));
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"$")
+    @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().takeScreenshot(
                     getSubstitutedString(directory),
-                    getSubstitutedString(filename));
+                    getSubstitutedString(filename),
+                    getSubstitutedString(captureArtifact));
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -1258,6 +1263,10 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     private String getSubstitutedString(final String string) {
+        if (StringUtils.isEmpty(string)) {
+            return string;
+        }
+
         return new StringSubstitutor(getAliases(), "#{", "}")
                 .setEnableSubstitutionInVariables(true)
                 .replace(getAliases().getOrDefault(string, string));

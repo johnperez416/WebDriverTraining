@@ -22,12 +22,14 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final Logger LOGGER = Logger.getLogger(WebDriverDecorator.class.toString());
+    private static final ServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new ServiceMessageGeneratorImpl();
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -88,26 +90,33 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename) {
-        return takeScreenshot(directory + File.separator + filename);
+    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename, final String captureArtifact) {
+        return takeScreenshot(directory + File.separator + filename, captureArtifact);
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String file) {
-        return takeScreenshot(file, false);
+    public CompletableFuture<Void> takeScreenshot(final String file, final String captureArtifact) {
+        return takeScreenshot(file, false, captureArtifact);
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String file, boolean force) {
+    public CompletableFuture<Void> takeScreenshot(final String file, boolean force, final String captureArtifact) {
         if (!force && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) || webDriver == null) {
             return CompletableFuture.completedFuture(null);
         }
+
+        final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
 
         try {
             if (file.startsWith("s3://")) {
                 final String[] urlParts = file.split("/");
                 if (urlParts.length >= 4) {
-                    final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+
+                    if (StringUtils.isNotBlank(captureArtifact)) {
+                        final File destination = Files.createTempFile("screenshot", ".png").toFile();
+                        SERVICE_MESSAGE_GENERATOR.newArtifact(destination, captureArtifact);
+                    }
+
                     // The file uploading is done in a thread in the background
                     return S_3_UPLOADER.uploadFileToS3(
                             urlParts[2],
@@ -115,11 +124,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                             screenshot,
                             true);
                 } else {
-                    throw new SaveException("S3 paths must be in the format S3://bucket/filename or S3://bucket/dir/filename. The path \"" + file + "\" is missing some paths.");
+                    throw new SaveException("S3 paths must be in the format S3://bucket/filename or S3://bucket/dir/filename. The path \"" + file + "\" is missing some elements.");
                 }
             } else {
-                final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-                FileUtils.copyFile(screenshot, new File(OS_UTILS.fixFileName(file)));
+                final File destination = new File(OS_UTILS.fixFileName(file));
+                FileUtils.copyFile(screenshot, destination);
+                if (StringUtils.isNotBlank(captureArtifact)) {
+                    SERVICE_MESSAGE_GENERATOR.newArtifact(destination, captureArtifact);
+                }
                 return CompletableFuture.completedFuture(null);
             }
         } catch (final IOException ex) {
