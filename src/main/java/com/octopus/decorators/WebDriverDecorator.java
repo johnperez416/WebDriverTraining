@@ -72,8 +72,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void startScreenRecording(final String file) {
-        SCREEN_RECORDER_SERVICE.start(new File(OS_UTILS.fixFileName(file)));
+    public void startScreenRecording(final String file, final String capturedArtifact) {
+        final File movie = SCREEN_RECORDER_SERVICE.start(file == null ? new File(".") : new File(OS_UTILS.fixFileName(file)));
+        if (StringUtils.isNotBlank(capturedArtifact)) {
+            SERVICE_MESSAGE_GENERATOR.newArtifact(movie, capturedArtifact);
+        }
     }
 
     public static void staticStopScreenRecording() {

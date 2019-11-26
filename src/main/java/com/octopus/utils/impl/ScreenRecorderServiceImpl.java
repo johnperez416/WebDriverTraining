@@ -22,14 +22,14 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     private ScreenRecorder screenRecorder;
 
     @Override
-    public void start(final File file) {
+    public File start(final File file) {
         if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_VIDEO_RECORDING, false)) {
-            return;
+            return null;
         }
 
         if (screenRecorder != null) {
             LOGGER.warning("The screen is already recording!");
-            return;
+            return screenRecorder.getCreatedMovieFiles().get(0);
         }
 
         try {
@@ -58,6 +58,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
                     file);
             screenRecorder.setMaxRecordingTime(SYSTEM_PROPERTY_UTILS.getPropertyAsLong(Constants.SCREEN_RECORDING_MAX_TIME, Constants.DEFAULT_SCREEN_RECORDING_MAX_TIME));
             screenRecorder.start();
+            return screenRecorder.getCreatedMovieFiles().get(0);
         } catch (final Exception ex) {
             throw new VideoException("Failed to set up screen recording", ex);
         }

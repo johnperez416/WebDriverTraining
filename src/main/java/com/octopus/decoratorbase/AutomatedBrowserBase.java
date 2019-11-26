@@ -235,11 +235,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I start recording the screen to the directory \"([^\"]*)\"$")
+    @And("^I start recording the screen(?: to the directory \"([^\"]*)\")(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public void startScreenRecording(final String file) {
+    public void startScreenRecording(final String file, final String capturedArtifact) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().startScreenRecording(getSubstitutedString(file));
+            getAutomatedBrowser().startScreenRecording(
+                    getSubstitutedString(file),
+                    getSubstitutedString(capturedArtifact));
         }
     }
 

@@ -68,7 +68,7 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Screenshots and Recording">
-    void startScreenRecording(final String file);
+    void startScreenRecording(final String file, final String capturedArtifact);
 
     void stopScreenRecording();
 
