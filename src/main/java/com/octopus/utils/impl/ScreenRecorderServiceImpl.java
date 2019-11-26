@@ -28,7 +28,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
         }
 
         if (screenRecorder != null) {
-            LOGGER.warning("The screen is already recording!");
+            LOGGER.warning("\nThe screen is already recording!");
             return screenRecorder.getCreatedMovieFiles().get(0);
         }
 
