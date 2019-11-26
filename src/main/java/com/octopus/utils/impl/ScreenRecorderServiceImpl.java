@@ -33,7 +33,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
         }
 
         try {
-            LOGGER.info("Starting video recording");
+            LOGGER.info("\nStarting video recording");
 
             // set the graphics configuration
             final GraphicsConfiguration gc = GraphicsEnvironment
@@ -68,7 +68,7 @@ public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     public void stop() {
         try {
             if (screenRecorder != null) {
-                LOGGER.info("Stopping video recording");
+                LOGGER.info("\nStopping video recording");
                 screenRecorder.stop();
             }
             screenRecorder = null;
