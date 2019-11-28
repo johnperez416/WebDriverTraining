@@ -346,5 +346,7 @@ public interface AutomatedBrowser {
     void writeAliasValueToOctopusVariable(String alias, String variable);
 
     void writeAliasValueToOctopusSensitiveVariable(String alias, String variable);
+
+    void defineArtifact(String name, String path);
     //</editor-fold>
 }

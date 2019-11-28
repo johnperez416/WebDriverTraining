@@ -1305,6 +1305,16 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I define an artifact called \"([^\"]*)\" from the file \"([^\"]*)\"$")
+    @Override
+    public void defineArtifact(String name, String path) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().defineArtifact(
+                    getSubstitutedString(name),
+                    getSubstitutedString(path));
+        }
+    }
+
     private String getSubstitutedString(final String string) {
         if (StringUtils.isEmpty(string)) {
             return string;

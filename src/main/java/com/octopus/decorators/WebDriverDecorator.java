@@ -1053,6 +1053,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void defineArtifact(String name, String path) {
+        SERVICE_MESSAGE_GENERATOR.newArtifact(path, name);
+    }
+
+    @Override
     public void runJavascript(final String code) {
         ((JavascriptExecutor) getWebDriver()).executeScript(code);
     }
