@@ -416,7 +416,7 @@ public final class InlineHTMLFormatter implements EventListener {
 
         try {
             final String html = Resources.toString(Resources.getResource(HTML_TEMPLATE), Charsets.UTF_8);
-            final String processedHtml = html.replace(JS_REFERENCE, new String( jsContent.toByteArray()));
+            final String processedHtml = html.replace(JS_REFERENCE, "<script>" + new String( jsContent.toByteArray()) + "</script>");
             writeBytesToURL(processedHtml.getBytes(), toUrl("index.html"));
         } catch (final IOException e) {
             throw new CucumberException(e);
