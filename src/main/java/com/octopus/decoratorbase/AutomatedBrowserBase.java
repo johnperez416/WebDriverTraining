@@ -8,9 +8,11 @@ import com.octopus.exceptions.NetworkException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.OSUtils;
+import com.octopus.utils.ServiceMessageGenerator;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.JavaLauncherUtilsImpl;
 import com.octopus.utils.impl.OSUtilsImpl;
+import com.octopus.utils.impl.ServiceMessageGeneratorImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -19,6 +21,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
@@ -40,6 +43,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
+    private static final ServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new ServiceMessageGeneratorImpl();
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
@@ -1283,6 +1287,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(percent),
                     getSubstitutedString(message));
         }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.setProgress(
+                    NumberUtils.toInt(getSubstitutedString(percent), 0),
+                    getSubstitutedString(message));
+        }
     }
 
     @And("^I write the value of the alias \"([^\"]*)\" to the Octopus variable \"([^\"]*)\"$")
@@ -1292,6 +1302,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().writeAliasValueToOctopusVariable(
                     getSubstitutedString(alias),
                     getSubstitutedString(variable));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newVariable(getSubstitutedString(alias), getSubstitutedString(variable));
         }
     }
 
@@ -1302,6 +1315,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().writeAliasValueToOctopusSensitiveVariable(
                     getSubstitutedString(alias),
                     getSubstitutedString(variable));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable),
+                    true);
         }
     }
 
@@ -1312,6 +1331,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().defineArtifact(
                     getSubstitutedString(name),
                     getSubstitutedString(path));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newArtifact(path, name);
         }
     }
 
