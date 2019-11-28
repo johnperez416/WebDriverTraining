@@ -82,17 +82,22 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
             final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
             final WebElement webElement = element.getElement();
 
-            final Long top = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
-            final Long left = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
-            final Long height = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
-            final Long width = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
+            final Long[] rect = RETRY_SERVICE.getTemplate()
+                    .execute(context -> {
+                                final Long top = (Long) javascriptExecutor.executeScript(
+                                        "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
+                                final Long left = (Long) javascriptExecutor.executeScript(
+                                        "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
+                                final Long height = (Long) javascriptExecutor.executeScript(
+                                        "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
+                                final Long width = (Long) javascriptExecutor.executeScript(
+                                        "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
+                                return new Long[]{left, top, width, height};
+                            });
+
             mouseGlide(
-                    Math.min(d.width - 1, (int) ((left + width / 2) * zoom)),
-                    Math.min(d.height - 1, (int) ((top + verticalOffset + height / 2) * zoom)),
+                    Math.min(d.width - 1, (int) ((rect[0] + rect[2] / 2) * zoom)),
+                    Math.min(d.height - 1, (int) ((rect[1] + verticalOffset + rect[3] / 2) * zoom)),
                     Constants.MOUSE_MOVE_TIME,
                     Constants.MOUSE_MOVE_STEPS);
 
