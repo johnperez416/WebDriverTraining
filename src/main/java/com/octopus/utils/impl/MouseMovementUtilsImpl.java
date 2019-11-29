@@ -33,7 +33,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
         try {
             final Robot r = new Robot();
 
-            final double dist =  Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            final double dist = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
             final double fixedSteps = Math.min(dist, steps);
 
             final double dx = (x2 - x1) / (fixedSteps);
@@ -80,7 +80,6 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     Constants.SCREEN_ZOOM_FACTOR, 1.0f);
 
             final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-            final WebElement webElement = element.getElement();
 
             /*
                 This can fail with the error:
@@ -89,16 +88,17 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
              */
             final Long[] rect = RETRY_SERVICE.getTemplate()
                     .execute(context -> {
-                                final Long top = (Long) javascriptExecutor.executeScript(
-                                        "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
-                                final Long left = (Long) javascriptExecutor.executeScript(
-                                        "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
-                                final Long height = (Long) javascriptExecutor.executeScript(
-                                        "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
-                                final Long width = (Long) javascriptExecutor.executeScript(
-                                        "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
-                                return new Long[]{left, top, width, height};
-                            });
+                        final WebElement webElement = element.getElement();
+                        final Long top = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
+                        final Long left = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
+                        final Long height = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
+                        final Long width = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
+                        return new Long[]{left, top, width, height};
+                    });
 
             mouseGlide(
                     Math.min(d.width - 1, (int) ((rect[0] + rect[2] / 2) * zoom)),
