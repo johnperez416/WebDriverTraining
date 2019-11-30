@@ -1,8 +1,10 @@
 package com.octopus;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface AutomatedBrowser {
@@ -66,15 +68,15 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Screenshots and Recording">
-    void startScreenRecording(final String file);
+    void startScreenRecording(final String file, final String capturedArtifact);
 
     void stopScreenRecording();
 
-    CompletableFuture<Void> takeScreenshot(String filename, boolean force);
+    CompletableFuture<Void> takeScreenshot(String filename, boolean force, String captureArtifact);
 
-    CompletableFuture<Void> takeScreenshot(String filename);
+    CompletableFuture<Void> takeScreenshot(String filename, String captureArtifact);
 
-    CompletableFuture<Void> takeScreenshot(String directory, String filename);
+    CompletableFuture<Void> takeScreenshot(String directory, String filename, String captureArtifact);
     //</editor-fold>
 
     //<editor-fold desc="ID Selection">
@@ -228,14 +230,24 @@ public interface AutomatedBrowser {
     void clearIfExists(String locator, int waitTime, String ifExistsOption);
 
     default void mouseOver(String locator) {
-        mouseOverIfExists(locator, null);}
+        mouseOverIfExists(null, locator, null);}
 
     default void mouseOver(String locator, int waitTime) {
-        mouseOverIfExists(locator, waitTime, null);}
+        mouseOverIfExists(null, locator, waitTime, null);}
 
-    void mouseOverIfExists(String locator, String ifExistsOption);
+    void mouseOverIfExists(String force, String locator, String ifExistsOption);
 
-    void mouseOverIfExists(String locator, int waitTime, String ifExistsOption);
+    void mouseOverIfExists(String force, String locator, int waitTime, String ifExistsOption);
+
+    default void focus(String locator) {
+        focusIfExists(null, locator, null);}
+
+    default void focus(String locator, int waitTime) {
+        focusIfExists(null, locator, waitTime, null);}
+
+    void focusIfExists(String force, String locator, String ifExistsOption);
+
+    void focusIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
     default String getTextFromElement(String locator) {return getTextFromElementIfExists(locator, null);}
 
@@ -294,6 +306,8 @@ public interface AutomatedBrowser {
     void verifyElementDoesNotExist(String locator);
 
     void verifyElementDoesNotExist(String locator, int waitTime);
+
+    String getTitle();
     //</editor-fold>
 
     //<editor-fold desc="Network Alter and Capture">
@@ -306,6 +320,8 @@ public interface AutomatedBrowser {
     void blockRequestTo(String url, int responseCode);
 
     void alterResponseFrom(String url, int responseCode, String responseBody);
+
+    List<Pair<String, Integer>> getErrors();
     //</editor-fold>
 
     //<editor-fold desc="Transitions and Annotations">
@@ -322,5 +338,15 @@ public interface AutomatedBrowser {
 
     //<editor-fold desc="Statistics">
     int getInteractionCount();
+    //</editor-fold>
+
+    //<editor-fold desc="Octopus">
+    void setOctopusPercent(String percent, String message);
+
+    void writeAliasValueToOctopusVariable(String alias, String variable);
+
+    void writeAliasValueToOctopusSensitiveVariable(String alias, String variable);
+
+    void defineArtifact(String name, String path);
     //</editor-fold>
 }

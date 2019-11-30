@@ -11,6 +11,11 @@ public class Constants {
         add("--strict");
     }};
 
+    /**
+     * Show the state of various options enabling and disabling features at startup
+     */
+    public static final String DUMP_OPTIONS = "dumpOptions";
+
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**
@@ -52,6 +57,11 @@ public class Constants {
      * The system property that can be used to disable any element highlighting steps
      */
     public static final String DISABLE_HIGHLIGHTS = "disableHighlights";
+
+    /**
+     * The system property that can be used to disable any Octopus service messages
+     */
+    public static final String DISABLE_SERVICEMESSAGES = "disableOctopusServiceMessages";
 
     /**
      * The system property that can be used to disable any video recording

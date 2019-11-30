@@ -28,6 +28,8 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         } catch (IOException e) {
             this.userData = null;
         }
+        // Disable the logging to System.err
+        System.setProperty("webdriver.chrome.silentOutput", "true");
     }
 
     @Override
@@ -38,6 +40,9 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         // A random user-data dir can fix issues with multiple tests opening and closing Chrome
         if (userData != null) {
             options.addArguments("--user-data-dir=" + userData.getAbsolutePath());
+        }
+        if (System.getProperty("chrome.binary") != null) {
+            options.setBinary(System.getProperty("chrome.binary"));
         }
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);

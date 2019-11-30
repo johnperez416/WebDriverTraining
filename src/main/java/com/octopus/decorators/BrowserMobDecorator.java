@@ -13,8 +13,13 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.core.har.Har;
+import net.lightbody.bmp.core.har.HarEntry;
+import net.lightbody.bmp.core.har.HarLog;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpHeaders;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
@@ -22,8 +27,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class BrowserMobDecorator extends AutomatedBrowserBase {
 
@@ -66,6 +75,9 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         }
 
         if (proxy != null) {
+            if (proxy.getHar() != null) {
+                proxy.endHar();
+            }
             proxy.stop();
         }
     }
@@ -124,5 +136,17 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         });
 
         getAutomatedBrowser().alterResponseFrom(url, responseCode, responseBody);
+    }
+
+    @Override
+    public List<Pair<String, Integer>> getErrors() {
+        return Optional.ofNullable(proxy.getHar())
+                .map(Har::getLog)
+                .map(HarLog::getEntries)
+                .orElse(List.of())
+                .stream()
+                .filter(s -> Range.between(400, 599).contains(s.getResponse().getStatus()))
+                .map(s -> Pair.of(s.getRequest().getUrl(), s.getResponse().getStatus()))
+                .collect(Collectors.toList());
     }
 }

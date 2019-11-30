@@ -9,11 +9,8 @@ import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-import cucumber.api.PickleStepTestStep;
-import cucumber.api.Result;
-import cucumber.api.event.EventListener;
-import cucumber.api.event.EventPublisher;
-import cucumber.api.event.TestStepFinished;
+import io.cucumber.plugin.EventListener;
+import io.cucumber.plugin.event.*;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,11 +45,11 @@ public class SlackStepHandler implements EventListener {
             return;
         }
 
-        if (event.result.isOk(false) && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
+        if (event.getResult().getStatus().isOk(false) && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(SLACK_HANDLER_ERROR_ONLY, false)) {
             return;
         }
 
-        if (event.result.getStatus() == Result.Type.SKIPPED) {
+        if (event.getResult().getStatus() == Status.SKIPPED) {
             return;
         }
 
@@ -85,14 +82,14 @@ public class SlackStepHandler implements EventListener {
                 final SlackMessage message = SlackMessage
                         .builder()
                         .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE, " ") +
-                                event.result.getStatus() + " " + getStepName(event))
+                                event.getResult().getStatus() + " " + getStepName(event))
                         .build();
 
                 imageUrl.ifPresent(s ->
                         message.attachments = new Attachments[]{
                             Attachments
                                     .builder()
-                                    .color(event.result.getStatus() == Result.Type.PASSED ? "good" : "danger")
+                                    .color(event.getResult().getStatus() == Status.PASSED ? "good" : "danger")
                                     .imageUrl(s)
                                     .build()
                         }
@@ -126,11 +123,11 @@ public class SlackStepHandler implements EventListener {
     }
 
     private String getStepName(final TestStepFinished event) {
-        if (event.testStep instanceof PickleStepTestStep) {
-            return ((PickleStepTestStep) event.testStep).getStepText();
+        if (event.getTestStep() instanceof PickleStepTestStep) {
+            return ((PickleStepTestStep) event.getTestStep()).getStepText();
         }
 
-        return event.testStep.getCodeLocation();
+        return event.getTestStep().getCodeLocation();
     }
 }
 

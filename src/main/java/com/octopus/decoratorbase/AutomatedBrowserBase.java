@@ -4,28 +4,35 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
+import com.octopus.exceptions.NetworkException;
 import com.octopus.exceptions.SaveException;
 import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.OSUtils;
+import com.octopus.utils.ServiceMessageGenerator;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.JavaLauncherUtilsImpl;
 import com.octopus.utils.impl.OSUtilsImpl;
+import com.octopus.utils.impl.ServiceMessageGeneratorImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
@@ -36,6 +43,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
+    private static final ServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new ServiceMessageGeneratorImpl();
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
@@ -75,7 +83,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             }
         }
 
-        LOGGER.info("Recorded " + getInteractionCount() + " interactions for the browser session");
+        LOGGER.info("\nRecorded " + getInteractionCount() + " interactions for the browser session");
     }
 
     private Map<String, String> getAliases() {
@@ -101,29 +109,29 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Given("^I set the following aliases:$")
-    public void setAliases(Map<String, String> aliases) {
+    public void setAliases(final Map<String, String> aliases) {
         this.aliases.putAll(aliases);
     }
 
     @Override
     @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds?$")
-    public void sleep(String seconds) {
+    public void sleep(final String seconds) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().sleep(getSubstitutedString(seconds));
         }
     }
 
     @Given("^I open the( shared)? browser \"([^\"]*)\"$")
-    public void openBrowser(String shared, String browser) {
+    public void openBrowser(final String shared, final String browser) {
         if (sharedAutomatedBrowser != null) {
             throw new BrowserException("Can not open a browser with an existing shared browser.");
         }
 
         if (shared != null) {
-            automatedBrowser = sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser = sharedAutomatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(getSubstitutedString(browser));
             automatedBrowser.init();
         } else {
-            automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
+            automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(getSubstitutedString(browser));
             automatedBrowser.init();
         }
     }
@@ -140,7 +148,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
     @Override
-    public void setDefaultExplicitWaitTime(int waitTime) {
+    public void setDefaultExplicitWaitTime(final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setDefaultExplicitWaitTime(waitTime);
         }
@@ -196,7 +204,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I open the URL \"([^\"]*)\"$")
     @Override
-    public void goTo(String url) {
+    public void goTo(final String url) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().goTo(getSubstitutedString(url));
         }
@@ -231,11 +239,13 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I start recording the screen to the directory \"([^\"]*)\"$")
+    @And("^I start recording the screen(?: to the directory \"([^\"]*)\")(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public void startScreenRecording(final String file) {
+    public void startScreenRecording(final String file, final String capturedArtifact) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().startScreenRecording(getSubstitutedString(file));
+            getAutomatedBrowser().startScreenRecording(
+                    getSubstitutedString(file),
+                    getSubstitutedString(capturedArtifact));
         }
     }
 
@@ -268,31 +278,35 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().takeScreenshot(
                     getSubstitutedString(filename),
-                    force);
+                    force,
+                    captureArtifact);
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    @And("^I save a screenshot to \"([^\"]*)\"$")
+    @And("^I save a screenshot to \"([^\"]*)\"(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
-            return getAutomatedBrowser().takeScreenshot(getSubstitutedString(filename));
+            return getAutomatedBrowser().takeScreenshot(
+                    getSubstitutedString(filename),
+                    getSubstitutedString(captureArtifact));
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"$")
+    @And("^I save a screenshot to \"([^\"]*)\" called \"([^\"]*)\"(?: and capture as an Octopus artifact called \"([^\"]*)\")?$")
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename) {
+    public CompletableFuture<Void> takeScreenshot(final String directory, final String filename, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().takeScreenshot(
                     getSubstitutedString(directory),
-                    getSubstitutedString(filename));
+                    getSubstitutedString(filename),
+                    getSubstitutedString(captureArtifact));
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -854,19 +868,46 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?")
+    @And("^I( force)? mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?")
     @Override
-    public void mouseOverIfExists(final String locator, final String ifExistsOption) {
+    public void mouseOverIfExists(final String force, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().mouseOverIfExists(getSubstitutedString(locator), ifExistsOption);
+            getAutomatedBrowser().mouseOverIfExists(
+                    force,
+                    getSubstitutedString(locator),
+                    ifExistsOption);
         }
     }
 
-    @And("^I mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?")
+    @And("^I( force)? mouse over the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?")
     @Override
-    public void mouseOverIfExists(final String locator, final int waitTime, final String ifExistsOption) {
+    public void mouseOverIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().mouseOverIfExists(
+                    force,
+                    getSubstitutedString(locator),
+                    waitTime,
+                    ifExistsOption);
+        }
+    }
+
+    @And("^I( force)? focus(?: on) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?")
+    @Override
+    public void focusIfExists(final String force, final String locator, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().focusIfExists(
+                    force,
+                    getSubstitutedString(locator),
+                    ifExistsOption);
+        }
+    }
+
+    @And("^I( force)? focus(?: on) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?")
+    @Override
+    public void focusIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().focusIfExists(
+                    force,
                     getSubstitutedString(locator),
                     waitTime,
                     ifExistsOption);
@@ -1018,7 +1059,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I block the request to \"([^\"]*)\" returning the HTTP code \"\\d+\"$")
+    @And("^I block the request to \"([^\"]*)\" returning the HTTP code \"(\\d+)\"$")
     @Override
     public void blockRequestTo(final String url, final int responseCode) {
         if (getAutomatedBrowser() != null) {
@@ -1028,7 +1069,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I alter the response from \"([^\"]*)\" returning the HTTP code \"\\d+\" and the response body:$")
+    @And("^I alter the response from \"([^\"]*)\" returning the HTTP code \"(\\d+)\" and the response body:$")
     @Override
     public void alterResponseFrom(final String url, final int responseCode, final String responseBody) {
         if (getAutomatedBrowser() != null) {
@@ -1036,6 +1077,25 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(url),
                     responseCode,
                     getSubstitutedString(responseBody));
+        }
+    }
+
+    @Override
+    public List<Pair<String, Integer>> getErrors() {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getErrors();
+        }
+
+        return List.of();
+    }
+
+    @And("^I verify there were no network errors$")
+    public void verifyNoErrorsInHar() {
+        final var errors = getErrors();
+
+        if (!errors.isEmpty()) {
+            errors.forEach(e -> LOGGER.warning("Request to " + e.getKey() + " returned " + e.getRight()));
+            throw new NetworkException("Errors found in the HAR file");
         }
     }
 
@@ -1130,6 +1190,17 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I get the text from the page title$")
+    @Override
+    public String getTitle() {
+        if (getAutomatedBrowser() != null) {
+            final String text = getAutomatedBrowser().getTitle();
+            aliases.put(LastReturn, text);
+            return text;
+        }
+        return null;
+    }
+
     @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
     public void pressEscape(final String locator) {
@@ -1208,7 +1279,69 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return 0;
     }
 
+    @And("^I set the Octopus step percentage to \"([^\"]*)\" with the message \"([^\"]*)\"$")
+    @Override
+    public void setOctopusPercent(final String percent, final String message) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setOctopusPercent(
+                    getSubstitutedString(percent),
+                    getSubstitutedString(message));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.setProgress(
+                    NumberUtils.toInt(getSubstitutedString(percent), 0),
+                    getSubstitutedString(message));
+        }
+    }
+
+    @And("^I write the value of the alias \"([^\"]*)\" to the Octopus variable \"([^\"]*)\"$")
+    @Override
+    public void writeAliasValueToOctopusVariable(final String alias, final String variable) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().writeAliasValueToOctopusVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newVariable(getSubstitutedString(alias), getSubstitutedString(variable));
+        }
+    }
+
+    @And("^I write the value of the alias \"([^\"]*)\" to the Octopus sensitive variable \"([^\"]*)\"$")
+    @Override
+    public void writeAliasValueToOctopusSensitiveVariable(final String alias, final String variable) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().writeAliasValueToOctopusSensitiveVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newVariable(
+                    getSubstitutedString(alias),
+                    getSubstitutedString(variable),
+                    true);
+        }
+    }
+
+    @And("^I define an artifact called \"([^\"]*)\" from the file \"([^\"]*)\"$")
+    @Override
+    public void defineArtifact(final String name, final String path) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().defineArtifact(
+                    getSubstitutedString(name),
+                    getSubstitutedString(path));
+        } else {
+            // If there is no wrapped instance to defer to, print the message here
+            SERVICE_MESSAGE_GENERATOR.newArtifact(path, name);
+        }
+    }
+
     private String getSubstitutedString(final String string) {
+        if (StringUtils.isEmpty(string)) {
+            return string;
+        }
+
         return new StringSubstitutor(getAliases(), "#{", "}")
                 .setEnableSubstitutionInVariables(true)
                 .replace(getAliases().getOrDefault(string, string));

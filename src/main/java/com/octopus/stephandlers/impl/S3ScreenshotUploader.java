@@ -30,7 +30,8 @@ public class S3ScreenshotUploader implements ScreenshotUploader {
         try {
             final CompletableFuture<Void> screenshot = AutomatedBrowserBase.getInstance().takeScreenshot(
                     "s3://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + "/" + filename,
-                    true);
+                    true,
+                    null);
             return Optional.of(screenshot.thenCompose(s ->
                     CompletableFuture.supplyAsync(() ->
                             "https://" + SYSTEM_PROPERTY_UTILS.getProperty(SCREENSHOT_S3_BUCKET) + ".s3.amazonaws.com/" + filename)));

@@ -33,7 +33,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
         try {
             final Robot r = new Robot();
 
-            final double dist =  Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            final double dist = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
             final double fixedSteps = Math.min(dist, steps);
 
             final double dx = (x2 - x1) / (fixedSteps);
@@ -80,19 +80,29 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     Constants.SCREEN_ZOOM_FACTOR, 1.0f);
 
             final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-            final WebElement webElement = element.getElement();
 
-            final Long top = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
-            final Long left = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
-            final Long height = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
-            final Long width = (Long) javascriptExecutor.executeScript(
-                    "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
+            /*
+                This can fail with the error:
+                The element reference of <reference> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
+                We retry here to allow the movement to complete if the source element disappears.
+             */
+            final Long[] rect = RETRY_SERVICE.getTemplate()
+                    .execute(context -> {
+                        final WebElement webElement = element.getElement();
+                        final Long top = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().top);", webElement);
+                        final Long left = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().left);", webElement);
+                        final Long height = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().height);", webElement);
+                        final Long width = (Long) javascriptExecutor.executeScript(
+                                "return Math.floor(arguments[0].getBoundingClientRect().width);", webElement);
+                        return new Long[]{left, top, width, height};
+                    });
+
             mouseGlide(
-                    Math.min(d.width - 1, (int) ((left + width / 2) * zoom)),
-                    Math.min(d.height - 1, (int) ((top + verticalOffset + height / 2) * zoom)),
+                    Math.min(d.width - 1, (int) ((rect[0] + rect[2] / 2) * zoom)),
+                    Math.min(d.height - 1, (int) ((rect[1] + verticalOffset + rect[3] / 2) * zoom)),
                     Constants.MOUSE_MOVE_TIME,
                     Constants.MOUSE_MOVE_STEPS);
 
