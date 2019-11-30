@@ -33,6 +33,8 @@ jobs:
         sudo chmod +x /usr/local/bin/geckodriver
     - name: Check for updates
       run: mvn versions:display-dependency-updates
+    - name: Set version
+      run: mvn versions:set -DnewVersion=$(cat /github/workspace/version.txt)
     - name: Build with Maven
       run: mvn package -DskipTests
     - name: Test
@@ -48,13 +50,18 @@ jobs:
       uses: docker://gittools/gitversion:5.0.2-beta1-27-linux-centos-7-netcoreapp2.2
       with:
         args: /github/workspace /nofetch /exec /bin/sh /execargs "-c \"echo $GitVersion_FullSemVer > /github/workspace/version.txt\""
-    - name: Build the Docker image
+    - name: Deploy to Github Package Registry
       run: |
-        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
-        docker tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt) ${{ secrets.DOCKER_USERNAME }}/webdriver:latest
-    - name: Docker login
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-    - name: Push the Docker image
-      run: |
-        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
-        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:latest
+        mkdir ~/.m2
+        echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+        mvn deploy
+#    - name: Build the Docker image
+#      run: |
+#        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+#        docker tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt) ${{ secrets.DOCKER_USERNAME }}/webdriver:latest
+#    - name: Docker login
+#      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#    - name: Push the Docker image
+#      run: |
+#        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
+#        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:latest
