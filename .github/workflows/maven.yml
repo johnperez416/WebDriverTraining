@@ -1,9 +1,10 @@
 name: Java CI
 on:
   push:
-    tags-ignore:
-      - 'v*'
 jobs:
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
   build:
     runs-on: ubuntu-latest
     steps:
