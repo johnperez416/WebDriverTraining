@@ -54,7 +54,7 @@ jobs:
     - name: Deploy to Github Package Registry
       run: |
         echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-        mvn deploy
+        mvn deploy -DskipTests
 #    - name: Build the Docker image
 #      run: |
 #        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
