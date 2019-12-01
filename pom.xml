@@ -221,4 +221,11 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>OctopusDeploy Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/OctopusDeploy/WebDriverTraining</url>
+        </repository>
+    </distributionManagement>
 </project>
