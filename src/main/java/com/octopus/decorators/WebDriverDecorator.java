@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -106,6 +107,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public CompletableFuture<Void> takeScreenshot(final String file, boolean force, final String captureArtifact) {
         if (!force && SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_SCREENSHOTS, false) || webDriver == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        // Don't attempt to take a screenshot after the window has been closed
+        if (((RemoteWebDriver)webDriver).getSessionId() == null) {
             return CompletableFuture.completedFuture(null);
         }
 
