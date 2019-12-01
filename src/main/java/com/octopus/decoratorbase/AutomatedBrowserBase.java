@@ -844,7 +844,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @Then("^I verify the (current )?URL matches the regex \"([^\"]*)\"$")
+    @Then("^I verify the (?:current )?URL matches the regex \"([^\"]*)\"$")
     @Override
     public void verifyUrl(final String regex) {
         if (getAutomatedBrowser() != null) {
