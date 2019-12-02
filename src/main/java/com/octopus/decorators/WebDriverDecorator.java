@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -958,6 +959,25 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 locator,
                 waitTime,
                 ExpectedConditions::presenceOfElementLocated).sendKeys(Keys.ENTER);
+    }
+
+    @Override
+    public void pressFunctionKey(final String key) {
+        switch (key) {
+            case "F1": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F1); break;
+            case "F2": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F2); break;
+            case "F3": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F3); break;
+            case "F4": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F4); break;
+            case "F5": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F5); break;
+            case "F6": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F6); break;
+            case "F7": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F7); break;
+            case "F8": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F8); break;
+            case "F9": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F9); break;
+            case "F10": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F10); break;
+            case "F11": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F11); break;
+            case "F12": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F12); break;
+        }
+
     }
 
     @Override

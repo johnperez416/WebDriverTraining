@@ -1233,6 +1233,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I press the \"([^\"]*)\" function key$")
+    @Override
+    public void pressFunctionKey(final String key) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressFunctionKey(getSubstitutedString(key));
+        }
+    }
+
     @Then("^I clear the transition$")
     @Override
     public void clearTransition() {

@@ -65,6 +65,8 @@ public interface AutomatedBrowser {
     void pressEnter(String locator);
 
     void pressEnter(String locator, int waitTime);
+
+    void pressFunctionKey(String key);
     //</editor-fold>
 
     //<editor-fold desc="Screenshots and Recording">
