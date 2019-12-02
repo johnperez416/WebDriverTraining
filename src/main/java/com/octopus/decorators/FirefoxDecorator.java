@@ -43,6 +43,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         myprofile.setPreference("network.automatic-ntlm-auth.allow-non-fqdn", "true");
         myprofile.setPreference("browser.cache.memory.enable", false);
         myprofile.setPreference("browser.cache.memory.capacity", 0);
+        myprofile.setPreference("browser.fullscreen.autohide", false);
 
         final FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(headless);

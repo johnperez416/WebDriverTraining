@@ -710,6 +710,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void fullscreen() {
+        webDriver.manage().window().fullscreen();
+    }
+
+    @Override
     public void verifyElementExists(final String locator, final String ifExistsOption) {
         verifyElementExists(locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
@@ -963,19 +968,20 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void pressFunctionKey(final String key) {
+        final Try<Robot> robot = Try.of(Robot::new);
         switch (key) {
-            case "F1": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F1); break;
-            case "F2": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F2); break;
-            case "F3": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F3); break;
-            case "F4": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F4); break;
-            case "F5": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F5); break;
-            case "F6": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F6); break;
-            case "F7": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F7); break;
-            case "F8": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F8); break;
-            case "F9": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F9); break;
-            case "F10": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F10); break;
-            case "F11": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F11); break;
-            case "F12": ((RemoteWebDriver)getWebDriver()).getKeyboard().pressKey(Keys.F12); break;
+            case "F1" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F1));
+            case "F2" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F2));
+            case "F3" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F3));
+            case "F4" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F4));
+            case "F5" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F5));
+            case "F6" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F6));
+            case "F7" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F7));
+            case "F8" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F8));
+            case "F9" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F9));
+            case "F10" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F10));
+            case "F11" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F11));
+            case "F12" -> robot.andThen(r -> r.keyPress(KeyEvent.VK_F12));
         }
 
     }

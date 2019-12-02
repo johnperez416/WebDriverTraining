@@ -1107,6 +1107,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I fullscreen the window$")
+    @Override
+    public void fullscreen() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().fullscreen();
+        }
+    }
+
     @And("^I highlight( outside| inside)?( and lift)? the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?(?: with an offset of \"([^\"]*)\")?( if it exists)?$")
     @Override
     public void elementHighlightIfExists(final String position, final String lift, final String locator, final String offset, final String ifExistsOption) {
