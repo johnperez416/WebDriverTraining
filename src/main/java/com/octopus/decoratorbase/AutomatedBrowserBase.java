@@ -6,6 +6,7 @@ import com.octopus.Constants;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.NetworkException;
 import com.octopus.exceptions.SaveException;
+import com.octopus.exceptions.ScriptException;
 import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.OSUtils;
 import com.octopus.utils.ServiceMessageGenerator;
@@ -99,12 +100,18 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I run the feature \"([^\"]*)\"$")
     public void executeFeature(final String featureFile) {
+        int retValue = 0;
+
         if (new File(featureFile).exists()) {
-            JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {featureFile});
+            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {featureFile});
         } else {
             final String[] mainCommand = System.getProperty("sun.java.command").split(" ");
             final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
-            JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, featureFile).getAbsolutePath())});
+            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, featureFile).getAbsolutePath())});
+        }
+
+        if (retValue != 0) {
+            throw new ScriptException("Failed to run the feature " + featureFile);
         }
     }
 
