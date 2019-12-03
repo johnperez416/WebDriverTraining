@@ -105,36 +105,6 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                     Math.min(d.height - 1, (int) ((rect[1] + verticalOffset + rect[3] / 2) * zoom)),
                     Constants.MOUSE_MOVE_TIME,
                     Constants.MOUSE_MOVE_STEPS);
-
-            /*
-                This can fail with the error:
-                The element reference of <reference> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed.
-                We retry here to allow the movement to complete if the source element disappears.
-             */
-            try {
-                RETRY_SERVICE.getTemplate()
-                        .execute(context -> {
-                            new Actions(driver).moveToElement(element.getElement()).perform();
-                            return 1;
-                        });
-            } catch (final MoveTargetOutOfBoundsException ex) {
-                /*
-                    We may be forcing a click on an element specifically to work around the fact that it is not
-                    something Selenium can reach. In this case, ignore the out of bounds exeception.
-                 */
-                if (!force) {
-                    throw ex;
-                }
-            } catch (final WebDriverException ex) {
-                /*
-                    Working with hidden elements (a common example here is a hidden file input type) means there is
-                    nothing to move the mouse to, so we ignore it and move on.
-                 */
-                if (!ex.getMessage().contains("rect is undefined")) {
-                    throw ex;
-                }
-            }
-
         }
     }
 }
