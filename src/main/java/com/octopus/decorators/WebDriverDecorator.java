@@ -653,8 +653,26 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     ExpectedConditions::elementToBeClickable);
 
             if (StringUtils.isNotBlank(force)) {
-                ((JavascriptExecutor) getWebDriver()).executeScript(
-                        "arguments[0].value = \"\";", element);
+                /*
+                    Clearing form fields with React is not as simple as it seems.
+                    https://github.com/facebook/react/issues/10135#issuecomment-314441175
+                 */
+
+                ((JavascriptExecutor) getWebDriver()).executeScript("""
+                            function setNativeValue(element, value) {
+                              const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
+                              const prototype = Object.getPrototypeOf(element);
+                              const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+
+                              if (valueSetter && valueSetter !== prototypeValueSetter) {
+                                prototypeValueSetter.call(element, value);
+                              } else {
+                                valueSetter.call(element, value);
+                              }
+                            }
+                            setNativeValue(arguments[0], "");
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                        """, element);
             } else {
                 element.clear();
             }
