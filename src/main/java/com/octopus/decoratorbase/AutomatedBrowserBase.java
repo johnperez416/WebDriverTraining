@@ -812,21 +812,23 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
+    @And("^I( force)? clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
-    public void clearIfExists(final String locator, final String ifExistsOption) {
+    public void clearIfExists(final String force, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().clearIfExists(
+                    force,
                     getSubstitutedString(locator),
                     ifExistsOption);
         }
     }
 
-    @And("^I clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I( force)? clear the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void clearIfExists(final String locator, final int waitTime, final String ifExistsOption) {
+    public void clearIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().clearIfExists(
+                    force,
                     getSubstitutedString(locator),
                     waitTime,
                     ifExistsOption);

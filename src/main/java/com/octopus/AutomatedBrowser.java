@@ -224,14 +224,14 @@ public interface AutomatedBrowser {
     void populateHiddenElement(final String locator, final String text, final String ifExistsOption);
 
     default void clear(String locator) {
-        clearIfExists(locator, null);}
+        clearIfExists(null, locator, null);}
 
     default void clear(String locator, int waitTime) {
-        clearIfExists(locator, waitTime, null);}
+        clearIfExists(null, locator, waitTime, null);}
 
-    void clearIfExists(String locator, String ifExistsOption);
+    void clearIfExists(String force, String locator, String ifExistsOption);
 
-    void clearIfExists(String locator, int waitTime, String ifExistsOption);
+    void clearIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
     default void mouseOver(String locator) {
         mouseOverIfExists(null, locator, null);}

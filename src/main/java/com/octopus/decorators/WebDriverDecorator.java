@@ -639,18 +639,25 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clearIfExists(final String locator, final String ifExistsOption) {
-        clearIfExists(locator, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void clearIfExists(final String force, final String locator, final String ifExistsOption) {
+        clearIfExists(force, locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void clearIfExists(final String locator, final int waitTime, final String ifExistsOption) {
+    public void clearIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
         try {
-            SIMPLE_BY.getElement(
+            final WebElement element = SIMPLE_BY.getElement(
                     getWebDriver(),
                     locator,
                     waitTime,
-                    ExpectedConditions::elementToBeClickable).clear();
+                    ExpectedConditions::elementToBeClickable);
+
+            if (StringUtils.isNotBlank(force)) {
+                ((JavascriptExecutor) getWebDriver()).executeScript(
+                        "arguments[0].value = \"\";", element);
+            } else {
+                element.clear();
+            }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
