@@ -100,14 +100,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I run the feature \"([^\"]*)\"$")
     public void executeFeature(final String featureFile) {
+        final String fixedPath = OS_UTILS.fixFileName(getSubstitutedString(featureFile));
         int retValue = 0;
 
-        if (new File(featureFile).exists()) {
+        if (new File(fixedPath).exists()) {
             retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {featureFile});
         } else {
             final String[] mainCommand = System.getProperty("sun.java.command").split(" ");
             final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
-            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, featureFile).getAbsolutePath())});
+            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, fixedPath).getAbsolutePath())});
         }
 
         if (retValue != 0) {
