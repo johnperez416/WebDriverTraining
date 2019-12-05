@@ -3,6 +3,7 @@ package com.octopus.decoratorbase;
 import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
+import com.octopus.Main;
 import com.octopus.exceptions.BrowserException;
 import com.octopus.exceptions.NetworkException;
 import com.octopus.exceptions.SaveException;
@@ -21,7 +22,11 @@ import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
@@ -35,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -98,17 +104,34 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return automatedBrowser;
     }
 
-    @And("^I run the feature \"([^\"]*)\"$")
-    public void executeFeature(final String featureFile) {
+    @And("^I run the feature \"([^\"]*)\"( passing the original arguments)?(?:(?: and)? with the arguments \"([^\"]*)\")?$")
+    public void executeFeature(final String featureFile, final String passArguments, final String additionalArgs) {
+        // The path in Windows uses either forward slash or back slash as path delimiters
         final String fixedPath = OS_UTILS.fixFileName(getSubstitutedString(featureFile));
+        final String fixedAdditionalArgs = getSubstitutedString(additionalArgs);
+        // Optionally pass the args that were used to start the app
+        final String[] args = StringUtils.isEmpty(passArguments)
+                ? new String[]{}
+                : ArrayUtils.subarray(Main.args, 0, Main.args.length - 1);
+        // Merge those args with any additional ones, processed by Apache Commons CLI to deal with quoting
+        final String[] additionalArgsArray = StringUtils.isEmpty(fixedAdditionalArgs)
+                ? args
+                : ArrayUtils.addAll(
+                    args,
+                    CommandLine
+                        .parse(Objects.toString(getSubstitutedString(additionalArgs), ""))
+                        .getArguments());
+        // Track the return code
         int retValue = 0;
 
         if (new File(fixedPath).exists()) {
-            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {featureFile});
+            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(ArrayUtils.add(additionalArgsArray, featureFile));
         } else {
             final String[] mainCommand = System.getProperty("sun.java.command").split(" ");
             final String featurePath = new File(mainCommand[mainCommand.length - 1]).getParentFile().getAbsolutePath();
-            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(new String[] {(new File(featurePath, fixedPath).getAbsolutePath())});
+            retValue = JAVA_LAUNCHER_UTILS.launchAppInternally(ArrayUtils.add(
+                    additionalArgsArray,
+                    new File(featurePath, fixedPath).getAbsolutePath()));
         }
 
         if (retValue != 0) {
