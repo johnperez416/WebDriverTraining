@@ -17,6 +17,9 @@ xvfb=$!
 
 export DISPLAY=:99
 
+/usr/bin/xcompmgr -d :99 &
+/usr/bin/fluxbox &
+
 chromium --no-sandbox $@ &
 chromium=$!
 
