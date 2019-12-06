@@ -21,8 +21,13 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.toString());
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR = new EnvironmentAliasesProcessorImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * We track the args so we can relaunch Cucumber with the same options
+     */
+    public static String[] args;
 
     public static void main(final String[] args) {
+        Main.args = args;
         configureLogging();
         dumpOptions();
         final int retValue = runCucumber(args);
