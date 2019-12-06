@@ -1,6 +1,6 @@
 FROM debian:stable
 
-RUN apt-get update && apt-get install -y curl wget xvfb chromium chromium-driver
+RUN apt-get update && apt-get install -y curl wget xvfb chromium chromium-driver firefox firefoxdriver
 RUN wget https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61e4305/9/GPL/openjdk-13.0.1_linux-x64_bin.tar.gz -O openjdk.tar.gz && \
     tar xzf openjdk.tar.gz && \
     for d in jdk*; do mv $d jdk; done &&  \
