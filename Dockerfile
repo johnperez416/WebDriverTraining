@@ -17,3 +17,5 @@ RUN ln -s /usr/bin/xvfb-chromium /usr/bin/chromium-browser
 
 COPY target/webdrivertraining.*.jar /opt/webdriver.jar
 ENTRYPOINT ["/opt/jdk/bin/java", "--enable-preview", "-jar", "/opt/webdriver.jar"]
+
+ENV DISPLAY :99
