@@ -468,7 +468,7 @@ public class FormTest {
 
     @Test
     @Retry
-    @Ignore
+    @Ignore("Android tests a quite flaky")
     public void browserStackAndroidTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
