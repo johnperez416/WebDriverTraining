@@ -10,12 +10,15 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckod
     mv geckodriver /usr/bin
 
 ADD docker/fluxbox-init /root/.fluxbox/init
-ADD docker/xvfb-chromium /usr/bin/xvfb-chromium
-RUN chmod +x /usr/bin/xvfb-chromium
-RUN ln -s /usr/bin/xvfb-chromium /usr/bin/google-chrome
-RUN ln -s /usr/bin/xvfb-chromium /usr/bin/chromium-browser
+ADD docker/webdriver /opt/webdriver
+RUN chmod +x /opt/webdriver
+
+ADD docker/chromium-wrapper /usr/bin/chromium-wrapper
+RUN chmod +x /usr/bin/chromium-wrapper
+RUN ln -s /usr/bin/chromium-wrapper /usr/bin/google-chrome
+RUN ln -s /usr/bin/chromium-wrapper /usr/bin/chromium-browser
 
 COPY target/webdrivertraining.*.jar /opt/webdriver.jar
-ENTRYPOINT ["/opt/jdk/bin/java", "--enable-preview", "-jar", "/opt/webdriver.jar"]
 
-ENV DISPLAY :99
+ENTRYPOINT ["/opt/webdriver"]
+
