@@ -74,7 +74,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     public MouseMovementDecorator() {
-
+        super(null);
     }
 
     public MouseMovementDecorator(final AutomatedBrowser automatedBrowser) {

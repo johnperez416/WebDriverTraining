@@ -27,7 +27,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     private Map<String, String> originalStyles = new HashMap<>();
 
     public HighlightDecorator() {
-
+        super(null);
     }
 
     public HighlightDecorator(final AutomatedBrowser automatedBrowser) {

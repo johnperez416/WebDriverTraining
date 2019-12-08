@@ -4,10 +4,7 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.Main;
-import com.octopus.exceptions.BrowserException;
-import com.octopus.exceptions.NetworkException;
-import com.octopus.exceptions.SaveException;
-import com.octopus.exceptions.ScriptException;
+import com.octopus.exceptions.*;
 import com.octopus.utils.JavaLauncherUtils;
 import com.octopus.utils.OSUtils;
 import com.octopus.utils.ServiceMessageGenerator;
@@ -63,6 +60,10 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     public AutomatedBrowserBase() {
+        if (instanceAutomatedBrowser != null) {
+            throw new InitializationException("The AutomatedBrowserBase() constructor is only expected to be called by Cucumber, " +
+                    "but instanceAutomatedBrowser is not null indicating it was called by another class.");
+        }
         instanceAutomatedBrowser = this;
     }
 
