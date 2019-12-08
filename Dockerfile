@@ -28,7 +28,7 @@ COPY target/webdrivertraining.*.jar /opt/webdriver.jar
 # Running Firefox as root in a regular user's session is not supported.
 RUN useradd -u 1001 -ms /bin/bash runner
 ADD docker/fluxbox-init /home/webdriver/.fluxbox/init
-RUN chown -R webdriver:webdriver /opt
+RUN chown -R runner:runner /opt
 USER runner
 
 ENTRYPOINT ["/opt/webdriver"]
