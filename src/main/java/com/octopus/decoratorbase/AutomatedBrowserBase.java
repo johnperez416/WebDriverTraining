@@ -59,6 +59,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return instanceAutomatedBrowser;
     }
 
+    /**
+     * This must only be called by Cucumber. Otherwise call AutomatedBrowserBase(null).
+     */
     public AutomatedBrowserBase() {
         instanceAutomatedBrowser = this;
     }
