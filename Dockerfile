@@ -24,5 +24,12 @@ RUN ln -s /usr/bin/chromium-wrapper /usr/bin/chromium-browser
 
 COPY target/webdrivertraining.*.jar /opt/webdriver.jar
 
+# Firefox can't run as root, otherwise you'll get the error:
+# Running Firefox as root in a regular user's session is not supported.
+RUN useradd -ms /bin/bash webdriver
+ADD docker/fluxbox-init /home/webdriver/.fluxbox/init
+RUN chown -R webdriver:webdriver /opt
+USER webdriver
+
 ENTRYPOINT ["/opt/webdriver"]
 

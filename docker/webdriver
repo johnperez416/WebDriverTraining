@@ -34,8 +34,10 @@ launch_window_manager() {
 
 main
 
-/opt/jdk/bin/java \
-  --enable-preview \
-  -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin \
-  -Dwebdriver.gecko.driver=/usr/bin/geckodriver \
-  -jar /opt/webdriver.jar "$@"
+/opt/firefox/firefox
+
+#/opt/jdk/bin/java \
+#  --enable-preview \
+#  -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin \
+#  -Dwebdriver.gecko.driver=/usr/bin/geckodriver \
+#  -jar /opt/webdriver.jar "$@"
