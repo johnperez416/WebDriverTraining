@@ -36,6 +36,6 @@ main
 
 /opt/jdk/bin/java \
   --enable-preview \
-  -Dwebdriver.firefox.bin=/opt/firefox/firefox \
+  -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin \
   -Dwebdriver.gecko.driver=/usr/bin/geckodriver \
   -jar /opt/webdriver.jar "$@"

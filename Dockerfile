@@ -5,7 +5,7 @@ RUN wget https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61
     tar xzf openjdk.tar.gz && \
     for d in jdk*; do mv $d jdk; done &&  \
     mv jdk /opt/
-RUN apt-get install bzip2
+RUN apt-get install bzip2 libdbus-glib-1-2
 RUN wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/linux-x86_64/en-US/firefox-71.0.tar.bz2 -O firefox.tar.bz2 && \
      tar xjf firefox.tar.bz2 && \
      mv firefox /opt/
