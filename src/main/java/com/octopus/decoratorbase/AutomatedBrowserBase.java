@@ -60,10 +60,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     public AutomatedBrowserBase() {
-        if (instanceAutomatedBrowser != null) {
-            throw new InitializationException("The AutomatedBrowserBase() constructor is only expected to be called by Cucumber, " +
-                    "but instanceAutomatedBrowser is not null indicating it was called by another class.");
-        }
         instanceAutomatedBrowser = this;
     }
 
