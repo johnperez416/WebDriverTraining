@@ -664,18 +664,20 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
                 ((JavascriptExecutor) getWebDriver()).executeScript("""
                             function setNativeValue(element, value) {
-                              const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
-                              const prototype = Object.getPrototypeOf(element);
-                              const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+                                const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {}
+                                const prototype = Object.getPrototypeOf(element)
+                                const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {}
 
-                              if (valueSetter && valueSetter !== prototypeValueSetter) {
-                                prototypeValueSetter.call(element, value);
-                              } else {
-                                valueSetter.call(element, value);
-                              }
+                                if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+                                    prototypeValueSetter.call(element, value)
+                                } else if (valueSetter) {
+                                    valueSetter.call(element, value)
+                                } else {
+                                    throw new Error('The given element does not have a value setter')
+                                }
                             }
                             setNativeValue(arguments[0], "");
-                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
                         """, element);
             } else {
                 element.clear();
