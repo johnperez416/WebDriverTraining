@@ -5,22 +5,14 @@ import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.Main;
 import com.octopus.exceptions.*;
-import com.octopus.utils.JavaLauncherUtils;
-import com.octopus.utils.OSUtils;
-import com.octopus.utils.ServiceMessageGenerator;
-import com.octopus.utils.SystemPropertyUtils;
-import com.octopus.utils.impl.JavaLauncherUtilsImpl;
-import com.octopus.utils.impl.OSUtilsImpl;
-import com.octopus.utils.impl.ServiceMessageGeneratorImpl;
-import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import com.octopus.utils.*;
+import com.octopus.utils.impl.*;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -47,7 +39,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
-    private static final ServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new ServiceMessageGeneratorImpl();
+    private static final OctopusServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new OctopusServiceMessageGeneratorImpl();
+    private static final GithubActionsServiceMessageGenerator GITHUB_SERVICE_MESSAGE_GENERATOR = new GithubActionsServiceMessageGeneratorImpl();
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
@@ -1383,6 +1376,136 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         } else {
             // If there is no wrapped instance to defer to, print the message here
             SERVICE_MESSAGE_GENERATOR.newArtifact(path, name);
+        }
+    }
+
+    @And("^I set the value of the alias \"([^\"]*)\" as a Github environment variable called \"([^\"]*)\"$")
+    @Override
+    public void setGithubEnvironmentVariable(String name, String value) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setGithubEnvironmentVariable(
+                    getSubstitutedString(name),
+                    getSubstitutedString(value));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.setEnvironmentVariable(
+                    getSubstitutedString(name),
+                    getSubstitutedString(value));
+        }
+    }
+
+    @And("^I set the value of the alias \"([^\"]*)\" as a Github output parameter variable called \"([^\"]*)\"$")
+    @Override
+    public void setGithubOutputParameter(String name, String value) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setGithubOutputParameter(
+                    getSubstitutedString(name),
+                    getSubstitutedString(value));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.setOutputParameter(
+                    getSubstitutedString(name),
+                    getSubstitutedString(value));
+        }
+    }
+
+    @And("^I set the value of the alias \"([^\"]*)\" as a Github system path$")
+    @Override
+    public void addGithubSystemPath(String path) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().addGithubSystemPath(
+                    getSubstitutedString(path));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.addSystemPath(
+                    getSubstitutedString(path));
+        }
+    }
+
+    @And("^I print \"([^\"]*)\" as a Github debug message$")
+    @Override
+    public void setGithubDebugMessage(final String message) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setGithubDebugMessage(
+                    getSubstitutedString(message));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.setDebugMessage(
+                    getSubstitutedString(message));
+        }
+    }
+
+    @And("^I print \"([^\"]*)\" as a Github warning message$")
+    @Override
+    public void setGithubWarningMessage(final String message) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setGithubWarningMessage(
+                    getSubstitutedString(message));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.setWarningMessage(
+                    getSubstitutedString(message));
+        }
+    }
+
+    @And("^I print \"([^\"]*)\" as a Github error message$")
+    @Override
+    public void setGithubErrorMessage(final String message) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setGithubErrorMessage(
+                    getSubstitutedString(message));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.setErrorMessage(
+                    getSubstitutedString(message));
+        }
+    }
+
+    @And("^I mask \"([^\"]*)\" from the Github logs$")
+    @Override
+    public void maskGithubValue(final String value) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().maskGithubValue(
+                    getSubstitutedString(value));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.maskValue(
+                    getSubstitutedString(value));
+        }
+    }
+
+    @And("^I pause the Github logging with the token \"([^\"]*)\"$")
+    @Override
+    public void stopGithubLogging(final String token) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().stopGithubLogging(
+                    getSubstitutedString(token));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.stopLogging(
+                    getSubstitutedString(token));
+        }
+    }
+
+    @And("^I resume the Github logging with the token \"([^\"]*)\"$")
+    @Override
+    public void startGithubLogging(final String token) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().startGithubLogging(
+                    getSubstitutedString(token));
+        }
+        else {
+            // If there is no wrapped instance to defer to, print the message here
+            GITHUB_SERVICE_MESSAGE_GENERATOR.startLogging(
+                    getSubstitutedString(token));
         }
     }
 

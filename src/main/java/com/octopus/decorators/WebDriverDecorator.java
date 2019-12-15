@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -32,7 +31,8 @@ import java.util.regex.Pattern;
 
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final Logger LOGGER = Logger.getLogger(WebDriverDecorator.class.toString());
-    private static final ServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new ServiceMessageGeneratorImpl();
+    private static final OctopusServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new OctopusServiceMessageGeneratorImpl();
+    private static final GithubActionsServiceMessageGenerator GITHUB_SERVICE_MESSAGE_GENERATOR = new GithubActionsServiceMessageGeneratorImpl();
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final ScreenTransitions SCREEN_TRANSITIONS = new ScreenTransitionsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -1134,5 +1134,45 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
             });
         }
+    }
+
+    @Override
+    public void setGithubOutputParameter(String name, String value) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.setOutputParameter(name, value);
+    }
+
+    @Override
+    public void addGithubSystemPath(String path) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.addSystemPath(path);
+    }
+
+    @Override
+    public void setGithubDebugMessage(final String message) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.setDebugMessage(message);
+    }
+
+    @Override
+    public void setGithubWarningMessage(final String message) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.setWarningMessage(message);
+    }
+
+    @Override
+    public void setGithubErrorMessage(final String message) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.setErrorMessage(message);
+    }
+
+    @Override
+    public void maskGithubValue(final String value) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.maskValue(value);
+    }
+
+    @Override
+    public void stopGithubLogging(final String token) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.stopLogging(token);
+    }
+
+    @Override
+    public void startGithubLogging(final String token) {
+        GITHUB_SERVICE_MESSAGE_GENERATOR.startLogging(token);
     }
 }

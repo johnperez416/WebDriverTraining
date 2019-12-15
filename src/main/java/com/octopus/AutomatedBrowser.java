@@ -353,4 +353,16 @@ public interface AutomatedBrowser {
 
     void defineArtifact(String name, String path);
     //</editor-fold>
+
+    //<editor-fold desc="Github Actions">
+    void setGithubEnvironmentVariable(String name, String value);
+    void setGithubOutputParameter(String name, String value);
+    void addGithubSystemPath(String path);
+    void setGithubDebugMessage(String message);
+    void setGithubWarningMessage(String message);
+    void setGithubErrorMessage(String message);
+    void maskGithubValue(String value);
+    void stopGithubLogging(String token);
+    void startGithubLogging(String token);
+    //</editor-fold>
 }
