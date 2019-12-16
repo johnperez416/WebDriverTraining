@@ -3,7 +3,6 @@
 main() {
     launch_xvfb
     launch_window_manager
-    launch_webdriver
 }
 
 launch_xvfb() {
@@ -33,10 +32,8 @@ launch_window_manager() {
     xcompmgr -d :99 2>/dev/null 1>&2 &
 }
 
-launch_webdriver() {
-  JAVA_OPTS="--enable-preview -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin -Dwebdriver.gecko.driver=/usr/bin/geckodriver $JAVA_OPTS"
-  /opt/jdk/bin/java $JAVA_OPTS -jar /opt/webdriver.jar "$@"
-}
-
 main
+
+JAVA_OPTS="--enable-preview -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin -Dwebdriver.gecko.driver=/usr/bin/geckodriver $JAVA_OPTS"
+/opt/jdk/bin/java $JAVA_OPTS -jar /opt/webdriver.jar "$@"
 
