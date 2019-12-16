@@ -32,5 +32,5 @@ ADD docker/fluxbox-init /home/webdriver/.fluxbox/init
 RUN chown -R runner:runner /opt
 USER runner
 
-ENTRYPOINT ["/bin/bash", "-c", "/opt/webdriver"]
+ENTRYPOINT /opt/webdriver
 
