@@ -33,8 +33,22 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
+/**
+ * This class serves two purposes.
+ *
+ * First, it is the base class that any decorator will extend to take advantage of the default implementations of the
+ * interface methods, allowing the extending class to override just those methods that are important.
+ *
+ * Second, it is the glue class used by Cucumber to execute custom steps. This class is in a namespace of its own so
+ * Cucumber doesn't see any of the extending classes, which is a limitation Cucumber enforces. When used by Cucumber,
+ * the lifecycle of the instance is managed by Cucumber, and tracked by the instanceAutomatedBrowser variable.
+ */
 public class AutomatedBrowserBase implements AutomatedBrowser {
     private static final Logger LOGGER = Logger.getLogger(AutomatedBrowserBase.class.toString());
+    /**
+     * This alias is used to store the value of any text extracted from the web page. Cucumber does not have the notion of
+     * creating variables, but verification steps can test the value of the LastReturn alias to perform their checks.
+     */
     static private final String LastReturn = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
@@ -59,6 +73,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         instanceAutomatedBrowser = this;
     }
 
+    /**
+     * The constructor that must be used by any extending decorator. If there is no parent AutomatedBrowser,
+     * pass null.
+     * @param automatedBrowser The parent decorator, or null if there is no parent.
+     */
     public AutomatedBrowserBase(final AutomatedBrowser automatedBrowser) {
         this.automatedBrowser = automatedBrowser;
     }
@@ -68,11 +87,21 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         AutomatedBrowserBase.externalAliases.putAll(externalAliases);
     }
 
+    /**
+     * Before each scenario, reuse a shared browser if one was created earlier
+     */
     @Before
     public void reuseSharedBrowser() {
         automatedBrowser = sharedAutomatedBrowser;
     }
 
+    /**
+     * After each scenario, close the browser if there was a failure, stop the screen recording, and optionally
+     * dump the values of the aliases to the log. Also note how many manual interactions have been made with
+     * the current session (which is either the shared browser instanced if one was created, or the browser instance
+     * created for this scenario).
+     * @param scenario The scenario passed in by Cucumber
+     */
     @After
     public void afterScenario(final Scenario scenario) {
         if (scenario.isFailed()) {
@@ -86,6 +115,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         LOGGER.info("\nRecorded " + getInteractionCount() + " interactions for the browser session");
     }
 
+    /**
+     * @return The combined map of the aliases defined in this scenario, and any passed in from the command line
+     */
     private Map<String, String> getAliases() {
         final Map<String, String> combinedAliases = new HashMap<>();
         combinedAliases.putAll(aliases);
@@ -93,10 +125,20 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return combinedAliases;
     }
 
+    /**
+     * @return The parent automated browser instance
+     */
     public AutomatedBrowser getAutomatedBrowser() {
         return automatedBrowser;
     }
 
+    /**
+     * Executes a new Cucumber instance, optionally passing in the command line arguments that were used to launch this
+     * Cucumber instance.
+     * @param featureFile The path to the feature file. It can be an absolute path, or relative to the current feature file.
+     * @param passArguments This string is defined if the command line arguments passed to this Cucumber instance are to be passed to the new feature
+     * @param additionalArgs A list of additional command line arguments to be passed. This string is parsed as if it were defined on the command line, so quoting rules apply.
+     */
     @And("^I run the feature \"([^\"]*)\"( passing the original arguments)?(?:(?: and)? with the arguments \"([^\"]*)\")?$")
     public void executeFeature(final String featureFile, final String passArguments, final String additionalArgs) {
         // The path in Windows uses either forward slash or back slash as path delimiters
@@ -132,11 +174,19 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    /**
+     * Defines the aliases for this scenario
+     * @param aliases The map of alias values to be appended to any existing aliases
+     */
     @Given("^I set the following aliases:$")
     public void setAliases(final Map<String, String> aliases) {
         this.aliases.putAll(aliases);
     }
 
+    /**
+     * Sleep for a period of seconds
+     * @param seconds The time to sleep for
+     */
     @Override
     @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds?$")
     public void sleep(final String seconds) {
@@ -145,6 +195,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    /**
+     * Opens a named browser, optionally making it shared so subsequent scenarios can reuse it
+     * @param shared This string is defined if the browser is to be reused with subsequent scenarios
+     * @param browser The name of the browser to open
+     */
     @Given("^I open the( shared)? browser \"([^\"]*)\"$")
     public void openBrowser(final String shared, final String browser) {
         if (sharedAutomatedBrowser != null) {
@@ -160,6 +215,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    /**
+     * Shuts down the browser
+     */
     @Given("^I close the browser$")
     public void closeBrowser() {
         if (automatedBrowser != null) {
@@ -170,6 +228,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         sharedAutomatedBrowser = null;
     }
 
+    /**
+     * Defines how long to wait for by default for any elements located with an explicit wait time. This includes
+     * all steps that use the simple locator syntax.
+     * @param waitTime The default wait time for elements located with an explicit wait.
+     */
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
@@ -178,6 +241,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    /**
+     * @return The default explicit wait time
+     */
     @Override
     public int getDefaultExplicitWaitTime() {
         if (getAutomatedBrowser() != null) {
@@ -187,6 +253,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return 0;
     }
 
+    /**
+     * @return The WebDriver instance from the browser
+     */
     @Override
     public WebDriver getWebDriver() {
         if (getAutomatedBrowser() != null) {
@@ -196,6 +265,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
+    /**
+     * @param webDriver The WebDriver instance from the browser
+     */
     @Override
     public void setWebDriver(final WebDriver webDriver) {
         if (getAutomatedBrowser() != null) {
