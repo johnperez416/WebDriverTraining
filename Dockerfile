@@ -28,7 +28,7 @@ COPY target/webdrivertraining.*.jar /opt/webdriver.jar
 # Running Firefox as root in a regular user's session is not supported.
 # 1001 is the UID of the Github Action runner user, which allows the image to access the mounted volumes
 RUN useradd -u 1001 -ms /bin/bash runner
-ADD docker/fluxbox-init /home/webdriver/.fluxbox/init
+ADD docker/fluxbox-init /home/runner/.fluxbox/init
 RUN chown -R runner:runner /opt
 USER runner
 
