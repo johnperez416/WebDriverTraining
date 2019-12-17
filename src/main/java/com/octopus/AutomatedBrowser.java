@@ -60,9 +60,13 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Keyboard Interaction">
+    default void pressEscape(String locator) {pressEscape(null, locator);}
+
     void pressEscape(String force, String locator);
 
     void pressEscape(String force, String locator, int waitTime);
+
+    default void pressEnter(String locator) {pressEnter(null, locator);}
 
     void pressEnter(String force, String locator);
 

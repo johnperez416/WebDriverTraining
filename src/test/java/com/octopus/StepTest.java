@@ -16,7 +16,7 @@ public class StepTest {
         try {
             automatedBrowser.init();
 
-            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
 
             automatedBrowser.maximizeWindow();
             automatedBrowser.setWindowSize(800, 600);
@@ -36,9 +36,24 @@ public class StepTest {
 
         try {
             automatedBrowser.init();
-            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
             automatedBrowser.pressEnter("textarea_element");
             automatedBrowser.pressEscape("textarea_element");
+            assertEquals("Text Area Changed", automatedBrowser.getTextFromElementWithId("message"));
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
+    @Test
+    public void keyInteractionForce() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+
+        try {
+            automatedBrowser.init();
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.pressEnter("force", "textarea_element");
+            automatedBrowser.pressEscape("force", "textarea_element");
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElementWithId("message"));
         } finally {
             automatedBrowser.destroy();
@@ -51,7 +66,7 @@ public class StepTest {
 
         try {
             automatedBrowser.init();
-            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
             automatedBrowser.runJavascript(" document.getElementById('message').textContent = 'Raw JavaScript';");
             assertEquals("Raw JavaScript", automatedBrowser.getTextFromElementWithId("message"));
         } finally {
@@ -65,7 +80,7 @@ public class StepTest {
 
         try {
             automatedBrowser.init();
-            automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
             automatedBrowser.verifyElementDoesNotExist("thisdoesnotexist", 2);
         } finally {
             automatedBrowser.destroy();
