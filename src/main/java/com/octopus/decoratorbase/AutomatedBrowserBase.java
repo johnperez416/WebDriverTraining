@@ -1235,35 +1235,35 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I( force)? press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
-    public void pressEscape(final String locator) {
+    public void pressEscape(final String force, final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().pressEscape(getSubstitutedString(locator));
+            getAutomatedBrowser().pressEscape(force, getSubstitutedString(locator));
         }
     }
 
-    @And("^I press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I( force)? press the escape key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
-    public void pressEscape(final String locator, final int waitTime) {
+    public void pressEscape(final String force, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().pressEscape(getSubstitutedString(locator), waitTime);
+            getAutomatedBrowser().pressEscape(force, getSubstitutedString(locator), waitTime);
         }
     }
 
-    @And("^I press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @And("^I( force)? press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
     @Override
-    public void pressEnter(final String locator) {
+    public void pressEnter(final String force, final String locator) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().pressEnter(getSubstitutedString(locator));
+            getAutomatedBrowser().pressEnter(force, getSubstitutedString(locator));
         }
     }
 
-    @And("^I press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @And("^I( force)? press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
-    public void pressEnter(final String locator, int waitTime) {
+    public void pressEnter(final String force, final String locator, int waitTime) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().pressEnter(getSubstitutedString(locator), waitTime);
+            getAutomatedBrowser().pressEnter(force, getSubstitutedString(locator), waitTime);
         }
     }
 

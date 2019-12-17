@@ -970,31 +970,48 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void pressEscape(final String locator) {
-        pressEscape(locator, getDefaultExplicitWaitTime());
+    public void pressEscape(final String force, final String locator) {
+        pressEscape(force, locator, getDefaultExplicitWaitTime());
     }
 
     @Override
-    public void pressEscape(final String locator, final int waitTime) {
-        SIMPLE_BY.getElement(
+    public void pressEscape(final String force, final String locator, final int waitTime) {
+        final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
-                ExpectedConditions::presenceOfElementLocated).sendKeys(Keys.ESCAPE);
+                ExpectedConditions::presenceOfElementLocated);
+
+        if (StringUtils.isNotBlank(force)) {
+            ((JavascriptExecutor) getWebDriver()).executeScript("""
+                    arguments[0].dispatchEvent(
+                        new KeyboardEvent("keydown",{'key': 'Escape'}));
+                    """, element);
+        } else {
+            element.sendKeys(Keys.ESCAPE);
+        }
     }
 
     @Override
-    public void pressEnter(final String locator) {
-        pressEnter(locator, getDefaultExplicitWaitTime());
+    public void pressEnter(final String force, final String locator) {
+        pressEnter(force, locator, getDefaultExplicitWaitTime());
     }
 
     @Override
-    public void pressEnter(final String locator, final int waitTime) {
-        SIMPLE_BY.getElement(
+    public void pressEnter(final String force, final String locator, final int waitTime) {
+        final WebElement element = SIMPLE_BY.getElement(
                 getWebDriver(),
                 locator,
                 waitTime,
-                ExpectedConditions::presenceOfElementLocated).sendKeys(Keys.ENTER);
+                ExpectedConditions::presenceOfElementLocated);
+        if (StringUtils.isNotBlank(force)) {
+            ((JavascriptExecutor) getWebDriver()).executeScript("""
+                    arguments[0].dispatchEvent(
+                        new KeyboardEvent("keydown",{'key': 'Enter'}));
+                    """, element);
+        } else {
+            element.sendKeys(Keys.ENTER);
+        }
     }
 
     @Override
