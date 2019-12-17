@@ -1005,6 +1005,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 waitTime,
                 ExpectedConditions::presenceOfElementLocated);
         if (StringUtils.isNotBlank(force)) {
+            // key names from https://www.w3.org/TR/uievents-key/#named-key-attribute-values
             ((JavascriptExecutor) getWebDriver()).executeScript("""
                     arguments[0].dispatchEvent(
                         new KeyboardEvent("keydown",{'key': 'Enter'}));
