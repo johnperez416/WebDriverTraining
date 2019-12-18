@@ -1150,6 +1150,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @Override
+    @And("^I set the default highlight offset to \"([^\"]*)\"$")
+    public void setDefaultHighlightOffset(final String offset) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().setDefaultHighlightOffset(
+                    getSubstitutedString(offset));
+        }
+    }
+
     @And("^I capture the HAR file$")
     @Override
     public void captureHarFile() {

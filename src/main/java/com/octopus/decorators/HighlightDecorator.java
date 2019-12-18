@@ -12,6 +12,7 @@ import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.bouncycastle.pqc.math.linearalgebra.IntUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,6 +25,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
+    private int defaultOffset = 10;
     private Map<String, String> originalStyles = new HashMap<>();
 
     public HighlightDecorator() {
@@ -32,6 +34,11 @@ public class HighlightDecorator extends AutomatedBrowserBase {
 
     public HighlightDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
+    }
+
+    @Override
+    public void setDefaultHighlightOffset(final String offset) {
+        defaultOffset = NumberUtils.toInt(offset, defaultOffset);
     }
 
     @Override
@@ -46,7 +53,7 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                 return;
             }
 
-            final int offsetValue = NumberUtils.toInt(offset, 10);
+            final int offsetValue = NumberUtils.toInt(offset, defaultOffset);
 
             // This will catch StaleElementReferenceException exceptions and attempt to apply the highlight again
             RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, WebElementException>)  context -> {

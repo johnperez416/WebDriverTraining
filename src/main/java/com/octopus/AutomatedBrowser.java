@@ -293,6 +293,8 @@ public interface AutomatedBrowser {
 
     void scrollElementIntoViewIfExists(String locator, String offset, int waitTime, String ifExistsOption);
 
+    void setDefaultHighlightOffset(String offset);
+
     default void elementHighlight(String location, String lift, String locator, final String offset) {
         elementHighlightIfExists(location, lift, locator, offset, null);}
 
