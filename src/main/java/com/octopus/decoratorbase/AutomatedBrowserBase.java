@@ -59,6 +59,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     private Map<String, String> aliases = new HashMap<>();
     static private Map<String, String> externalAliases = new HashMap<>();
     private AutomatedBrowser automatedBrowser;
+    private static Map<String, String> sharedAliases = new HashMap<>();
     private static AutomatedBrowser sharedAutomatedBrowser;
     private static AutomatedBrowserBase instanceAutomatedBrowser;
 
@@ -120,8 +121,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
      */
     private Map<String, String> getAliases() {
         final Map<String, String> combinedAliases = new HashMap<>();
-        combinedAliases.putAll(aliases);
         combinedAliases.putAll(externalAliases);
+        combinedAliases.putAll(sharedAliases);
+        combinedAliases.putAll(aliases);
         return combinedAliases;
     }
 
@@ -360,10 +362,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         getAliases().entrySet().forEach(entrySet -> LOGGER.info(entrySet.getKey() + ": " + entrySet.getValue()));
     }
 
-    @And("^I copy the value from the LastReturn alias to the alias \"([^\"]*)\"$")
+    @And("^I copy the value from the LastReturn alias to the( shared)? alias \"([^\"]*)\"$")
     @Override
-    public void copyLastReturnAliasTo(final String newAlias) {
-        aliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+    public void copyLastReturnAliasTo(final String shared, final String newAlias) {
+        if (StringUtils.isEmpty(shared)) {
+            aliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+        } else {
+            sharedAliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+        }
     }
 
     @And("^I write the value of the alias \"([^\"]*)\" to the file \"([^\"]*)\"$")
