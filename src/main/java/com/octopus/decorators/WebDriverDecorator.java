@@ -597,8 +597,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
-        populateElement(null, locator, keystrokeDelay, text, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
+        populateElement(force, locator, keystrokeDelay, text, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
