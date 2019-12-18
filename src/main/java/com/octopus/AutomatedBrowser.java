@@ -57,6 +57,8 @@ public interface AutomatedBrowser {
     void dumpAliases();
 
     void writeAliasValueToFile(String alias, String filename);
+
+    void copyLastReturnAliasTo(String newAlias);
     //</editor-fold>
 
     //<editor-fold desc="Keyboard Interaction">

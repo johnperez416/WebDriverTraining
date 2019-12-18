@@ -360,6 +360,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         getAliases().entrySet().forEach(entrySet -> LOGGER.info(entrySet.getKey() + ": " + entrySet.getValue()));
     }
 
+    @And("^I copy the value from the LastReturn alias to the alias \"([^\"]*)\"")
+    @Override
+    public void copyLastReturnAliasTo(final String newAlias) {
+        aliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+    }
+
     @And("^I write the value of the alias \"([^\"]*)\" to the file \"([^\"]*)\"$")
     @Override
     public void writeAliasValueToFile(final String alias, final String filename) {
