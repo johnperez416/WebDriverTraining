@@ -598,13 +598,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
-        populateElement(locator, keystrokeDelay, text, getDefaultExplicitWaitTime(), ifExistsOption);
+        populateElement(null, locator, keystrokeDelay, text, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
         try {
             populateElementWithText(
+                    force,
                     text,
                     SIMPLE_BY.getElement(
                             getWebDriver(),
@@ -620,14 +621,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateHiddenElement(final String locator, final String text, final String ifExistsOption) {
-        populateHiddenElement(locator, text, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void populateHiddenElement(final String force, final String locator, final String text, final String ifExistsOption) {
+        populateHiddenElement(force, locator, text, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void populateHiddenElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateHiddenElement(final String force, final String locator, final String text, final int waitTime, final String ifExistsOption) {
         try {
             populateElementWithText(
+                    force,
                     text,
                     SIMPLE_BY.getElement(
                             getWebDriver(),
@@ -1143,14 +1145,38 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         ((JavascriptExecutor) getWebDriver()).executeScript(code);
     }
 
-    private void populateElementWithText(final String text, final WebElement element, final int keystrokeDelay) {
-        if (keystrokeDelay <= 0) {
-            element.sendKeys(text);
+    private void populateElementWithText(final String force, final String text, final WebElement element, final int keystrokeDelay) {
+        if (StringUtils.isNotBlank(force)) {
+            /*
+                Populating form fields with React is not as simple as it seems.
+                https://github.com/facebook/react/issues/10135#issuecomment-314441175
+             */
+            ((JavascriptExecutor) getWebDriver()).executeScript("""
+                    function setNativeValue(element, value) {
+                        const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {}
+                        const prototype = Object.getPrototypeOf(element)
+                        const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {}
+
+                        if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+                            prototypeValueSetter.call(element, value)
+                        } else if (valueSetter) {
+                            valueSetter.call(element, value)
+                        } else {
+                            throw new Error('The given element does not have a value setter')
+                        }
+                    }
+                    setNativeValue(arguments[0], arguments[1]);
+                    arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+                """, element, text);
         } else {
-            text.chars().forEach(c -> {
-                element.sendKeys(String.valueOf((char) c));
-                Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
-            });
+            if (keystrokeDelay <= 0) {
+                element.sendKeys(text);
+            } else {
+                text.chars().forEach(c -> {
+                    element.sendKeys(String.valueOf((char) c));
+                    Try.run(() -> Thread.sleep(Constants.DEFAULT_INPUT_DELAY));
+                });
+            }
         }
     }
 

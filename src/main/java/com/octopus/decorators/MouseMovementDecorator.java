@@ -715,7 +715,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -723,6 +723,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().populateElement(
+                        force,
                         locator,
                         keystrokeDelay,
                         text,
@@ -738,7 +739,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -746,6 +747,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().populateElement(
+                        force,
                         locator,
                         keystrokeDelay,
                         text,

@@ -211,21 +211,21 @@ public interface AutomatedBrowser {
 
     void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExistsOption);
 
-    default void populateElement(String locator, String text) {populateElement(locator, "0", text, null);}
+    default void populateElement(String locator, String text) {populateElement(null, locator, "0", text, null);}
 
-    default void populateElement(String locator, String text, int waitTime) {populateElement(locator, "0", text, waitTime, null);}
+    default void populateElement(String locator, String text, int waitTime) {populateElement(null, locator, "0", text, waitTime, null);}
 
-    default void populateElement(String locator, String keystrokeDelay, String text) {populateElement(locator, keystrokeDelay, text, null);}
+    default void populateElement(String force, String locator, String keystrokeDelay, String text) {populateElement(force, locator, keystrokeDelay, text, null);}
 
-    default void populateElement(String locator, String keystrokeDelay, String text, int waitTime) {populateElement(locator, keystrokeDelay, text, waitTime, null);}
+    default void populateElement(String locator, String keystrokeDelay, String text, int waitTime) {populateElement(null, locator, keystrokeDelay, text, waitTime, null);}
 
-    void populateElement(String locator, String keystrokeDelay, String text, String ifExistsOption);
+    void populateElement(String force, String locator, String keystrokeDelay, String text, String ifExistsOption);
 
-    void populateElement(String locator, String keystrokeDelay, String text, int waitTime, String ifExistsOption);
+    void populateElement(String force, String locator, String keystrokeDelay, String text, int waitTime, String ifExistsOption);
 
-    void populateHiddenElement(final String locator, final String text, final int waitTime, final String ifExistsOption);
+    void populateHiddenElement(String force, String locator, String text, int waitTime, String ifExistsOption);
 
-    void populateHiddenElement(final String locator, final String text, final String ifExistsOption);
+    void populateHiddenElement(String force, String locator, String text, String ifExistsOption);
 
     default void clear(String locator) {
         clearIfExists(null, locator, null);}

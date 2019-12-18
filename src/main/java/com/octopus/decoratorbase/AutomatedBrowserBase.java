@@ -841,11 +841,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of (\"([^\"]*)\") )?with(?: the text)? \"([^\"]*)\"( if it exists)?$")
+    @And("^I( force)? populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of (\"([^\"]*)\") )?with(?: the text)? \"([^\"]*)\"( if it exists)?$")
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
+                    force,
                     getSubstitutedString(locator),
                     getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
@@ -853,11 +854,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)?:$")
+    @And("^I( force)? populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)?:$")
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
+                    force,
                     getSubstitutedString(locator),
                     getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
@@ -865,11 +867,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I( force)? populate the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (?:with a keystroke delay of \"([^\"]*)\" )?with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void populateElement(final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateElement(final String force, final String locator, final String keystrokeDelay, final String text, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateElement(
+                    force,
                     getSubstitutedString(locator),
                     getSubstitutedString(keystrokeDelay),
                     getSubstitutedString(text),
@@ -878,22 +881,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")
+    @And("^I( force)? populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\"( if it exists)?$")
     @Override
-    public void populateHiddenElement(final String locator, final String text, final String ifExistsOption) {
+    public void populateHiddenElement(final String force, final String locator, final String text, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateHiddenElement(
+                    force,
                     getSubstitutedString(locator),
                     getSubstitutedString(text),
                     ifExistsOption);
         }
     }
 
-    @And("^I populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I( force)? populate the hidden \"([^\"]*)\" \\w+(?:\\s+\\w+)* with(?: the text)? \"([^\"]*)\" waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void populateHiddenElement(final String locator, final String text, final int waitTime, final String ifExistsOption) {
+    public void populateHiddenElement(final String force, final String locator, final String text, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().populateHiddenElement(
+                    force,
                     getSubstitutedString(locator),
                     getSubstitutedString(text),
                     waitTime,
