@@ -67,7 +67,7 @@ public class SimpleByImpl implements SimpleBy {
             }
         }
 
-        throw new WebElementException("All attempts to find element failed");
+        throw new WebElementException("All attempts to find element failed after " + waitTime + " seconds");
     }
 
     private void saveMultipleElements(final WebDriver webDriver, final By by, final String locator) {
