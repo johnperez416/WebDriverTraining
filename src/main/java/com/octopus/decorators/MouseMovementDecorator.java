@@ -4,6 +4,7 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
+import com.octopus.utils.ExpectedConditionCallback;
 import com.octopus.utils.MouseMovementUtils;
 import com.octopus.utils.SimpleBy;
 import com.octopus.utils.SystemPropertyUtils;
@@ -24,7 +25,10 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private int interactionCount = 0;
 
-    private void glideMouse(final String locator, final int waitTime) {
+    private void glideMouse(
+            final String locator,
+            final int waitTime,
+            final ExpectedConditionCallback expectedConditionCallback) {
         MOUSE_MOVEMENT_UTILS.mouseGlide(
                 getWebDriver(),
                 (JavascriptExecutor) getWebDriver(),
@@ -32,7 +36,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
                         getWebDriver(),
                         locator,
                         waitTime,
-                        ExpectedConditions::presenceOfElementLocated),
+                        expectedConditionCallback),
                 Constants.MOUSE_MOVE_TIME,
                 Constants.MOUSE_MOVE_STEPS);
     }
@@ -719,7 +723,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, getDefaultExplicitWaitTime());
+            glideMouse(locator, getDefaultExplicitWaitTime(), ExpectedConditions::elementToBeClickable);
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().populateElement(
@@ -743,7 +747,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, waitTime);
+            glideMouse(locator, waitTime, ExpectedConditions::elementToBeClickable);
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().populateElement(
@@ -767,7 +771,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, getDefaultExplicitWaitTime());
+            glideMouse(locator, getDefaultExplicitWaitTime(), ExpectedConditions::presenceOfElementLocated);
 
             final Actions action = new Actions(getWebDriver());
             final WebElement element = SIMPLE_BY.getElement(
@@ -795,7 +799,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, waitTime);
+            glideMouse(locator, waitTime, ExpectedConditions::presenceOfElementLocated);
 
             final Actions action = new Actions(getWebDriver());
             final WebElement element = SIMPLE_BY.getElement(
@@ -824,7 +828,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, getDefaultExplicitWaitTime());
+            glideMouse(locator, getDefaultExplicitWaitTime(), ExpectedConditions::presenceOfElementLocated);
 
             final Actions action = new Actions(getWebDriver());
             final WebElement element = SIMPLE_BY.getElement(
@@ -852,7 +856,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         ++interactionCount;
 
         try {
-            glideMouse(locator, waitTime);
+            glideMouse(locator, waitTime, ExpectedConditions::presenceOfElementLocated);
 
             final Actions action = new Actions(getWebDriver());
             final WebElement element = SIMPLE_BY.getElement(
