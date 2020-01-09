@@ -3,8 +3,10 @@ package com.octopus;
 import com.octopus.pages.ticketmonster.*;
 import io.vavr.control.Try;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class TicketMonsterTest {
 
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY =

@@ -376,6 +376,7 @@ public class FormTest {
 
     @Test
     @Retry
+    @Ignore
     public void browserStackTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
