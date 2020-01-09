@@ -12,12 +12,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <apache.commons.lang.version>3.9</apache.commons.lang.version>
         <java.version>13</java.version>
         <selenium.version>3.14.0</selenium.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13</junit.version>
         <browsermob.version>2.1.5</browsermob.version>
-        <cucumber.version>5.0.0-RC2</cucumber.version>
+        <cucumber.version>5.0.0-RC4</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.0</aws.lambda.version>
-        <aws.sdk.version>1.11.681</aws.sdk.version>
+        <aws.sdk.version>1.11.703</aws.sdk.version>
         <commons.io.version>2.6</commons.io.version>
         <commons.text.version>1.8</commons.text.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
@@ -28,7 +28,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <apache.http.version>4.5.10</apache.http.version>
         <lombok.version>1.18.10</lombok.version>
-        <spring.retry.version>1.2.4.RELEASE</spring.retry.version>
+        <spring.retry.version>1.2.5.RELEASE</spring.retry.version>
         <commons.cli.version>1.4</commons.cli.version>
     </properties>
     <build>
