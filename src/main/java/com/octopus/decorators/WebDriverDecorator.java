@@ -1229,4 +1229,9 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         getDefaultExplicitWaitTime(),
                         ExpectedConditions::presenceOfElementLocated));
     }
+
+    @Override
+    public void switchToMainFrame() {
+        getWebDriver().switchTo().defaultContent();
+    }
 }

@@ -375,4 +375,5 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     void switchToIFrame(String locator);
+    void switchToMainFrame();
 }

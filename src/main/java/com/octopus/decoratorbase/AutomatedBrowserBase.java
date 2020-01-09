@@ -1615,6 +1615,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I switch to the default context$")
+    @Override
+    public void switchToMainFrame() {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().switchToMainFrame();
+        }
+    }
+
     private String getSubstitutedString(final String string) {
         if (StringUtils.isEmpty(string)) {
             return string;
