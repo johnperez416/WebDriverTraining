@@ -1607,6 +1607,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I switch to the \"([^\"]*)\" iframe$")
+    @Override
+    public void switchToIFrame(final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().switchToIFrame(getSubstitutedString(locator));
+        }
+    }
+
     private String getSubstitutedString(final String string) {
         if (StringUtils.isEmpty(string)) {
             return string;

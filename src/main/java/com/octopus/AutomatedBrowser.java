@@ -373,4 +373,6 @@ public interface AutomatedBrowser {
     void stopGithubLogging(String token);
     void startGithubLogging(String token);
     //</editor-fold>
+
+    void switchToIFrame(String locator);
 }

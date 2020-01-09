@@ -116,7 +116,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         }
 
         // Don't attempt to take a screenshot after the window has been closed
-        if (((RemoteWebDriver)webDriver).getSessionId() == null) {
+        if (((RemoteWebDriver) webDriver).getSessionId() == null) {
             return CompletableFuture.completedFuture(null);
         }
 
@@ -1152,22 +1152,22 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                 https://github.com/facebook/react/issues/10135#issuecomment-314441175
              */
             ((JavascriptExecutor) getWebDriver()).executeScript("""
-                    function setNativeValue(element, value) {
-                        const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {}
-                        const prototype = Object.getPrototypeOf(element)
-                        const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {}
+                        function setNativeValue(element, value) {
+                            const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {}
+                            const prototype = Object.getPrototypeOf(element)
+                            const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {}
 
-                        if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
-                            prototypeValueSetter.call(element, value)
-                        } else if (valueSetter) {
-                            valueSetter.call(element, value)
-                        } else {
-                            throw new Error('The given element does not have a value setter')
+                            if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+                                prototypeValueSetter.call(element, value)
+                            } else if (valueSetter) {
+                                valueSetter.call(element, value)
+                            } else {
+                                throw new Error('The given element does not have a value setter')
+                            }
                         }
-                    }
-                    setNativeValue(arguments[0], arguments[1]);
-                    arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
-                """, element, text);
+                        setNativeValue(arguments[0], arguments[1]);
+                        arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+                    """, element, text);
         } else {
             if (keystrokeDelay <= 0) {
                 element.sendKeys(text);
@@ -1218,5 +1218,15 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     @Override
     public void startGithubLogging(final String token) {
         GITHUB_SERVICE_MESSAGE_GENERATOR.startLogging(token);
+    }
+
+    @Override
+    public void switchToIFrame(final String locator) {
+        getWebDriver().switchTo().frame(
+                SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        getDefaultExplicitWaitTime(),
+                        ExpectedConditions::presenceOfElementLocated));
     }
 }
