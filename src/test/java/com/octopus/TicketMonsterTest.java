@@ -16,7 +16,7 @@ public class TicketMonsterTest {
     public void purchaseTickets() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
 
         try {
 
@@ -69,7 +69,7 @@ public class TicketMonsterTest {
     public void purchaseTicketsPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
 
         try {
 
@@ -103,7 +103,7 @@ public class TicketMonsterTest {
     public void verifyPricesPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
 
         try {
             automatedBrowser.init();

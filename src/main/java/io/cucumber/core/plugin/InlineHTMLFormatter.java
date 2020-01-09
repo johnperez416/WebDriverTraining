@@ -45,6 +45,10 @@ import java.util.Map;
 
 import static java.util.Locale.ROOT;
 
+/**
+ * A copy of HTMLFormatter (https://github.com/cucumber/cucumber-jvm/blob/master/core/src/main/java/io/cucumber/core/plugin/HTMLFormatter.java)
+ * that embeds all the resources to create a self contained HTML file.
+ */
 public final class InlineHTMLFormatter implements EventListener {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final String JS_FORMATTER_VAR = "formatter";
