@@ -178,11 +178,16 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     /**
      * Defines the aliases for this scenario
+     * @param shared Set if the alias values should be shared (i.e. span scenarios)
      * @param aliases The map of alias values to be appended to any existing aliases
      */
-    @Given("^I set the following aliases:$")
-    public void setAliases(final Map<String, String> aliases) {
-        this.aliases.putAll(aliases);
+    @Given("^I set the following( shared)? aliases:$")
+    public void setAliases(final String shared, final Map<String, String> aliases) {
+        if (StringUtils.isEmpty(shared)) {
+            this.aliases.putAll(aliases);
+        } else {
+            sharedAliases.putAll(aliases);
+        }
     }
 
     /**
