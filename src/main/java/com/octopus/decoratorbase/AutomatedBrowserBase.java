@@ -1308,6 +1308,27 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is clickable( if it exists)?$")
+    @Override
+    public void verifyElementIsClickable(final String locator, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementIsClickable(
+                    getSubstitutedString(locator),
+                    ifExistsOption);
+        }
+    }
+
+    @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is clickable waiting up to \"(\\d+)\" seconds( if it exists)?$")
+    @Override
+    public void verifyElementIsClickable(final String locator, final int waitTime, final String ifExistsOption) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().verifyElementIsClickable(
+                    getSubstitutedString(locator),
+                    waitTime,
+                    ifExistsOption);
+        }
+    }
+
     @Then("^I verify the \"([^\"]*)\" \\w+(?:\\s+\\w+)* is not present$")
     @Override
     public void verifyElementDoesNotExist(final String locator) {

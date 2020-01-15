@@ -315,6 +315,12 @@ public interface AutomatedBrowser {
 
     void verifyElementExists(String locator, int waitTime, String ifExistsOption);
 
+    default void verifyElementIsClickable(String locator) {verifyElementIsClickable(locator, null);}
+
+    void verifyElementIsClickable(String locator, String ifExistsOption);
+
+    void verifyElementIsClickable(String locator, int waitTime, String ifExistsOption);
+
     void verifyElementDoesNotExist(String locator);
 
     void verifyElementDoesNotExist(String locator, int waitTime);

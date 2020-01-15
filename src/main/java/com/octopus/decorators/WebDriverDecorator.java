@@ -9,6 +9,7 @@ import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -760,6 +761,26 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                     locator,
                     waitTime,
                     ExpectedConditions::presenceOfElementLocated);
+        } catch (final WebElementException ex) {
+            if (StringUtils.isEmpty(ifExistsOption)) {
+                throw ex;
+            }
+        }
+    }
+
+    @Override
+    public void verifyElementIsClickable(final String locator, final String ifExistsOption) {
+        verifyElementIsClickable(locator, getDefaultExplicitWaitTime(), ifExistsOption);
+    }
+
+    @Override
+    public void verifyElementIsClickable(final String locator, final int waitTime, final String ifExistsOption) {
+        try {
+            SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    ExpectedConditions::elementToBeClickable);
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
