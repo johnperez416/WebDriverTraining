@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 
@@ -52,6 +54,14 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         final WebDriver webDriver = new FirefoxDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
         getAutomatedBrowser().init();
+    }
+
+    @Override
+    public DesiredCapabilities getDesiredCapabilities() {
+        final DesiredCapabilities desiredCapabilities = super.getDesiredCapabilities();
+        desiredCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+        desiredCapabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+        return desiredCapabilities;
     }
 
     @Override

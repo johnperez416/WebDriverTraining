@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +46,19 @@ public class ChromeDecorator extends AutomatedBrowserBase {
         if (System.getProperty("chrome.binary") != null) {
             options.setBinary(System.getProperty("chrome.binary"));
         }
+
         options.merge(getDesiredCapabilities());
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
         getAutomatedBrowser().init();
+    }
+
+    @Override
+    public DesiredCapabilities getDesiredCapabilities() {
+        final DesiredCapabilities desiredCapabilities = super.getDesiredCapabilities();
+        desiredCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+        desiredCapabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+        return desiredCapabilities;
     }
 
     @Override
