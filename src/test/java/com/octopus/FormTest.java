@@ -376,52 +376,6 @@ public class FormTest {
 
     @Test
     @Retry
-    @Ignore
-    public void browserStackTest() {
-
-        if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
-                StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
-            return;
-        }
-
-        final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("BrowserStackEdge");
-
-        final String formButtonLocator = "button_element";
-        final String formTextBoxLocator = "text_element";
-        final String formTextAreaLocator = "textarea_element";
-        final String formDropDownListLocator = "[name=select_element]";
-        final String formCheckboxLocator = "//*[@name=\"checkbox1_element\"]";
-
-        final String messageLocator = "message";
-
-        try {
-            automatedBrowser.init();
-
-            automatedBrowser.goTo("https://s3.amazonaws.com/webdriver-testing-website/form.html");
-
-            automatedBrowser.clickElement(formButtonLocator);
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
-
-            automatedBrowser.populateElement(formTextBoxLocator, "test text");
-            assertEquals("Text Input Changed", automatedBrowser.getTextFromElement(messageLocator));
-
-            automatedBrowser.populateElement(formTextAreaLocator, "test text");
-            assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
-
-            automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator);
-            assertEquals("Select Changed",  automatedBrowser.getTextFromElement(messageLocator));
-
-            automatedBrowser.clickElement(formCheckboxLocator);
-            assertEquals("Checkbox Changed",  automatedBrowser.getTextFromElement(messageLocator));
-
-        } finally {
-            automatedBrowser.destroy();
-        }
-    }
-
-    @Test
-    @Retry
     public void browserStackEdgeTest() {
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
                 StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
@@ -470,7 +424,6 @@ public class FormTest {
 
     @Test
     @Retry
-    @Ignore("Android tests a quite flaky")
     public void browserStackAndroidTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
@@ -493,9 +446,10 @@ public class FormTest {
 
             automatedBrowser.maximizeWindow();
 
-            automatedBrowser.goTo("https://s3.amazonaws.com/webdriver-tests/form.html");
+            automatedBrowser.goTo("https://s3.amazonaws.com/webdriver-testing-website/form.html");
 
-            automatedBrowser.clickElement(formButtonLocator);
+            // A normal click also triggers a mouse over in Android, so we force the click instead
+            automatedBrowser.clickElementIfExists("force", formButtonLocator, null);
             assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.populateElement(formTextBoxLocator, "test text");

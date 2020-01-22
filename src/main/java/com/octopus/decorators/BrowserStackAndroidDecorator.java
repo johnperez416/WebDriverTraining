@@ -14,10 +14,10 @@ public class BrowserStackAndroidDecorator extends AutomatedBrowserBase {
 
         final DesiredCapabilities caps = getAutomatedBrowser().getDesiredCapabilities();
 
-        caps.setCapability("os_version", "7.1");
-        caps.setCapability("device", "Samsung Galaxy Note 8");
+        caps.setCapability("browserName", "android");
+        caps.setCapability("os_version", "9.0");
+        caps.setCapability("device", "Samsung Galaxy S8 Plus");
         caps.setCapability("real_mobile", "true");
-        caps.setCapability("browserstack.local", "false");
 
         return caps;
     }
