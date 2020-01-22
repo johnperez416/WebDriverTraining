@@ -422,7 +422,6 @@ public class FormTest {
 
     @Test
     @Retry
-    @Ignore
     public void browserStackEdgeTest() {
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
                 StringUtils.isBlank(System.getenv(BrowserStackDecorator.AUTOMATE_KEY_ENV))) {
@@ -447,7 +446,8 @@ public class FormTest {
 
             automatedBrowser.goTo("https://s3.amazonaws.com/webdriver-testing-website/form.html");
 
-            automatedBrowser.clickElement(formButtonLocator);
+            // A normal click also triggers a mouse over in Edge, so we force the click instead
+            automatedBrowser.clickElementIfExists("force", formButtonLocator, null);
             assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.populateElement(formTextBoxLocator, "test text");
