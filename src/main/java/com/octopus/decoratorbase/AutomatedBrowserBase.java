@@ -1432,7 +1432,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public Object runJavascript(final String code) {
         if (getAutomatedBrowser() != null) {
-            final Object result = getAutomatedBrowser().runJavascript(
+            return getAutomatedBrowser().runJavascript(
                     getSubstitutedString(code));
         }
 
@@ -1451,6 +1451,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     sharedAliases.put(getSubstitutedString(alias), resultString);
                 }
             }
+            return result;
         }
 
         return null;

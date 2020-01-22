@@ -3,6 +3,7 @@ package com.octopus;
 import org.junit.Test;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -69,6 +70,20 @@ public class StepTest {
             automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
             automatedBrowser.runJavascript(" document.getElementById('message').textContent = 'Raw JavaScript';");
             assertEquals("Raw JavaScript", automatedBrowser.getTextFromElementWithId("message"));
+        } finally {
+            automatedBrowser.destroy();
+        }
+    }
+
+    @Test
+    public void javascriptTestWithReturn() throws URISyntaxException {
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+
+        try {
+            automatedBrowser.init();
+            automatedBrowser.goTo(StepTest.class.getResource("/form.html").toURI().toString());
+            final Object value = automatedBrowser.runJavascript("return 'test';");
+            assertEquals("test", Objects.toString(value));
         } finally {
             automatedBrowser.destroy();
         }
