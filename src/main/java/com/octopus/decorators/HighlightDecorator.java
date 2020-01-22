@@ -20,8 +20,10 @@ import org.springframework.retry.RetryCallback;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class HighlightDecorator extends AutomatedBrowserBase {
+    private static final Logger LOGGER = Logger.getLogger(HighlightDecorator.class.toString());
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
@@ -50,6 +52,11 @@ public class HighlightDecorator extends AutomatedBrowserBase {
     public void elementHighlightIfExists(final String location, final String lift, final String locator, final String offset, final int waitTime, final String ifExistsOption) {
         try {
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(Constants.DISABLE_HIGHLIGHTS, false)) {
+                if (waitTime != getDefaultExplicitWaitTime()) {
+                    LOGGER.info("A highlight step has a custom wait time that is ignored because highlighting " +
+                            "is disabled. If this step was used to wait for an element to be visible, the scenario " +
+                            "may not work as expected.");
+                }
                 return;
             }
 
