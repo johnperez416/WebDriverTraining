@@ -1,5 +1,6 @@
 package com.octopus;
 
+import com.kevinmost.junit_retry_rule.Retry;
 import com.octopus.pages.ticketmonster.*;
 import io.vavr.control.Try;
 import org.junit.Assert;
@@ -14,6 +15,7 @@ public class TicketMonsterTest {
     private static final int WAIT_TIME = 30;
 
     @Test
+    @Retry
     public void purchaseTickets() {
 
         final AutomatedBrowser automatedBrowser =
@@ -67,6 +69,7 @@ public class TicketMonsterTest {
     }
 
     @Test
+    @Retry
     public void purchaseTicketsPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
@@ -101,6 +104,7 @@ public class TicketMonsterTest {
     }
 
     @Test
+    @Retry
     public void verifyPricesPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
