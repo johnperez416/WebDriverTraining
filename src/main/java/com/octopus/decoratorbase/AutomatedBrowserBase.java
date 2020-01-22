@@ -1429,13 +1429,31 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I run the following JavaScript:$")
     @Override
-    public void runJavascript(final String code) {
+    public Object runJavascript(final String code) {
         if (getAutomatedBrowser() != null) {
-            getAutomatedBrowser().runJavascript(
+            final Object result = getAutomatedBrowser().runJavascript(
                     getSubstitutedString(code));
         }
+
+        return null;
+    }
+
+    @And("^I run the following JavaScript(?: saving the result to the( shared)? alias \"([^\"]*)\")?:$")
+    public Object runJavascript(final String shared, final String alias, final String code) {
+        if (getAutomatedBrowser() != null) {
+            final Object result = getAutomatedBrowser().runJavascript(getSubstitutedString(code));
+            final String resultString = Objects.toString(result, "");
+            if (!StringUtils.isEmpty(alias)) {
+                if (StringUtils.isEmpty(shared)) {
+                    aliases.put(getSubstitutedString(alias), resultString);
+                } else {
+                    sharedAliases.put(getSubstitutedString(alias), resultString);
+                }
+            }
+        }
+
+        return null;
     }
 
     public int getInteractionCount() {

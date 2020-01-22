@@ -351,7 +351,7 @@ public interface AutomatedBrowser {
     //</editor-fold>
 
     //<editor-fold desc="Raw JavaScript">
-    void runJavascript(String code);
+    Object runJavascript(String code);
     //</editor-fold>
 
     //<editor-fold desc="Statistics">

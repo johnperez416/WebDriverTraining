@@ -1162,8 +1162,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void runJavascript(final String code) {
-        ((JavascriptExecutor) getWebDriver()).executeScript(code);
+    public Object runJavascript(final String code) {
+        return ((JavascriptExecutor) getWebDriver()).executeScript(code);
     }
 
     private void populateElementWithText(final String force, final String text, final WebElement element, final int keystrokeDelay) {
