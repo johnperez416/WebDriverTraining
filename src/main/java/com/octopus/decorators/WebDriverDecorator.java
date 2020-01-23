@@ -1039,6 +1039,43 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void pressArrow(final String force, final String key, final String locator) {
+
+    }
+
+    @Override
+    public void pressArrow(final String force, final String key, final String locator, int waitTime) {
+        final WebElement element = SIMPLE_BY.getElement(
+                getWebDriver(),
+                locator,
+                waitTime,
+                ExpectedConditions::presenceOfElementLocated);
+        if (StringUtils.isNotBlank(force)) {
+            // key names from https://www.w3.org/TR/uievents-key/#named-key-attribute-values
+
+            final String keyName = switch (key) {
+                case "left" -> "ArrowLeft";
+                case "right" -> "ArrowRight";
+                case "up" -> "ArrowUp";
+                default -> "ArrowDown";
+            };
+
+            ((JavascriptExecutor) getWebDriver()).executeScript("""
+                    arguments[0].dispatchEvent(
+                        new KeyboardEvent("keydown",{'key': '""" + keyName + "'}))",
+                    element);
+        } else {
+            switch (key) {
+                case "left" -> element.sendKeys(Keys.ARROW_LEFT);
+                case "right" -> element.sendKeys(Keys.ARROW_RIGHT);
+                case "up" -> element.sendKeys(Keys.ARROW_UP);
+                case "down" -> element.sendKeys(Keys.ARROW_DOWN);
+            }
+
+        }
+    }
+
+    @Override
     public void pressFunctionKey(final String key) {
         final Try<Robot> robot = Try.of(Robot::new);
         switch (key) {

@@ -74,6 +74,10 @@ public interface AutomatedBrowser {
 
     void pressEnter(String force, String locator, int waitTime);
 
+    void pressArrow(final String force, final String key, final String locator);
+
+    void pressArrow(final String force, final String key, final String locator, int waitTime);
+
     void pressFunctionKey(String key);
     //</editor-fold>
 

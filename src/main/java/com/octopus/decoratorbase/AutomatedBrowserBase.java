@@ -1391,6 +1391,22 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I( force)? press the (up|down|left|right) arrow key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)*$")
+    @Override
+    public void pressArrow(final String force, final String key, final String locator) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressArrow(force, key, getSubstitutedString(locator));
+        }
+    }
+
+    @And("^I( force)? press the (up|down|left|right) arrow key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
+    @Override
+    public void pressArrow(final String force, final String key, final String locator, int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().pressArrow(force, key, getSubstitutedString(locator), waitTime);
+        }
+    }
+
     @And("^I press the \"([^\"]*)\" function key$")
     @Override
     public void pressFunctionKey(final String key) {
