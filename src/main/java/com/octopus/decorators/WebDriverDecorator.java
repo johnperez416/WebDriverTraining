@@ -20,6 +20,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.retry.RetryCallback;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -40,6 +41,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final S3Uploader S_3_UPLOADER = new S3UploaderImpl();
     private static final ScreenRecorderService SCREEN_RECORDER_SERVICE = new ScreenRecorderServiceImpl();
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
     private int defaultExplicitWaitTime;
     private WebDriver webDriver;
 
@@ -544,11 +546,14 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
             } else {
-                SIMPLE_BY.getElement(
-                        getWebDriver(),
-                        locator,
-                        waitTime,
-                        ExpectedConditions::elementToBeClickable).click();
+                RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, ElementClickInterceptedException>) context -> {
+                    SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            waitTime,
+                            ExpectedConditions::elementToBeClickable).click();
+                    return null;
+                });
             }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
