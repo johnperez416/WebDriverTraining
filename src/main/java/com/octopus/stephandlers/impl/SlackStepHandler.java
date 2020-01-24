@@ -60,24 +60,26 @@ public class SlackStepHandler implements EventListener {
         }
 
         // Run through all the enabled options for uploading screenshots, and return the first successful image upload
-        final Optional<String> imageUrl = Arrays.stream(SCREENSHOT_UPLOADER)
+        final Optional<CompletableFuture<String>> imageUrlFuture = Arrays.stream(SCREENSHOT_UPLOADER)
                 // take the screenshot and get the future
                 .map(ScreenshotUploader::takeAndUploadScreenshot)
                 // only accept results that resulted in a future
                 .filter(Optional::isPresent)
                 // get the future
                 .map(Optional::get)
-                // get the value from the future, wrapping any exceptions
-                .map(s -> Try.of(() -> s.get()))
-                // ignore any failed attempts to get the value
-                .filter(t -> t.isSuccess())
-                // get the value
-                .map(Try::get)
                 // get the first success
                 .findFirst();
 
         // Post to slack from a thread to prevent any video recording from being held up
         CompletableFuture.supplyAsync(() -> {
+
+            // get the value from the future, wrapping any exceptions
+             final Optional<String> imageUrl = imageUrlFuture.map(s -> Try.of(s::get))
+                    // ignore any failed attempts to get the value
+                    .filter(Try::isSuccess)
+                    // get the value
+                    .map(Try::get);
+
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
                 final SlackMessage message = SlackMessage
                         .builder()
