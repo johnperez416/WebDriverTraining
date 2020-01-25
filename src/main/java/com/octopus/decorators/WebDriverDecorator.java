@@ -507,11 +507,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfOtherExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         Try.of(() -> SIMPLE_BY.getElement(
                 getWebDriver(),
                 ifOtherExists,
-                waitTime,
+                ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                 ExpectedConditions::presenceOfElementLocated))
                 .onSuccess(e -> clickElementIfExists(force, locator, waitTime, null));
     }
@@ -522,11 +522,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfOtherNotExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherNotExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         Try.of(() -> SIMPLE_BY.getElement(
                 getWebDriver(),
                 ifOtherExists,
-                waitTime,
+                ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                 ExpectedConditions::presenceOfElementLocated))
                 .onFailure(ex -> clickElementIfExists(force, locator, waitTime, null));
     }

@@ -169,19 +169,19 @@ public interface AutomatedBrowser {
 
     void clickElementIfOtherExists(String force, String locator, String ifOtherExists);
 
-    void clickElementIfOtherExists(String force, String locator, int waitTime, String ifOtherExists);
+    void clickElementIfOtherExists(String force, String locator, Integer waitTime, String ifOtherExists);
 
     default void clickElementIfOtherExists(String locator, String ifOtherExists) {clickElementIfExists(null, locator, ifOtherExists);}
 
-    default void clickElementIfOtherExists(String locator, int waitTime, String ifOtherExists) {clickElementIfExists(null, locator, waitTime, ifOtherExists);}
+    default void clickElementIfOtherExists(String locator, Integer waitTime, String ifOtherExists) {clickElementIfExists(null, locator, waitTime, ifOtherExists);}
 
     void clickElementIfOtherNotExists(String force, String locator, String ifOtherExists);
 
-    void clickElementIfOtherNotExists(String force, String locator, int waitTime, String ifOtherExists);
+    void clickElementIfOtherNotExists(String force, String locator, Integer waitTime, String ifOtherExists);
 
     default void clickElementIfOtherNotExists(String locator, String ifOtherExists) {clickElementIfExists(null, locator, ifOtherExists);}
 
-    default void clickElementIfOtherNotExists(String locator, int waitTime, String ifOtherExists) {clickElementIfExists(null, locator, waitTime, ifOtherExists);}
+    default void clickElementIfOtherNotExists(String locator, Integer waitTime, String ifOtherExists) {clickElementIfExists(null, locator, waitTime, ifOtherExists);}
 
     void clickElementIfExists(String force, String locator, String ifExistsOption);
 
@@ -190,12 +190,12 @@ public interface AutomatedBrowser {
     default void clickElement(String locator) {
         clickElementIfExists(locator, null);}
 
-    default void clickElement(String locator, int waitTime) {
+    default void clickElement(String locator, Integer waitTime) {
         clickElementIfExists(locator, waitTime,null);}
 
     default void clickElementIfExists(String locator, String ifExistsOption) {clickElementIfExists(null, locator, ifExistsOption);}
 
-    default void clickElementIfExists(String locator, int waitTime, String ifExistsOption) {clickElementIfExists(null, locator, waitTime, ifExistsOption);}
+    default void clickElementIfExists(String locator, Integer waitTime, String ifExistsOption) {clickElementIfExists(null, locator, waitTime, ifExistsOption);}
 
     default void selectOptionByTextFromSelect(String optionText, String locator) {
         selectOptionByTextFromSelectIfExists(optionText, locator, null);}

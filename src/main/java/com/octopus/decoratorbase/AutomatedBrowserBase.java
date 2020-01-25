@@ -756,7 +756,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? waiting up to \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? exists$")
     @Override
-    public void clickElementIfOtherExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().clickElementIfOtherExists(
                     force,
@@ -779,7 +779,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? waiting up to \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)*? does not exist$")
     @Override
-    public void clickElementIfOtherNotExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherNotExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().clickElementIfOtherNotExists(
                     force,
