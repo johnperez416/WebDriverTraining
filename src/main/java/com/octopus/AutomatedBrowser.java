@@ -185,7 +185,7 @@ public interface AutomatedBrowser {
 
     void clickElementIfExists(String force, String locator, String ifExistsOption);
 
-    void clickElementIfExists(String force, String locator, int waitTime, String ifExistsOption);
+    void clickElementIfExists(String force, String locator, Integer waitTime, String ifExistsOption);
 
     default void clickElement(String locator) {
         clickElementIfExists(locator, null);}

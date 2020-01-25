@@ -802,7 +802,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I( force)? click the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+    public void clickElementIfExists(final String force, final String locator, final Integer waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().clickElementIfExists(
                     force,
