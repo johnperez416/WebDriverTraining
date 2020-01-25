@@ -547,7 +547,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
                         ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
             } else {
-                RETRY_SERVICE.getTemplate(3, 1000).execute((RetryCallback<Void, ElementClickInterceptedException>) context -> {
+                RETRY_SERVICE.getTemplate(3, 1000).execute(context -> {
                     SIMPLE_BY.getElement(
                             getWebDriver(),
                             locator,
