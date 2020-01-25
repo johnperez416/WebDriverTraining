@@ -27,10 +27,10 @@ public class SimpleByImpl implements SimpleBy {
 
     @Override
     public WebElement getElement(
-            WebDriver webDriver,
-            String locator,
-            int waitTime,
-            ExpectedConditionCallback expectedConditionCallback) {
+            final WebDriver webDriver,
+            final String locator,
+            final int waitTime,
+            final ExpectedConditionCallback expectedConditionCallback) {
 
         final By[] byInstances = new By[] {
                 By.id(locator),
@@ -67,7 +67,7 @@ public class SimpleByImpl implements SimpleBy {
             }
         }
 
-        throw new WebElementException("All attempts to find element failed after " + waitTime + " seconds");
+        throw new WebElementException("All attempts to find element located with " + locator + " failed after " + waitTime + " seconds");
     }
 
     private void saveMultipleElements(final WebDriver webDriver, final By by, final String locator) {
