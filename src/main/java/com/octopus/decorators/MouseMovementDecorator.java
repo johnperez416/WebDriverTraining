@@ -592,7 +592,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+    public void clickElementIfExists(final String force, final String locator, final Integer waitTime, final String ifExistsOption) {
         ++interactionCount;
 
         try {
