@@ -14,6 +14,8 @@ import io.vavr.control.Try;
  */
 public class StepPauseHandler implements EventListener {
 
+    private static final String[] PREFIXES = new String[] {"I ", "I force "};
+    private static final String[] ACTION_KEYWORDS = new String[] {"click", "populate", "clear", "select", "scroll", "zoom", "mouse over", "focus", "press"};
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private final int pauseTime;
 
@@ -34,21 +36,19 @@ public class StepPauseHandler implements EventListener {
 
     /**
      * Match any action steps
-     * @param event The evenmt
+     * @param event The event
      * @return true if it is an action step, and false otherwise
      */
     private boolean isActionStep(final TestStepFinished event) {
         if (event.getTestStep() instanceof PickleStepTestStep) {
             final String step =  ((PickleStepTestStep) event.getTestStep()).getStep().getText();
-            return step.contains("click") ||
-                    step.contains("populate") ||
-                    step.contains("clear") ||
-                    step.contains("select") ||
-                    step.contains("scroll") ||
-                    step.contains("zoom") ||
-                    step.contains("mouse over") ||
-                    step.contains("focus") ||
-                    step.contains("press");
+            for (String prefix : PREFIXES) {
+                for (String actionKeyword : ACTION_KEYWORDS) {
+                    if (step.startsWith(prefix + actionKeyword)) {
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;
