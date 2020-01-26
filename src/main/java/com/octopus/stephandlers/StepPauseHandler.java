@@ -23,7 +23,7 @@ public class StepPauseHandler implements EventListener {
 
     private void handleTestStepFinished(final TestStepFinished event) {
         if (pauseTime > 0 && isActionStep(event)) {
-            Try.run(() -> Thread.sleep(pauseTime * 1000));
+            Try.run(() -> Thread.sleep(pauseTime));
         }
     }
 
