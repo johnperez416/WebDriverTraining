@@ -8,8 +8,15 @@ public class Constants {
         add("com.octopus.decoratorbase");
         add("--plugin");
         add("com.octopus.stephandlers.impl.SlackStepHandler");
+        add("--plugin");
+        add("com.octopus.stephandlers.impl.StepPauseHandler");
         add("--strict");
     }};
+
+    /**
+     * The amount of time to pause between each step
+     */
+    public static final String STEP_PAUSE = "stepPause";
 
     /**
      * Show the state of various options enabling and disabling features at startup

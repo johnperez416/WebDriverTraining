@@ -126,7 +126,7 @@ public class SlackStepHandler implements EventListener {
 
     private String getStepName(final TestStepFinished event) {
         if (event.getTestStep() instanceof PickleStepTestStep) {
-            return ((PickleStepTestStep) event.getTestStep()).getStepText();
+            return ((PickleStepTestStep) event.getTestStep()).getStep().getText();
         }
 
         return event.getTestStep().getCodeLocation();

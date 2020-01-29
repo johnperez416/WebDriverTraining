@@ -12,6 +12,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.Dimension;
@@ -506,11 +507,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfOtherExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         Try.of(() -> SIMPLE_BY.getElement(
                 getWebDriver(),
                 ifOtherExists,
-                waitTime,
+                ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                 ExpectedConditions::presenceOfElementLocated))
                 .onSuccess(e -> clickElementIfExists(force, locator, waitTime, null));
     }
@@ -521,11 +522,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfOtherNotExists(final String force, final String locator, final int waitTime, final String ifOtherExists) {
+    public void clickElementIfOtherNotExists(final String force, final String locator, final Integer waitTime, final String ifOtherExists) {
         Try.of(() -> SIMPLE_BY.getElement(
                 getWebDriver(),
                 ifOtherExists,
-                waitTime,
+                ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                 ExpectedConditions::presenceOfElementLocated))
                 .onFailure(ex -> clickElementIfExists(force, locator, waitTime, null));
     }
@@ -536,21 +537,21 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void clickElementIfExists(final String force, final String locator, final int waitTime, final String ifExistsOption) {
+    public void clickElementIfExists(final String force, final String locator, final Integer waitTime, final String ifExistsOption) {
         try {
             if (force != null) {
                 final WebElement element = SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
-                        waitTime,
+                        ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                         ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("arguments[0].click();", element);
             } else {
-                RETRY_SERVICE.getTemplate(3, 1000).execute((RetryCallback<Void, ElementClickInterceptedException>) context -> {
+                RETRY_SERVICE.getTemplate(3, 1000).execute(context -> {
                     SIMPLE_BY.getElement(
                             getWebDriver(),
                             locator,
-                            waitTime,
+                            ObjectUtils.defaultIfNull(waitTime, getDefaultExplicitWaitTime()),
                             ExpectedConditions::elementToBeClickable).click();
                     return null;
                 });
