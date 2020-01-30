@@ -28,10 +28,15 @@ public class Main {
 
     public static void main(final String[] args) {
         Main.args = args;
+        catchShutdown();
         configureLogging();
         dumpOptions();
         final int retValue = runCucumber(args);
         System.exit(retValue);
+    }
+
+    private static void catchShutdown() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
     }
 
     private static int runCucumber(final String[] args) {
@@ -55,13 +60,19 @@ public class Main {
             }
             return retValue;
         } finally {
+            shutdown();
+        }
+    }
+
+    private static void shutdown() {
+        Try.run(() -> {
             WebDriverDecorator.staticStopScreenRecording();
             if (SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(BROWSER_CLEANUP, true)) {
                 if (AutomatedBrowserBase.getInstance() != null) {
                     AutomatedBrowserBase.getInstance().closeBrowser();
                 }
             }
-        }
+        });
     }
 
     private static void configureLogging() {
