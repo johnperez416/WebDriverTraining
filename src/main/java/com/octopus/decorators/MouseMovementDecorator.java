@@ -4,11 +4,9 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
-import com.octopus.utils.ExpectedConditionCallback;
-import com.octopus.utils.MouseMovementUtils;
-import com.octopus.utils.SimpleBy;
-import com.octopus.utils.SystemPropertyUtils;
+import com.octopus.utils.*;
 import com.octopus.utils.impl.MouseMovementUtilsImpl;
+import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -18,11 +16,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.retry.RetryCallback;
 
 public class MouseMovementDecorator extends AutomatedBrowserBase {
     private static final MouseMovementUtils MOUSE_MOVEMENT_UTILS = new MouseMovementUtilsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
     private int interactionCount = 0;
 
     private void glideMouse(
@@ -774,18 +774,29 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
             glideMouse(locator, getDefaultExplicitWaitTime(), ExpectedConditions::presenceOfElementLocated);
 
             final Actions action = new Actions(getWebDriver());
-            final WebElement element = SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
-                            Constants.MOVE_CURSOR_TO_ELEMENT, false) ? 0 : getDefaultExplicitWaitTime(),
-                    ExpectedConditions::presenceOfElementLocated);
+
             if (StringUtils.isNotBlank(force)) {
+                final WebElement element = SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
+                                Constants.MOVE_CURSOR_TO_ELEMENT, false) ? 0 : getDefaultExplicitWaitTime(),
+                        ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript(
                         "arguments[0].dispatchEvent(new Event('mouseover', { bubbles: true }))",
                         element);
             } else {
-                action.moveToElement(element).perform();
+                // Retry to address the org.openqa.selenium.StaleElementReferenceException exception
+                RETRY_SERVICE.getTemplate().execute((RetryCallback<Void, WebElementException>) context -> {
+                    final WebElement element = SIMPLE_BY.getElement(
+                            getWebDriver(),
+                            locator,
+                            SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
+                                    Constants.MOVE_CURSOR_TO_ELEMENT, false) ? 0 : getDefaultExplicitWaitTime(),
+                            ExpectedConditions::presenceOfElementLocated);
+                    action.moveToElement(element).perform();
+                    return null;
+                });
             }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
