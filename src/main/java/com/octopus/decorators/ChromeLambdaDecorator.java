@@ -23,7 +23,7 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
             options.addArguments("--headless");
         }
         options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1366,768");
+        options.addArguments("--window-size=1920,1080");
         options.addArguments("--single-process");
         options.addArguments("--no-sandbox");
         options.addArguments("--user-data-dir=/tmp/user-data");
