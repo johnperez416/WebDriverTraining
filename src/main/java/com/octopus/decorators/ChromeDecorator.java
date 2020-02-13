@@ -80,4 +80,14 @@ public class ChromeDecorator extends AutomatedBrowserBase {
             }
         }
     }
+
+    @Override
+    public void startScreenRecording(final String file, final String capturedArtifact) {
+        // Assume a headless environment means we either can't or don't want record the screen
+        if (!this.headless) {
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().startScreenRecording(file, capturedArtifact);
+            }
+        }
+    }
 }
