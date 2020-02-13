@@ -37,6 +37,9 @@ public class ChromeDecorator extends AutomatedBrowserBase {
     @Override
     public void init() {
         final ChromeOptions options = new ChromeOptions();
+        if (headless) {
+            options.addArguments("--window-size=1920,1080");
+        }
         options.setHeadless(headless);
         // https://bugs.chromium.org/p/chromedriver/issues/detail?id=795
         // A random user-data dir can fix issues with multiple tests opening and closing Chrome
