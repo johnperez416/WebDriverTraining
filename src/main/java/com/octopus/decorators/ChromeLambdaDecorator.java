@@ -1,19 +1,30 @@
 package com.octopus.decorators;
 
+import com.google.common.io.Files;
 import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
+
 public class ChromeLambdaDecorator extends AutomatedBrowserBase
 {
     private final boolean headless;
+    private final File userData;
+    private final File dataPath;
+    private final File cacheDir;
 
     public ChromeLambdaDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;
         System.setProperty("webdriver.chrome.silentOutput", "true");
+
+        userData = Files.createTempDir();
+        dataPath = Files.createTempDir();
+        cacheDir = Files.createTempDir();
     }
 
     @Override
@@ -26,10 +37,10 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--single-process");
         options.addArguments("--no-sandbox");
-        options.addArguments("--user-data-dir=/tmp/user-data");
-        options.addArguments("--data-path=/tmp/data-path");
+        options.addArguments("--user-data-dir=" + userData.getAbsolutePath());
+        options.addArguments("--data-path=" + dataPath.getAbsolutePath());
         options.addArguments("--homedir=/tmp");
-        options.addArguments("--disk-cache-dir=/tmp/cache-dir");
+        options.addArguments("--disk-cache-dir=" + cacheDir.getAbsolutePath());
 
         if (System.getProperty("chrome.binary") != null) {
             options.setBinary(System.getProperty("chrome.binary"));
@@ -39,6 +50,14 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
         getAutomatedBrowser().init();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        FileUtils.deleteQuietly(userData);
+        FileUtils.deleteQuietly(dataPath);
+        FileUtils.deleteQuietly(cacheDir);
     }
 
     @Override
