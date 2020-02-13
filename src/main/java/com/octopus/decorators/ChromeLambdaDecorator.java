@@ -10,7 +10,7 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
 {
     private final boolean headless;
 
-    public ChromeLambdaDecorator(final boolean headless , final AutomatedBrowser automatedBrowser) {
+    public ChromeLambdaDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;
         System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -39,5 +39,15 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase
         final WebDriver webDriver = new ChromeDriver(options);
         getAutomatedBrowser().setWebDriver(webDriver);
         getAutomatedBrowser().init();
+    }
+
+    @Override
+    public void fadeScreen(final String red, final String green, final String blue, final String duration) {
+        // Assume a headless environment means we either can't or don't want to do fades
+        if (!this.headless) {
+            if (getAutomatedBrowser() != null) {
+                getAutomatedBrowser().fadeScreen(red, green, blue, duration);
+            }
+        }
     }
 }
