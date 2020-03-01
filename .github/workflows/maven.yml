@@ -51,10 +51,6 @@ jobs:
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         CHROME_BIN: /usr/bin/google-chrome
-    - name: Deploy to Github Package Registry
-      run: |
-        echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-        mvn deploy -DskipTests
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
@@ -65,3 +61,7 @@ jobs:
       run: |
         docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:$(cat /home/runner/work/WebDriverTraining/WebDriverTraining/version.txt)
         docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:latest
+    - name: Deploy to Github Package Registry
+      run: |
+        echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+        mvn deploy -X -DskipTests
