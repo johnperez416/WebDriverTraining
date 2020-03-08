@@ -2,7 +2,13 @@ package com.octopus;
 
 import java.util.ArrayList;
 
+/**
+ * Various contants used by the app.
+ */
 public class Constants {
+    /**
+     * The default options to pass to the Cucumber run method.
+     */
     public static final ArrayList<String> DEFAULT_CUCUMBER_OPTIONS = new ArrayList<>() {{
         add("--glue");
         add("com.octopus.decoratorbase");
@@ -23,6 +29,9 @@ public class Constants {
      */
     public static final String DUMP_OPTIONS = "dumpOptions";
 
+    /**
+     * The prefix for system properties that define a Cucumber alias.
+     */
     public static final String ALIAS_HEADER_PREFIX = "CucumberAlias-";
 
     /**

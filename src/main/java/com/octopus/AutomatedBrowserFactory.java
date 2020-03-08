@@ -2,6 +2,9 @@ package com.octopus;
 
 import com.octopus.decorators.*;
 
+/**
+ * A factory to create AutomatedBrowser instances with various configurations.
+ */
 public class AutomatedBrowserFactory {
 
     public AutomatedBrowser getAutomatedBrowser(final String browser) {

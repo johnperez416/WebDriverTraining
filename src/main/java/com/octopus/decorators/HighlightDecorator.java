@@ -12,7 +12,6 @@ import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.bouncycastle.pqc.math.linearalgebra.IntUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * A decorator to provide highlighting of HTML elements.
+ */
 public class HighlightDecorator extends AutomatedBrowserBase {
     private static final Logger LOGGER = Logger.getLogger(HighlightDecorator.class.toString());
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
@@ -75,16 +77,16 @@ public class HighlightDecorator extends AutomatedBrowserBase {
                 if (StringUtils.equals(StringUtils.trim(location), "inside")) {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
                             """
-                            arguments[0].style.border = '5px solid rgb(0, 204, 101)';
-                            """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
+                                    arguments[0].style.border = '5px solid rgb(0, 204, 101)';
+                                    """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
                             element);
                 } else {
                     ((JavascriptExecutor) getWebDriver()).executeScript(
                             """
-                            arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
-                            arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
-                            arguments[0].style['outline-style'] = 'solid';
-                            """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
+                                    arguments[0].style.outline = '5px solid rgb(0, 204, 101)';
+                                    arguments[0].style['outline-offset'] = '""" + offsetValue + "px';" + """
+                                    arguments[0].style['outline-style'] = 'solid';
+                                    """ + (StringUtils.isBlank(lift) ? "" : "arguments[0].style['z-index'] = 999999;"),
                             element);
                 }
 

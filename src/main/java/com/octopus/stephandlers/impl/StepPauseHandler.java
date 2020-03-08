@@ -10,7 +10,7 @@ import io.cucumber.plugin.event.TestStepFinished;
 import io.vavr.control.Try;
 
 /**
- * A handler to add a pause between each step
+ * A step handler to add a pause between each interaction step.
  */
 public class StepPauseHandler implements EventListener {
 

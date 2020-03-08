@@ -4,6 +4,9 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+/**
+ * A decorator to configure a Browser Stack Windows Edge session.
+ */
 public class BrowserStackEdgeDecorator extends AutomatedBrowserBase {
 
     public BrowserStackEdgeDecorator(final AutomatedBrowser  automatedBrowser) {

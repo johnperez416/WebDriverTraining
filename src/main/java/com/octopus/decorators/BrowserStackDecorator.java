@@ -9,6 +9,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * A decorator to configure a Browser Stack session.
+ */
 public class BrowserStackDecorator extends AutomatedBrowserBase {
 
     public static final String USERNAME_ENV = "BROWSERSTACK_USERNAME";

@@ -18,6 +18,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.retry.RetryCallback;
 
+/**
+ * This decorator wraps up commands that emulate end user interactions, and move the mouse to the element
+ * location. The broser must be maximized or in full screen mode for mouse movement to work correctly, as
+ * WebDriver can not find the absolute position of an element on the screen, but that position can be worked out
+ * from the element position in the browser window plus a fixed value for the browsers user interface.
+ */
 public class MouseMovementDecorator extends AutomatedBrowserBase {
     private static final MouseMovementUtils MOUSE_MOVEMENT_UTILS = new MouseMovementUtilsImpl();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();

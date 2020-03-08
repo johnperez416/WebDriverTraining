@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+/**
+ * A decorator to configure a Chrome session.
+ */
 public class ChromeDecorator extends AutomatedBrowserBase {
 
     final boolean headless;

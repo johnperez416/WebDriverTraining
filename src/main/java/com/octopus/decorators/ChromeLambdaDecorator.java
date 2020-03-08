@@ -10,6 +10,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 
+/**
+ * A decorator to configure a Chrome session in a restricted environment such as AWS Lambdas. This
+ * is based on the work from https://github.com/adieuadieu/serverless-chrome.
+ * <p>
+ * This decorator can also be used in other situations such as running as root in a Linux session.
+ */
 public class ChromeLambdaDecorator extends AutomatedBrowserBase
 {
     private final boolean headless;

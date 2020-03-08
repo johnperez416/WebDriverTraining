@@ -2,6 +2,9 @@ package com.octopus;
 
 import java.util.Map;
 
+/**
+ * A class representing the input required when the app is launched from AWS Lambda.
+ */
 public class LambdaInput {
     private String id;
     private String feature;

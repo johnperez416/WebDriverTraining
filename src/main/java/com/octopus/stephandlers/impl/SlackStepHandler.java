@@ -10,7 +10,10 @@ import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.cucumber.plugin.EventListener;
-import io.cucumber.plugin.event.*;
+import io.cucumber.plugin.event.EventPublisher;
+import io.cucumber.plugin.event.PickleStepTestStep;
+import io.cucumber.plugin.event.Status;
+import io.cucumber.plugin.event.TestStepFinished;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +31,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+/**
+ * A step handler to generate a slack message after each step.
+ */
 public class SlackStepHandler implements EventListener {
     private static final Logger LOGGER = Logger.getLogger(SlackStepHandler.class.toString());
     private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
@@ -74,7 +80,7 @@ public class SlackStepHandler implements EventListener {
         CompletableFuture.supplyAsync(() -> {
 
             // get the value from the future, wrapping any exceptions
-             final Optional<String> imageUrl = imageUrlFuture.map(s -> Try.of(s::get))
+            final Optional<String> imageUrl = imageUrlFuture.map(s -> Try.of(s::get))
                     // ignore any failed attempts to get the value
                     .filter(Try::isSuccess)
                     // get the value
@@ -89,11 +95,11 @@ public class SlackStepHandler implements EventListener {
 
                 imageUrl.ifPresent(s ->
                         message.attachments = new Attachments[]{
-                            Attachments
-                                    .builder()
-                                    .color(event.getResult().getStatus() == Status.PASSED ? "good" : "danger")
-                                    .imageUrl(s)
-                                    .build()
+                                Attachments
+                                        .builder()
+                                        .color(event.getResult().getStatus() == Status.PASSED ? "good" : "danger")
+                                        .imageUrl(s)
+                                        .build()
                         }
                 );
 
@@ -101,17 +107,17 @@ public class SlackStepHandler implements EventListener {
                         SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SLACK_RETRIES, Constants.DEFAULT_SLACK_RETRIES),
                         SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SLACK_BACKOFF, Constants.DEFAULT_SLACK_BACKOFF))
                         .execute((RetryCallback<Void, Exception>) context -> {
-                    final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
-                    httpPost.setHeader("Content-Type", "application/json");
-                    httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
-                    try (final CloseableHttpResponse response = client.execute(httpPost)) {
-                        if (response.getStatusLine().getStatusCode() != 200) {
-                            throw new NetworkException("Slack response code was " +
-                                    response.getStatusLine().getStatusCode());
-                        }
-                    }
-                    return null;
-                });
+                            final HttpPost httpPost = new HttpPost(SYSTEM_PROPERTY_UTILS.getProperty(SLACK_HOOK_URL));
+                            httpPost.setHeader("Content-Type", "application/json");
+                            httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
+                            try (final CloseableHttpResponse response = client.execute(httpPost)) {
+                                if (response.getStatusLine().getStatusCode() != 200) {
+                                    throw new NetworkException("Slack response code was " +
+                                            response.getStatusLine().getStatusCode());
+                                }
+                            }
+                            return null;
+                        });
             } catch (final Exception ex) {
                 LOGGER.warning("Failed to send post to Slack. " + ex.toString());
                 return null;

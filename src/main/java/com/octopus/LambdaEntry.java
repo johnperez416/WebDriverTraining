@@ -27,6 +27,9 @@ import java.util.HashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * The entry class when this application is called from an AWS Lambda.
+ */
 public class LambdaEntry {
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
             new EnvironmentAliasesProcessorImpl();

@@ -1,9 +1,11 @@
 package com.octopus.logging;
 
-import java.util.logging.*;
+import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 
 /**
- * A console logger that uses system.out
+ * A console logger that uses system.out instead of system.err.
  */
 public class OutConsoleHandler extends StreamHandler {
 

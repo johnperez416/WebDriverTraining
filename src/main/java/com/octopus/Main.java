@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 import static com.octopus.Constants.BROWSER_CLEANUP;
 import static com.octopus.Constants.DUMP_OPTIONS;
 
+/**
+ * The application entry class.
+ */
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.toString());
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR = new EnvironmentAliasesProcessorImpl();
@@ -26,6 +29,11 @@ public class Main {
      */
     public static String[] args;
 
+    /**
+     * The application entry method.
+     *
+     * @param args Arguments to be passed to the Cucumber entry point, along with the default values.
+     */
     public static void main(final String[] args) {
         Main.args = args;
         catchShutdown();

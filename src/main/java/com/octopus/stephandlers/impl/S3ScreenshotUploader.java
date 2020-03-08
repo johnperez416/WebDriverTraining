@@ -10,6 +10,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
+/**
+ * A step handler that uploads screenshots to an AWS S3 bucket.
+ */
 public class S3ScreenshotUploader implements ScreenshotUploader {
     static final Logger LOGGER = Logger.getLogger(S3ScreenshotUploader.class.toString());
     private static final String S3_UPLOADING_ENABLED = "screenshotS3Enabled";

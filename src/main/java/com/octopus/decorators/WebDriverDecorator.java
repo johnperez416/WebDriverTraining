@@ -29,6 +29,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+/**
+ * The decorator the implements most of the interaction with the browser.
+ */
 public class WebDriverDecorator extends AutomatedBrowserBase {
     private static final Logger LOGGER = Logger.getLogger(WebDriverDecorator.class.toString());
     private static final OctopusServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new OctopusServiceMessageGeneratorImpl();
@@ -1064,8 +1067,8 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
             };
 
             ((JavascriptExecutor) getWebDriver()).executeScript("""
-                    arguments[0].dispatchEvent(
-                        new KeyboardEvent("keydown",{'key': '""" + keyName + "'}))",
+                            arguments[0].dispatchEvent(
+                                new KeyboardEvent("keydown",{'key': '""" + keyName + "'}))",
                     element);
         } else {
             switch (key) {
