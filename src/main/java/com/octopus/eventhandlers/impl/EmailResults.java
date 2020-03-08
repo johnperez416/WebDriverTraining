@@ -8,8 +8,17 @@ import com.octopus.eventhandlers.EventHandler;
 import java.util.Map;
 
 public class EmailResults implements EventHandler {
+    /**
+     * The header defining the region from which to send the SMS message.
+     */
     private static final String EMAIL_CLIENT_REGION = "Email-Client-Region";
+    /**
+     * The header defining the email to address.
+     */
     private static final String EMAIL_TO = "Email-To";
+    /**
+     * The header defining the email from address.
+     */
     private static final String EMAIL_FROM = "Email-From";
 
     @Override
@@ -20,11 +29,11 @@ public class EmailResults implements EventHandler {
                                         final String htmlOutputDir,
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
-        if (!(headers.containsKey(EMAIL_TO) &&
-                headers.containsKey(EMAIL_FROM) &&
-                headers.containsKey(EMAIL_CLIENT_REGION))) {
-            System.out.println("The " + EMAIL_TO + ", " + EMAIL_FROM + " and " + EMAIL_CLIENT_REGION +
-                    " headers must be defined to send an email report.");
+        if (!(headers.containsKey(EMAIL_TO)
+                && headers.containsKey(EMAIL_FROM)
+                && headers.containsKey(EMAIL_CLIENT_REGION))) {
+            System.out.println("The " + EMAIL_TO + ", " + EMAIL_FROM + " and " + EMAIL_CLIENT_REGION
+                    + " headers must be defined to send an email report.");
             return previousResults;
         }
 

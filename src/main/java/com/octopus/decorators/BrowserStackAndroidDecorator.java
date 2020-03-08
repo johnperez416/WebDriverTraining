@@ -8,6 +8,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  * A decorator to configure a Browser Stack Android session.
  */
 public class BrowserStackAndroidDecorator extends AutomatedBrowserBase {
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public BrowserStackAndroidDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
     }

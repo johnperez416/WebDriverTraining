@@ -35,13 +35,37 @@ import java.util.logging.Logger;
  * A step handler to generate a slack message after each step.
  */
 public class SlackStepHandler implements EventListener {
-    private static final Logger LOGGER = Logger.getLogger(SlackStepHandler.class.toString());
-    private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
-    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
+    /**
+     * The system property that defines the Slack hook URL.
+     */
     public static final String SLACK_HOOK_URL = "slackHookUrl";
+    /**
+     * The system property that defines if this step handler is enabled.
+     */
     public static final String SLACK_HANDLER_ENABLED = "slackStepHandlerEnabled";
+    /**
+     * The system property that defines if this step handler is enabled only for errors.
+     */
     public static final String SLACK_HANDLER_ERROR_ONLY = "slackStepHandlerErrorOnly";
+    /**
+     * The shared Logger instance.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SlackStepHandler.class.toString());
+    /**
+     * An executor to send messages serially, but in background threads.
+     */
+    private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
+    /**
+     * The shared RetryServiceImpl instance.
+     */
+    private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * A list of known screenshot uploaders.
+     */
     private static final ScreenshotUploader[] SCREENSHOT_UPLOADER = new ScreenshotUploader[]{
             new S3ScreenshotUploader()
     };
@@ -60,8 +84,8 @@ public class SlackStepHandler implements EventListener {
         }
 
         if (!SYSTEM_PROPERTY_UTILS.hasProperty(SLACK_HOOK_URL)) {
-            LOGGER.info("The " + SLACK_HOOK_URL +
-                    " system property must be defined to return the results via Slack");
+            LOGGER.info("The " + SLACK_HOOK_URL
+                    + " system property must be defined to return the results via Slack");
             return;
         }
 
@@ -89,8 +113,8 @@ public class SlackStepHandler implements EventListener {
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
                 final SlackMessage message = SlackMessage
                         .builder()
-                        .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE, " ") +
-                                event.getResult().getStatus() + " " + getStepName(event))
+                        .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE, " ")
+                                + event.getResult().getStatus() + " " + getStepName(event))
                         .build();
 
                 imageUrl.ifPresent(s ->
@@ -112,8 +136,8 @@ public class SlackStepHandler implements EventListener {
                             httpPost.setEntity(new StringEntity(new ObjectMapper().writeValueAsString(message)));
                             try (final CloseableHttpResponse response = client.execute(httpPost)) {
                                 if (response.getStatusLine().getStatusCode() != 200) {
-                                    throw new NetworkException("Slack response code was " +
-                                            response.getStatusLine().getStatusCode());
+                                    throw new NetworkException("Slack response code was "
+                                            + response.getStatusLine().getStatusCode());
                                 }
                             }
                             return null;
@@ -142,17 +166,32 @@ public class SlackStepHandler implements EventListener {
 @Getter
 @Builder
 class SlackMessage {
+    /**
+     * The message text.
+     */
     public String text;
+    /**
+     * The message attachments (like images).
+     */
     public Attachments[] attachments;
 }
 
 @Getter
 @Builder
 class Attachments {
+    /**
+     * The attachment text.
+     */
     public String text;
 
+    /**
+     * The attachment color.
+     */
     public String color;
 
+    /**
+     * The attachment image url.
+     */
     @JsonProperty("image_url")
     public String imageUrl;
 }

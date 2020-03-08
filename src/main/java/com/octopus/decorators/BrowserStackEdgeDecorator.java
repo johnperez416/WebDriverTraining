@@ -9,7 +9,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class BrowserStackEdgeDecorator extends AutomatedBrowserBase {
 
-    public BrowserStackEdgeDecorator(final AutomatedBrowser  automatedBrowser) {
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
+    public BrowserStackEdgeDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
     }
 

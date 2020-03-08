@@ -64,7 +64,7 @@ public interface AutomatedBrowser {
     void goTo(String url);
 
     /**
-     * Refresh the page
+     * Refresh the page.
      */
     void refresh();
 
@@ -230,7 +230,7 @@ public interface AutomatedBrowser {
      * @param locator The element to press the key on.
      * @param key     The name of the arrow key: up, down, left or right.
      */
-    void pressArrow(final String force, final String key, final String locator);
+    void pressArrow(String force, String key, String locator);
 
     /**
      * Press an arrow key on the element.
@@ -240,7 +240,7 @@ public interface AutomatedBrowser {
      * @param key      The name of the arrow key: up, down, left or right.
      * @param waitTime The amount of time to wait for the element.
      */
-    void pressArrow(final String force, final String key, final String locator, int waitTime);
+    void pressArrow(String force, String key, String locator, int waitTime);
 
     /**
      * Press a function key.
@@ -258,7 +258,7 @@ public interface AutomatedBrowser {
      * @param file             The name of the file to save the recording to.
      * @param capturedArtifact If this is not blank it is used as the name of an Octopus artifact capturing the recording file.
      */
-    void startScreenRecording(final String file, final String capturedArtifact);
+    void startScreenRecording(String file, String capturedArtifact);
 
     /**
      * Stop screen recording.
@@ -574,7 +574,7 @@ public interface AutomatedBrowser {
     //<editor-fold desc="Simple Selection">
 
     /**
-     * Click an element if a second element exists
+     * Click an element if a second element exists.
      *
      * @param force         If not blank use JavaScript to click the element.
      * @param locator       The locator of the element to click.
@@ -583,7 +583,7 @@ public interface AutomatedBrowser {
     void clickElementIfOtherExists(String force, String locator, String ifOtherExists);
 
     /**
-     * Click an element if a second element exists
+     * Click an element if a second element exists.
      *
      * @param force         If not blank use JavaScript to click the element.
      * @param locator       The locator of the element to click.
@@ -593,7 +593,7 @@ public interface AutomatedBrowser {
     void clickElementIfOtherExists(String force, String locator, Integer waitTime, String ifOtherExists);
 
     /**
-     * Click an element if a second element exists
+     * Click an element if a second element exists.
      *
      * @param locator       The locator of the element to click.
      * @param ifOtherExists The locator of the second element that must exist for the first element to be clicked.
@@ -603,7 +603,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Click an element if a second element exists
+     * Click an element if a second element exists.
      *
      * @param locator       The locator of the element to click.
      * @param waitTime      The amount of time to wait for the element.
@@ -673,7 +673,7 @@ public interface AutomatedBrowser {
     void clickElementIfExists(String force, String locator, Integer waitTime, String ifExistsOption);
 
     /**
-     * Click the element
+     * Click the element.
      *
      * @param locator The element locator.
      */
@@ -682,7 +682,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Click the element
+     * Click the element.
      *
      * @param locator  The element locator.
      * @param waitTime The amount of time to wait for the element.
@@ -692,7 +692,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Click the element
+     * Click the element.
      *
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
@@ -702,7 +702,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Click the element
+     * Click the element.
      *
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
@@ -907,6 +907,7 @@ public interface AutomatedBrowser {
     /**
      * Clear the element of any text.
      *
+     * @param force          If not blank, clear the text using JavaScript.
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
@@ -915,6 +916,7 @@ public interface AutomatedBrowser {
     /**
      * Clear the element of any text.
      *
+     * @param force          If not blank, clear the text using JavaScript.
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
@@ -983,6 +985,7 @@ public interface AutomatedBrowser {
      *
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @param force          If not blank, focus on the element using JavaScript.
      */
     void focusIfExists(String force, String locator, String ifExistsOption);
 
@@ -992,11 +995,12 @@ public interface AutomatedBrowser {
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @param force          If not blank, focus on the element using JavaScript.
      */
     void focusIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
     /**
-     * Get the text from the element
+     * Get the text from the element.
      *
      * @param locator The element locator.
      * @return The text set in the element.
@@ -1006,7 +1010,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Get the text from the element
+     * Get the text from the element.
      *
      * @param locator  The element locator.
      * @param waitTime The amount of time to wait for the element.
@@ -1017,7 +1021,7 @@ public interface AutomatedBrowser {
     }
 
     /**
-     * Get the text from the element
+     * Get the text from the element.
      *
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
@@ -1026,7 +1030,7 @@ public interface AutomatedBrowser {
     String getTextFromElementIfExists(String locator, String ifExistsOption);
 
     /**
-     * Get the text from the element
+     * Get the text from the element.
      *
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
@@ -1204,7 +1208,7 @@ public interface AutomatedBrowser {
      * @param offset         If not blank, use this offset if the location is set to "outside".
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void elementHighlightIfExists(String location, String lift, String locator, final String offset, String ifExistsOption);
+    void elementHighlightIfExists(String location, String lift, String locator, String offset, String ifExistsOption);
 
     /**
      * Apply a highlight to an element.
@@ -1226,7 +1230,7 @@ public interface AutomatedBrowser {
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void removeElementHighlight(String locator, final String ifExistsOption);
+    void removeElementHighlight(String locator, String ifExistsOption);
 
     /**
      * Remove a highlight from an element by reapplying the style on the element before the highlight was applied.
@@ -1237,7 +1241,7 @@ public interface AutomatedBrowser {
      * @param waitTime       The amount of time to wait for the element.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void removeElementHighlight(String locator, int waitTime, final String ifExistsOption);
+    void removeElementHighlight(String locator, int waitTime, String ifExistsOption);
 
     /**
      * Verify an element exists in the page.
@@ -1363,12 +1367,12 @@ public interface AutomatedBrowser {
     //<editor-fold desc="Transitions and Annotations">
 
     /**
-     * Clear any screen transitions
+     * Clear any screen transitions.
      */
     void clearTransition();
 
     /**
-     * Fade the screen from transparent to the supplied color
+     * Fade the screen from transparent to the supplied color.
      *
      * @param red      The red component of the final color.
      * @param green    The green component of the final color.

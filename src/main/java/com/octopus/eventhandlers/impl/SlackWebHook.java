@@ -10,7 +10,13 @@ import org.apache.http.impl.client.HttpClients;
 import java.util.Map;
 
 public class SlackWebHook implements EventHandler {
+    /**
+     * The header defining the Slack hook URL.
+     */
     private static final String HOOK_URL = "Hook-Url";
+    /**
+     * The header defining whether or not a message is sent only for errors.
+     */
     private static final String SLACK_FAILURE_ONLY = "Slack-Failure-Only";
 
     @Override
@@ -22,8 +28,8 @@ public class SlackWebHook implements EventHandler {
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!headers.containsKey(HOOK_URL)) {
-            System.out.println("The " + HOOK_URL +
-                    " headers must be defined to return the results via Slack");
+            System.out.println("The " + HOOK_URL
+                    + " headers must be defined to return the results via Slack");
             return previousResults;
         }
 
@@ -31,13 +37,13 @@ public class SlackWebHook implements EventHandler {
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
                 final HttpPost httpPost = new HttpPost(headers.get(HOOK_URL));
                 httpPost.setHeader("Content-Type", "application/json");
-                httpPost.setEntity(new StringEntity("{" +
-                        "\"text\":\"Cucumber test " +
-                        (status ? "succeeded" : "failed") + ": " + id + ". " +
-                        (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
-                                ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
-                                : "") +
-                        "\"}"));
+                httpPost.setEntity(new StringEntity("{"
+                        + "\"text\":\"Cucumber test "
+                        + (status ? "succeeded" : "failed") + ": " + id + ". "
+                        + (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
+                        ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
+                        : "")
+                        + "\"}"));
                 try (final CloseableHttpResponse response = client.execute(httpPost)) {
                     if (response.getStatusLine().getStatusCode() != 200) {
                         throw new Exception("Failed to post to slack");

@@ -21,11 +21,20 @@ import static com.octopus.Constants.DUMP_OPTIONS;
  * The application entry class.
  */
 public class Main {
+    /**
+     * The shared Logger instance.
+     */
     private static final Logger LOGGER = Logger.getLogger(Main.class.toString());
+    /**
+     * The shared EnvironmentAliasesProcessorImpl instance.
+     */
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR = new EnvironmentAliasesProcessorImpl();
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     /**
-     * We track the args so we can relaunch Cucumber with the same options
+     * We track the args so we can relaunch Cucumber with the same options.
      */
     public static String[] args;
 

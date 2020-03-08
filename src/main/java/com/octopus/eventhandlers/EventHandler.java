@@ -18,15 +18,15 @@ public interface EventHandler {
      * @param htmlOutputDir   The directory containing the output of the Cucumber HTML plugin
      * @param headers         Any headers that were defined when the Lambda was executed.
      * @param previousResults A generic map containing any information saved by other event listeners.
-     * @return
+     * @return A generic map containing any information to be passed to other event listeners.
      */
-    Map<String, String> finished(final String id,
-                                 final boolean status,
-                                 final String featureFile,
-                                 final String txtOutput,
-                                 final String htmlOutputDir,
-                                 final Map<String, String> headers,
-                                 final Map<String, String> previousResults);
+    Map<String, String> finished(String id,
+                                 boolean status,
+                                 String featureFile,
+                                 String txtOutput,
+                                 String htmlOutputDir,
+                                 Map<String, String> headers,
+                                 Map<String, String> previousResults);
 
     /**
      * Called to determine if the event handler is to proceed.
@@ -36,11 +36,11 @@ public interface EventHandler {
      * @param failureOnlyHeader The name of a header used to determine if this event handler is to only run on failure.
      * @return true if the event handler is to proceed, and false otherwise.
      */
-    default boolean proceed(final boolean status,
-                            final Map<String, String> headers,
-                            final String failureOnlyHeader) {
-        return !status ||
-                !headers.containsKey(failureOnlyHeader) ||
-                headers.get(failureOnlyHeader).equalsIgnoreCase(Boolean.FALSE.toString());
+    default boolean proceed(boolean status,
+                            Map<String, String> headers,
+                            String failureOnlyHeader) {
+        return !status
+                || !headers.containsKey(failureOnlyHeader)
+                || headers.get(failureOnlyHeader).equalsIgnoreCase(Boolean.FALSE.toString());
     }
 }

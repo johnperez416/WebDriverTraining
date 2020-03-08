@@ -14,9 +14,20 @@ import java.net.URL;
  */
 public class BrowserStackDecorator extends AutomatedBrowserBase {
 
+    /**
+     * The environment variable that folds the BrowserStack username.
+     */
     public static final String USERNAME_ENV = "BROWSERSTACK_USERNAME";
+    /**
+     * The environment variable that folds the BrowserStack key.
+     */
     public static final String AUTOMATE_KEY_ENV = "BROWSERSTACK_KEY";
 
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public BrowserStackDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
     }
@@ -24,10 +35,10 @@ public class BrowserStackDecorator extends AutomatedBrowserBase {
     @Override
     public void init() {
         try {
-            final String url = "https://" +
-                    System.getenv(USERNAME_ENV) + ":" +
-                    System.getenv(AUTOMATE_KEY_ENV) +
-                    "@hub-cloud.browserstack.com/wd/hub";
+            final String url = "https://"
+                    + System.getenv(USERNAME_ENV) + ":"
+                    + System.getenv(AUTOMATE_KEY_ENV)
+                    + "@hub-cloud.browserstack.com/wd/hub";
             final WebDriver webDriver = new RemoteWebDriver(new URL(url), getDesiredCapabilities());
             getAutomatedBrowser().setWebDriver(webDriver);
             getAutomatedBrowser().init();

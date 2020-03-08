@@ -37,11 +37,24 @@ import java.util.stream.Collectors;
  */
 public class BrowserMobDecorator extends AutomatedBrowserBase {
 
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * The shared OSUtilsImpl instance.
+     */
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
-
+    /**
+     * The BrowserMob proxy instance.
+     */
     private BrowserMobProxy proxy;
 
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public BrowserMobDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
     }
@@ -108,7 +121,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void blockRequestTo(String url, int responseCode) {
+    public void blockRequestTo(final String url, final int responseCode) {
         proxy.addRequestFilter((request, contents, messageInfo) -> {
             if (Pattern.compile(url).matcher(messageInfo.getOriginalUrl()).matches()) {
                 final HttpResponse response = new DefaultHttpResponse(

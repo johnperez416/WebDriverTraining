@@ -25,10 +25,25 @@ import org.springframework.retry.RetryCallback;
  * from the element position in the browser window plus a fixed value for the browsers user interface.
  */
 public class MouseMovementDecorator extends AutomatedBrowserBase {
+    /**
+     * The shared MouseMovementUtilsImpl instance.
+     */
     private static final MouseMovementUtils MOUSE_MOVEMENT_UTILS = new MouseMovementUtilsImpl();
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * The shared SimpleByImpl instance.
+     */
     private static final SimpleBy SIMPLE_BY = new SimpleByImpl();
+    /**
+     * The shared RetryServiceImpl instance.
+     */
     private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
+    /**
+     * A count of how many user interactions we simulated.
+     */
     private int interactionCount = 0;
 
     private void glideMouse(
@@ -83,10 +98,18 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         }
     }
 
+    /**
+     * Default constructor.
+     */
     public MouseMovementDecorator() {
         super(null);
     }
 
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public MouseMovementDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
     }
@@ -897,6 +920,9 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         }
     }
 
+    /**
+     * @return the number of user interactions we have simulated.
+     */
     public int getInteractionCount() {
         return interactionCount;
     }

@@ -19,12 +19,33 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class UploadToS3 implements EventHandler {
-    private static final Logger LOGGER = Logger.getLogger(UploadToS3.class.toString());
-    private static final int MAX_ID_LENGTH = 50;
-    private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
+    /**
+     * The header that saves the URL of the uploaded report.
+     */
     public static final String S3_REPORT_URL = "S3-Report-Url";
+    /**
+     * The shared Logger instance.
+     */
+    private static final Logger LOGGER = Logger.getLogger(UploadToS3.class.toString());
+    /**
+     * The maximum file name length.
+     */
+    private static final int MAX_ID_LENGTH = 50;
+    /**
+     * The shared ZipUtilsImpl instance.
+     */
+    private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
+    /**
+     * The header that defines the S3 bucket name.
+     */
     private static final String BUCKET_NAME = "S3-Bucket-Name";
+    /**
+     * The header that defines the S3 region.
+     */
     private static final String CLIENT_REGION = "S3-Client-Region";
+    /**
+     * The header that defines if the report should only be uploaded on error.
+     */
     private static final String S3_FAILURE_ONLY = "S3-Failure-Only";
 
     @Override
@@ -36,16 +57,16 @@ public class UploadToS3 implements EventHandler {
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
         if (!(headers.containsKey(BUCKET_NAME) && headers.containsKey(CLIENT_REGION))) {
-            LOGGER.info("The " + BUCKET_NAME + " and " + CLIENT_REGION +
-                    " headers must be defined to upload the results to S3.");
+            LOGGER.info("The " + BUCKET_NAME + " and " + CLIENT_REGION
+                    + " headers must be defined to upload the results to S3.");
             return previousResults;
         }
 
         if (proceed(status, headers, S3_FAILURE_ONLY)) {
-            final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-" +
+            final String fileObjKeyName = (status ? "SUCCEEDED" : "FAILED") + "-"
                     // Sanitise the filename
-                    StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), MAX_ID_LENGTH) + "-" +
-                    UUID.randomUUID() + ".zip";
+                    + StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), MAX_ID_LENGTH) + "-"
+                    + UUID.randomUUID() + ".zip";
 
             try (final AutoDeletingTempFile report = new AutoDeletingTempFile("htmlreport", ".zip")) {
                 FileUtils.copyFileToDirectory(new File(featureFile), new File(htmlOutputDir));
@@ -64,8 +85,8 @@ public class UploadToS3 implements EventHandler {
                 request.setMetadata(metadata);
                 s3Client.putObject(request);
 
-                LOGGER.info("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id +
-                        " to s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
+                LOGGER.info("UPLOADED " + (status ? "SUCCEEDED" : "FAILED") + " Cucumber Test ID " + id
+                        + " to s3://" + headers.get(BUCKET_NAME) + "/" + fileObjKeyName);
 
                 return new HashMap<>() {{
                     this.putAll(previousResults);

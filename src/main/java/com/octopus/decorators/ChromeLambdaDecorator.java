@@ -16,14 +16,34 @@ import java.io.File;
  * <p>
  * This decorator can also be used in other situations such as running as root in a Linux session.
  */
-public class ChromeLambdaDecorator extends AutomatedBrowserBase
-{
+public class ChromeLambdaDecorator extends AutomatedBrowserBase {
+    /**
+     * true if the browser is headless, and false otherwise.
+     */
     private final boolean headless;
+    /**
+     * The Chrome user data directory.
+     */
     private final File userData;
+    /**
+     * The Chrome data directory.
+     */
     private final File dataPath;
+    /**
+     * The Chrome cache directory.
+     */
     private final File cacheDir;
+    /**
+     * The Chrome home directory.
+     */
     private final File homeDir;
 
+    /**
+     * Decorator constructor.
+     *
+     * @param headless         true if the browser is to operate in headless mode, and false otherwise
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public ChromeLambdaDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;

@@ -7,6 +7,12 @@ import com.octopus.decorators.*;
  */
 public class AutomatedBrowserFactory {
 
+    /**
+     * Return a preconfigured AutomatedBrowser instance.
+     *
+     * @param browser The name of the AutomatedBrowser to create
+     * @return a preconfigured AutomatedBrowser instance
+     */
     public AutomatedBrowser getAutomatedBrowser(final String browser) {
 
         if ("Chrome".equalsIgnoreCase(browser)) {

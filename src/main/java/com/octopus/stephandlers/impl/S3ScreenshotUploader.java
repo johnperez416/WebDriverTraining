@@ -14,15 +14,28 @@ import java.util.logging.Logger;
  * A step handler that uploads screenshots to an AWS S3 bucket.
  */
 public class S3ScreenshotUploader implements ScreenshotUploader {
+    /**
+     * The shared Logger instance.
+     */
     static final Logger LOGGER = Logger.getLogger(S3ScreenshotUploader.class.toString());
+    /**
+     * The system property that defines if uploading to S3 is enabled.
+     */
     private static final String S3_UPLOADING_ENABLED = "screenshotS3Enabled";
+    /**
+     * The system property that defines the S3 bucket to upload images to.
+     */
     private static final String SCREENSHOT_S3_BUCKET = "screenshotS3Bucket";
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
     @Override
     public Optional<CompletableFuture<String>> takeAndUploadScreenshot() {
-        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(S3_UPLOADING_ENABLED, false) || AutomatedBrowserBase.getInstance() == null)
+        if (!SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(S3_UPLOADING_ENABLED, false) || AutomatedBrowserBase.getInstance() == null) {
             return Optional.empty();
+        }
 
         if (!SYSTEM_PROPERTY_UTILS.hasProperty(SCREENSHOT_S3_BUCKET)) {
             LOGGER.info("The " + SCREENSHOT_S3_BUCKET + " system property must be set");

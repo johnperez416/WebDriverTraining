@@ -38,36 +38,81 @@ import java.util.logging.Logger;
 
 /**
  * This class serves two purposes.
- *
+ * <p>
  * First, it is the base class that any decorator will extend to take advantage of the default implementations of the
  * interface methods, allowing the extending class to override just those methods that are important.
- *
+ * <p>
  * Second, it is the glue class used by Cucumber to execute custom steps. This class is in a namespace of its own so
  * Cucumber doesn't see any of the extending classes, which is a limitation Cucumber enforces. When used by Cucumber,
  * the lifecycle of the instance is managed by Cucumber, and tracked by the instanceAutomatedBrowser variable.
  */
 public class AutomatedBrowserBase implements AutomatedBrowser {
+    /**
+     * The shared Logger instance.
+     */
     private static final Logger LOGGER = Logger.getLogger(AutomatedBrowserBase.class.toString());
     /**
      * This alias is used to store the value of any text extracted from the web page. Cucumber does not have the notion of
      * creating variables, but verification steps can test the value of the LastReturn alias to perform their checks.
      */
-    static private final String LAST_RETURN = "LastReturn";
-    static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
+    private static final String LAST_RETURN = "LastReturn";
+    /**
+     * The shared AutomatedBrowserFactory instance.
+     */
+    private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * The shared JavaLauncherUtilsImpl instance.
+     */
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
+    /**
+     * The shared OctopusServiceMessageGeneratorImpl instance.
+     */
     private static final OctopusServiceMessageGenerator SERVICE_MESSAGE_GENERATOR = new OctopusServiceMessageGeneratorImpl();
+    /**
+     * The shared GithubActionsServiceMessageGeneratorImpl instance.
+     */
     private static final GithubActionsServiceMessageGenerator GITHUB_SERVICE_MESSAGE_GENERATOR = new GithubActionsServiceMessageGeneratorImpl();
+    /**
+     * The shared OSUtilsImpl instance.
+     */
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
-    private Map<String, String> aliases = new HashMap<>();
-    static private Map<String, String> externalAliases = new HashMap<>();
-    private AutomatedBrowser automatedBrowser;
+    /**
+     * The aliases defined externally (system properties or HTTP headers).
+     */
+    private static Map<String, String> externalAliases = new HashMap<>();
+    /**
+     * The shared alias mappings that exist across all instances of AutomatedBrowser.
+     */
     private static Map<String, String> sharedAliases = new HashMap<>();
+    /**
+     * A shared AutomatedBrowser that is used across scenarios.
+     */
     private static AutomatedBrowser sharedAutomatedBrowser;
+    /**
+     * The AutomatedBrowser used for this scenario.
+     */
     private static AutomatedBrowserBase instanceAutomatedBrowser;
+    /**
+     * The alias mappings for this instance of AutomatedBrowser.
+     */
+    private Map<String, String> aliases = new HashMap<>();
+    /**
+     * The AutomatedBrowser instance wrapped by this decorator.
+     */
+    private AutomatedBrowser automatedBrowser;
 
-    public static AutomatedBrowserBase getInstance() {
-        return instanceAutomatedBrowser;
+    /**
+     * The constructor that must be used by any extending decorator. If there is no parent AutomatedBrowser,
+     * pass null.
+     *
+     * @param automatedBrowser The parent decorator, or null if there is no parent.
+     */
+    public AutomatedBrowserBase(final AutomatedBrowser automatedBrowser) {
+        this.automatedBrowser = automatedBrowser;
     }
 
     /**
@@ -78,21 +123,26 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     /**
-     * The constructor that must be used by any extending decorator. If there is no parent AutomatedBrowser,
-     * pass null.
-     * @param automatedBrowser The parent decorator, or null if there is no parent.
+     * @return The AutomatedBrowser instance for this scenario.
      */
-    public AutomatedBrowserBase(final AutomatedBrowser automatedBrowser) {
-        this.automatedBrowser = automatedBrowser;
+    public static AutomatedBrowserBase getInstance() {
+        return instanceAutomatedBrowser;
     }
 
+    /**
+     * Set the aliases passed in from an external source.
+     *
+     * @param externalAliases The externally defined aliases.
+     */
     public static void setExternalAliases(final Map<String, String> externalAliases) {
-        if (externalAliases == null) return;
+        if (externalAliases == null) {
+            return;
+        }
         AutomatedBrowserBase.externalAliases.putAll(externalAliases);
     }
 
     /**
-     * Before each scenario, reuse a shared browser if one was created earlier
+     * Before each scenario, reuse a shared browser if one was created earlier.
      */
     @Before
     public void reuseSharedBrowser() {
@@ -104,6 +154,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
      * dump the values of the aliases to the log. Also note how many manual interactions have been made with
      * the current session (which is either the shared browser instanced if one was created, or the browser instance
      * created for this scenario).
+     *
      * @param scenario The scenario passed in by Cucumber
      */
     @After
@@ -140,8 +191,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     /**
      * Executes a new Cucumber instance, optionally passing in the command line arguments that were used to launch this
      * Cucumber instance.
-     * @param featureFile The path to the feature file. It can be an absolute path, or relative to the current feature file.
-     * @param passArguments This string is defined if the command line arguments passed to this Cucumber instance are to be passed to the new feature
+     *
+     * @param featureFile    The path to the feature file. It can be an absolute path, or relative to the current feature file.
+     * @param passArguments  This string is defined if the command line arguments passed to this Cucumber instance are to be passed to the new feature
      * @param additionalArgs A list of additional command line arguments to be passed. This string is parsed as if it were defined on the command line, so quoting rules apply.
      */
     @And("^I run the feature \"([^\"]*)\"( passing the original arguments)?(?:(?: and)? with the arguments \"([^\"]*)\")?$")
@@ -157,8 +209,8 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         final String[] additionalArgsArray = StringUtils.isEmpty(fixedAdditionalArgs)
                 ? args
                 : ArrayUtils.addAll(
-                    args,
-                    CommandLine
+                args,
+                CommandLine
                         .parse(Objects.toString(getSubstitutedString(additionalArgs), ""))
                         .getArguments());
         // Track the return code
@@ -180,8 +232,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     /**
-     * Defines the aliases for this scenario
-     * @param shared Set if the alias values should be shared (i.e. span scenarios)
+     * Defines the aliases for this scenario.
+     *
+     * @param shared  Set if the alias values should be shared (i.e. span scenarios)
      * @param aliases The map of alias values to be appended to any existing aliases
      */
     @Given("^I set the following( shared)? aliases:$")
@@ -202,8 +255,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     /**
-     * Opens a named browser, optionally making it shared so subsequent scenarios can reuse it
-     * @param shared This string is defined if the browser is to be reused with subsequent scenarios
+     * Opens a named browser, optionally making it shared so subsequent scenarios can reuse it.
+     *
+     * @param shared  This string is defined if the browser is to be reused with subsequent scenarios
      * @param browser The name of the browser to open
      */
     @Given("^I open the( shared)? browser \"([^\"]*)\"$")
@@ -222,7 +276,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     /**
-     * Shuts down the browser
+     * Shuts down the browser.
      */
     @Given("^I close the browser$")
     public void closeBrowser() {
@@ -376,7 +430,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     }
 
     @Override
-    public CompletableFuture<Void> takeScreenshot(final String filename, boolean force, final String captureArtifact) {
+    public CompletableFuture<Void> takeScreenshot(final String filename, final boolean force, final String captureArtifact) {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().takeScreenshot(
                     getSubstitutedString(filename),
@@ -1203,6 +1257,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return List.of();
     }
 
+    /**
+     * Inspect the captured network events and throw an exception if there are any HTTP errors.
+     */
     @And("^I verify there were no network errors$")
     public void verifyNoErrorsInHar() {
         final var errors = getErrors();
@@ -1370,7 +1427,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I( force)? press the enter key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
-    public void pressEnter(final String force, final String locator, int waitTime) {
+    public void pressEnter(final String force, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().pressEnter(force, getSubstitutedString(locator), waitTime);
         }
@@ -1386,7 +1443,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I( force)? press the (up|down|left|right) arrow key (?:on|in|from) the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds$")
     @Override
-    public void pressArrow(final String force, final String key, final String locator, int waitTime) {
+    public void pressArrow(final String force, final String key, final String locator, final int waitTime) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().pressArrow(force, key, getSubstitutedString(locator), waitTime);
         }
@@ -1410,7 +1467,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @Then("^I fade the screen to \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" over \"([^\"]*)\" milliseconds$")
     @Override
-    public void fadeScreen(String red, String green, String blue, String duration) {
+    public void fadeScreen(final String red, final String green, final String blue, final String duration) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().fadeScreen(
                     getSubstitutedString(red),
@@ -1440,6 +1497,14 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
+    /**
+     * Execute raw JavaScript and save the result to an alias.
+     *
+     * @param shared true if the alias is shared, and false otherwise.
+     * @param alias  The name of the alias.
+     * @param code   The JavaScript code.
+     * @return The return value from the JavaScript execution.
+     */
     @And("^I run the following JavaScript(?: saving the result to the( shared)? alias \"([^\"]*)\")?:$")
     public Object runJavascript(final String shared, final String alias, final String code) {
         if (getAutomatedBrowser() != null) {
@@ -1458,6 +1523,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
+    @Override
     public int getInteractionCount() {
         if (getAutomatedBrowser() != null) {
             return getAutomatedBrowser().getInteractionCount();
@@ -1472,8 +1538,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             getAutomatedBrowser().setOctopusPercent(
                     getSubstitutedString(percent),
                     getSubstitutedString(message));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             SERVICE_MESSAGE_GENERATOR.setProgress(
                     NumberUtils.toInt(getSubstitutedString(percent), 0),
@@ -1525,13 +1590,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I set the value of the alias \"([^\"]*)\" as a Github environment variable called \"([^\"]*)\"$")
     @Override
-    public void setGithubEnvironmentVariable(String name, String value) {
+    public void setGithubEnvironmentVariable(final String name, final String value) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setGithubEnvironmentVariable(
                     getSubstitutedString(name),
                     getSubstitutedString(value));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.setEnvironmentVariable(
                     getSubstitutedString(name),
@@ -1541,13 +1605,12 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I set the value of the alias \"([^\"]*)\" as a Github output parameter variable called \"([^\"]*)\"$")
     @Override
-    public void setGithubOutputParameter(String name, String value) {
+    public void setGithubOutputParameter(final String name, final String value) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setGithubOutputParameter(
                     getSubstitutedString(name),
                     getSubstitutedString(value));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.setOutputParameter(
                     getSubstitutedString(name),
@@ -1557,12 +1620,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
 
     @And("^I set the value of the alias \"([^\"]*)\" as a Github system path$")
     @Override
-    public void addGithubSystemPath(String path) {
+    public void addGithubSystemPath(final String path) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().addGithubSystemPath(
                     getSubstitutedString(path));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.addSystemPath(
                     getSubstitutedString(path));
@@ -1575,8 +1637,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setGithubDebugMessage(
                     getSubstitutedString(message));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.setDebugMessage(
                     getSubstitutedString(message));
@@ -1589,8 +1650,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setGithubWarningMessage(
                     getSubstitutedString(message));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.setWarningMessage(
                     getSubstitutedString(message));
@@ -1603,8 +1663,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().setGithubErrorMessage(
                     getSubstitutedString(message));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.setErrorMessage(
                     getSubstitutedString(message));
@@ -1617,8 +1676,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().maskGithubValue(
                     getSubstitutedString(value));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.maskValue(
                     getSubstitutedString(value));
@@ -1631,8 +1689,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().stopGithubLogging(
                     getSubstitutedString(token));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.stopLogging(
                     getSubstitutedString(token));
@@ -1645,8 +1702,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().startGithubLogging(
                     getSubstitutedString(token));
-        }
-        else {
+        } else {
             // If there is no wrapped instance to defer to, print the message here
             GITHUB_SERVICE_MESSAGE_GENERATOR.startLogging(
                     getSubstitutedString(token));

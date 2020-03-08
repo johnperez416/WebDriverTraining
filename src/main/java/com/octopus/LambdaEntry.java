@@ -31,21 +31,50 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * The entry class when this application is called from an AWS Lambda.
  */
 public class LambdaEntry {
+    /**
+     * A shared EnvironmentAliasesProcessorImpl instance.
+     */
     private static final EnvironmentAliasesProcessor ENVIRONMENT_ALIASES_PROCESSOR =
             new EnvironmentAliasesProcessorImpl();
-    private static final String RETRY_HEADER = "Test-Retry";
-    private static final String RETRY_SLEEP_HEADER = "Test-Retry-Sleep";
+    /**
+     * A shared ZipUtilsImpl instance.
+     */
     private static final ZipUtils ZIP_UTILS = new ZipUtilsImpl();
+    /**
+     * Header to set the number of times to retry a feature.
+     */
+    private static final String RETRY_HEADER = "Test-Retry";
+    /**
+     * Header to set the sleep time before retries.
+     */
+    private static final String RETRY_SLEEP_HEADER = "Test-Retry-Sleep";
+    /**
+     * All the event handlers we know about.
+     */
     private static final EventHandler[] EVENT_HANDLERS = new EventHandler[]{
             new UploadToS3(),
             new SlackWebHook(),
             new SeqLogging()
     };
+    /**
+     * Where to download a build of Chrome that works with Lambda.
+     */
     private static final String CHROME_HEADLESS_PACKAGE =
             "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/stable-headless-chromium-amazonlinux-2017-03.zip";
+    /**
+     * Where to download the Chrome driver that works with the version of Chrome we're using.
+     */
     private static final String CHROME_DRIVER =
             "http://bamboo-support.s3.amazonaws.com/chrome-68-stable/chromedriver_linux64.zip";
 
+    /**
+     * The Lambda entry point.
+     *
+     * @param input   The parsed Lambda input
+     * @param context The Lambda context
+     * @return The output of the text Cucumber plugin
+     * @throws Throwable
+     */
     public String runCucumber(final LambdaInput input, final Context context) throws Throwable {
         checkNotNull(input);
 

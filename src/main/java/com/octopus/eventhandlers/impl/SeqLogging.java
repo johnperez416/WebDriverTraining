@@ -32,11 +32,11 @@ public class SeqLogging implements EventHandler {
                                         final String htmlOutputDir,
                                         final Map<String, String> headers,
                                         final Map<String, String> previousResults) {
-        if (!headers.containsKey(SEQ_API_KEY) ||
-                !headers.containsKey(SEQ_MESSAGE) ||
-                !headers.containsKey(SEQ_URL)) {
-            LOGGER.info("The " + SEQ_API_KEY + ", " + SEQ_MESSAGE + " and " + SEQ_URL +
-                    " headers must be defined to return the results via Seq");
+        if (!headers.containsKey(SEQ_API_KEY)
+                || !headers.containsKey(SEQ_MESSAGE)
+                || !headers.containsKey(SEQ_URL)) {
+            LOGGER.info("The " + SEQ_API_KEY + ", " + SEQ_MESSAGE + " and " + SEQ_URL
+                    + " headers must be defined to return the results via Seq");
             return previousResults;
         }
 
@@ -45,17 +45,17 @@ public class SeqLogging implements EventHandler {
                 final HttpPost httpPost = new HttpPost(headers.get(SEQ_URL) + "/api/events/raw");
                 httpPost.setHeader("Content-Type", "application/json");
                 httpPost.setHeader("X-Seq-ApiKey", headers.get(SEQ_API_KEY));
-                final String body = "{\"Events\": [{" +
-                        "\"Timestamp\": \"" + DATE_FORMAT.format(LocalDateTime.now()) + "\", " +
-                        "\"Level\": \"" + getLevel(headers) + "\", " +
-                        "\"Properties\": {" +
-                        "\"success\":\"" + status + "\", " +
-                        "\"MessageTemplate\":\"" + headers.get(SEQ_MESSAGE) + " " +
-                        (status ? "succeeded" : "failed") + ": " + id + ". " +
-                        (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
-                                ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
-                                : "") +
-                        "\"}]}";
+                final String body = "{\"Events\": [{"
+                        + "\"Timestamp\": \"" + DATE_FORMAT.format(LocalDateTime.now()) + "\", "
+                        + "\"Level\": \"" + getLevel(headers) + "\", "
+                        + "\"Properties\": {"
+                        + "\"success\":\"" + status + "\", "
+                        + "\"MessageTemplate\":\"" + headers.get(SEQ_MESSAGE) + " "
+                        + (status ? "succeeded" : "failed") + ": " + id + ". "
+                        + (previousResults.containsKey(UploadToS3.S3_REPORT_URL)
+                        ? " " + previousResults.get(UploadToS3.S3_REPORT_URL)
+                        : "")
+                        + "\"}]}";
                 httpPost.setEntity(new StringEntity(body));
                 try (final CloseableHttpResponse response = client.execute(httpPost)) {
                     if (!(response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201)) {
@@ -71,8 +71,8 @@ public class SeqLogging implements EventHandler {
     }
 
     private String getLevel(final Map<String, String> headers) {
-        return LEVELS.contains(headers.get(SEQ_LEVEL)) ?
-                headers.get(SEQ_LEVEL) :
-                "Information";
+        return LEVELS.contains(headers.get(SEQ_LEVEL))
+                ? headers.get(SEQ_LEVEL)
+                : "Information";
     }
 }

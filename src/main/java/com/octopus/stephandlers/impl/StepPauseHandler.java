@@ -14,11 +14,26 @@ import io.vavr.control.Try;
  */
 public class StepPauseHandler implements EventListener {
 
-    private static final String[] PREFIXES = new String[] {"I ", "I force "};
-    private static final String[] ACTION_KEYWORDS = new String[] {"click", "populate", "clear", "select", "scroll", "zoom", "mouse over", "focus", "press"};
+    /**
+     * Prefixes used for any steps that simulate user interaction.
+     */
+    private static final String[] PREFIXES = new String[]{"I ", "I force "};
+    /**
+     * Action keywords that indicate steps that simulate user interaction.
+     */
+    private static final String[] ACTION_KEYWORDS = new String[]{"click", "populate", "clear", "select", "scroll", "zoom", "mouse over", "focus", "press"};
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
+    /**
+     * How long to pause after a simulated user interaction.
+     */
     private final int pauseTime;
 
+    /**
+     * Default constructor.
+     */
     public StepPauseHandler() {
         pauseTime = SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.STEP_PAUSE, 0);
     }
@@ -35,7 +50,8 @@ public class StepPauseHandler implements EventListener {
     }
 
     /**
-     * Match any action steps
+     * Match any action steps.
+     *
      * @param event The event
      * @return true if it is an action step, and false otherwise
      */

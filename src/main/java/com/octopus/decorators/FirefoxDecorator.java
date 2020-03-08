@@ -19,14 +19,31 @@ import java.io.File;
  * A decorator to configure a Firefox session.
  */
 public class FirefoxDecorator extends AutomatedBrowserBase {
+    /**
+     * The shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
+    /**
+     * true if the browser is headless, and false otherwise.
+     */
     final boolean headless;
 
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public FirefoxDecorator(final AutomatedBrowser automatedBrowser) {
         this(false, automatedBrowser);
     }
 
+    /**
+     * Decorator constructor.
+     *
+     * @param headless         true if the browser is to operate in headless mode, and false otherwise
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public FirefoxDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;

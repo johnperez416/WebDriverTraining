@@ -9,13 +9,16 @@ import java.util.logging.StreamHandler;
  */
 public class OutConsoleHandler extends StreamHandler {
 
+    /**
+     * Default constructor.
+     */
     public OutConsoleHandler() {
         super(System.out, new SimpleFormatter());
     }
 
 
     @Override
-    public void publish(LogRecord record) {
+    public void publish(final LogRecord record) {
         super.publish(record);
         flush();
     }

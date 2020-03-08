@@ -18,13 +18,30 @@ import java.nio.file.Files;
  */
 public class ChromeDecorator extends AutomatedBrowserBase {
 
+    /**
+     * true if the browser is headless, and false otherwise.
+     */
     final boolean headless;
+    /**
+     * The user data directory for this instance.
+     */
     File userData;
 
+    /**
+     * Decorator constructor.
+     *
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public ChromeDecorator(final AutomatedBrowser automatedBrowser) {
         this(false, automatedBrowser);
     }
 
+    /**
+     * Decorator constructor to create an optionally headless browser.
+     *
+     * @param headless         true if the browser is to operate in headless mode, and false otherwise
+     * @param automatedBrowser The AutomatedBrowser to wrap up.
+     */
     public ChromeDecorator(final boolean headless, final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
         this.headless = headless;
