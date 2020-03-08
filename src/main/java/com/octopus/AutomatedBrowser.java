@@ -653,208 +653,870 @@ public interface AutomatedBrowser {
         clickElementIfExists(null, locator, waitTime, ifOtherExists);
     }
 
+    /**
+     * Click an element, optionally silently failing if it does not exist.
+     *
+     * @param force          If this is not blank then use JavaScript to click the element.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void clickElementIfExists(String force, String locator, String ifExistsOption);
 
+    /**
+     * Click an element, optionally silently failing if it does not exist.
+     *
+     * @param force          If this is not blank then use JavaScript to click the element.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void clickElementIfExists(String force, String locator, Integer waitTime, String ifExistsOption);
 
+    /**
+     * Click the element
+     *
+     * @param locator The element locator.
+     */
     default void clickElement(String locator) {
         clickElementIfExists(locator, null);
     }
 
+    /**
+     * Click the element
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void clickElement(String locator, Integer waitTime) {
-        clickElementIfExists(locator, waitTime,null);}
+        clickElementIfExists(locator, waitTime, null);
+    }
 
-    default void clickElementIfExists(String locator, String ifExistsOption) {clickElementIfExists(null, locator, ifExistsOption);}
+    /**
+     * Click the element
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
+    default void clickElementIfExists(String locator, String ifExistsOption) {
+        clickElementIfExists(null, locator, ifExistsOption);
+    }
 
-    default void clickElementIfExists(String locator, Integer waitTime, String ifExistsOption) {clickElementIfExists(null, locator, waitTime, ifExistsOption);}
+    /**
+     * Click the element
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
+    default void clickElementIfExists(String locator, Integer waitTime, String ifExistsOption) {
+        clickElementIfExists(null, locator, waitTime, ifExistsOption);
+    }
 
+    /**
+     * Select an option by its visible text from a drop down list.
+     *
+     * @param optionText The visible text of the option to select.
+     * @param locator    The element locator.
+     */
     default void selectOptionByTextFromSelect(String optionText, String locator) {
-        selectOptionByTextFromSelectIfExists(optionText, locator, null);}
+        selectOptionByTextFromSelectIfExists(optionText, locator, null);
+    }
 
+    /**
+     * Select an option by its visible text from a drop down list.
+     *
+     * @param optionText The visible text of the option to select.
+     * @param locator    The element locator.
+     * @param waitTime   The amount of time to wait for the element.
+     */
     default void selectOptionByTextFromSelect(String optionText, String locator, int waitTime) {
-        selectOptionByTextFromSelectIfExists(optionText, locator, waitTime, null);}
+        selectOptionByTextFromSelectIfExists(optionText, locator, waitTime, null);
+    }
 
+    /**
+     * Select an option by its visible text from a drop down list.
+     *
+     * @param optionText     The visible text of the option to select.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void selectOptionByTextFromSelectIfExists(String optionText, String locator, String ifExistsOption);
 
+    /**
+     * Select an option by its visible text from a drop down list.
+     *
+     * @param optionText     The visible text of the option to select.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void selectOptionByTextFromSelectIfExists(String optionText, String locator, int waitTime, String ifExistsOption);
 
+    /**
+     * Select an option by its value from a drop down list.
+     *
+     * @param optionValue The value of the option to select.
+     * @param locator     The element locator.
+     */
     default void selectOptionByValueFromSelect(String optionValue, String locator) {
-        selectOptionByValueFromSelectIfExists(optionValue, locator, null);}
+        selectOptionByValueFromSelectIfExists(optionValue, locator, null);
+    }
 
+    /**
+     * Select an option by its value from a drop down list.
+     *
+     * @param optionValue The value of the option to select.
+     * @param locator     The element locator.
+     * @param waitTime    The amount of time to wait for the element.
+     */
     default void selectOptionByValueFromSelect(String optionValue, String locator, int waitTime) {
-        selectOptionByValueFromSelectIfExists(optionValue, locator, waitTime, null);}
+        selectOptionByValueFromSelectIfExists(optionValue, locator, waitTime, null);
+    }
 
+    /**
+     * Select an option by its value from a drop down list.
+     *
+     * @param optionValue    The value of the option to select.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void selectOptionByValueFromSelectIfExists(String optionValue, String locator, String ifExistsOption);
 
+    /**
+     * Select an option by its value from a drop down list.
+     *
+     * @param optionValue    The value of the option to select.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExistsOption);
 
-    default void populateElement(String locator, String text) {populateElement(null, locator, "0", text, null);}
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param locator The element locator.
+     * @param text    The text to populate the element with.
+     */
+    default void populateElement(String locator, String text) {
+        populateElement(null, locator, "0", text, null);
+    }
 
-    default void populateElement(String locator, String text, int waitTime) {populateElement(null, locator, "0", text, waitTime, null);}
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param locator  The element locator.
+     * @param text     The text to populate the element with.
+     * @param waitTime The amount of time to wait for the element.
+     */
+    default void populateElement(String locator, String text, int waitTime) {
+        populateElement(null, locator, "0", text, waitTime, null);
+    }
 
-    default void populateElement(String force, String locator, String keystrokeDelay, String text) {populateElement(force, locator, keystrokeDelay, text, null);}
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param force          If not blank, populate the element using JavaScript.
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param keystrokeDelay The amount of time to deploy before entering each character. If set to zero, the text is
+     *                       entered in a single operation. This value must be zero for file selector inputs.
+     */
+    default void populateElement(String force, String locator, String keystrokeDelay, String text) {
+        populateElement(force, locator, keystrokeDelay, text, null);
+    }
 
-    default void populateElement(String locator, String keystrokeDelay, String text, int waitTime) {populateElement(null, locator, keystrokeDelay, text, waitTime, null);}
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param keystrokeDelay The amount of time to deploy before entering each character. If set to zero, the text is
+     *                       entered in a single operation. This value must be zero for file selector inputs.
+     * @param waitTime       The amount of time to wait for the element.
+     */
+    default void populateElement(String locator, String keystrokeDelay, String text, int waitTime) {
+        populateElement(null, locator, keystrokeDelay, text, waitTime, null);
+    }
 
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param force          If not blank, populate the element using JavaScript.
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param keystrokeDelay The amount of time to deploy before entering each character. If set to zero, the text is
+     *                       entered in a single operation. This value must be zero for file selector inputs.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void populateElement(String force, String locator, String keystrokeDelay, String text, String ifExistsOption);
 
+    /**
+     * Populate an element with the supplied text.
+     *
+     * @param force          If not blank, populate the element using JavaScript.
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param keystrokeDelay The amount of time to deploy before entering each character. If set to zero, the text is
+     *                       entered in a single operation. This value must be zero for file selector inputs.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void populateElement(String force, String locator, String keystrokeDelay, String text, int waitTime, String ifExistsOption);
 
+    /**
+     * Populate an element with the supplied text. The element has to be present on the page, but not necessarily clickable.
+     *
+     * @param force          If not blank, populate the element using JavaScript.
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void populateHiddenElement(String force, String locator, String text, int waitTime, String ifExistsOption);
 
+    /**
+     * Populate an element with the supplied text. The element has to be present on the page, but not necessarily clickable.
+     *
+     * @param force          If not blank, populate the element using JavaScript.
+     * @param locator        The element locator.
+     * @param text           The text to populate the element with.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void populateHiddenElement(String force, String locator, String text, String ifExistsOption);
 
+    /**
+     * Clear the element of any text.
+     *
+     * @param locator The element locator.
+     */
     default void clear(String locator) {
-        clearIfExists(null, locator, null);}
+        clearIfExists(null, locator, null);
+    }
 
+    /**
+     * Clear the element of any text.
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void clear(String locator, int waitTime) {
-        clearIfExists(null, locator, waitTime, null);}
+        clearIfExists(null, locator, waitTime, null);
+    }
 
+    /**
+     * Clear the element of any text.
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void clearIfExists(String force, String locator, String ifExistsOption);
 
+    /**
+     * Clear the element of any text.
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void clearIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
+    /**
+     * Mouse over the element.
+     *
+     * @param locator The element locator.
+     */
     default void mouseOver(String locator) {
-        mouseOverIfExists(null, locator, null);}
+        mouseOverIfExists(null, locator, null);
+    }
 
+    /**
+     * Mouse over the element.
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void mouseOver(String locator, int waitTime) {
-        mouseOverIfExists(null, locator, waitTime, null);}
+        mouseOverIfExists(null, locator, waitTime, null);
+    }
 
+    /**
+     * Mouse over the element.
+     *
+     * @param force          If not blank, trigger the mouse over event using JavaScript.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void mouseOverIfExists(String force, String locator, String ifExistsOption);
 
+    /**
+     * Mouse over the element.
+     *
+     * @param force          If not blank, trigger the mouse over event using JavaScript.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void mouseOverIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
+    /**
+     * Focus on the element.
+     *
+     * @param locator The element locator.
+     */
     default void focus(String locator) {
-        focusIfExists(null, locator, null);}
+        focusIfExists(null, locator, null);
+    }
 
+    /**
+     * Focus on the element.
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void focus(String locator, int waitTime) {
-        focusIfExists(null, locator, waitTime, null);}
+        focusIfExists(null, locator, waitTime, null);
+    }
 
+    /**
+     * Focus on the element.
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void focusIfExists(String force, String locator, String ifExistsOption);
 
+    /**
+     * Focus on the element.
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void focusIfExists(String force, String locator, int waitTime, String ifExistsOption);
 
-    default String getTextFromElement(String locator) {return getTextFromElementIfExists(locator, null);}
+    /**
+     * Get the text from the element
+     *
+     * @param locator The element locator.
+     * @return The text set in the element.
+     */
+    default String getTextFromElement(String locator) {
+        return getTextFromElementIfExists(locator, null);
+    }
 
-    default String getTextFromElement(String locator, int waitTime) {return getTextFromElementIfExists(locator, waitTime, null);}
+    /**
+     * Get the text from the element
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     * @return The text set in the element.
+     */
+    default String getTextFromElement(String locator, int waitTime) {
+        return getTextFromElementIfExists(locator, waitTime, null);
+    }
 
+    /**
+     * Get the text from the element
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @return The text set in the element.
+     */
     String getTextFromElementIfExists(String locator, String ifExistsOption);
 
+    /**
+     * Get the text from the element
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @return The text set in the element.
+     */
     String getTextFromElementIfExists(String locator, int waitTime, String ifExistsOption);
 
-    default String getRegexGroupFromElement(String group, String regex, String locator) {return getRegexGroupFromElementIfExists(group, regex, locator, null);}
+    /**
+     * Return the regex group value extracted from the text of an element.
+     *
+     * @param group   The name of the regex group whose value is returned.
+     * @param regex   The regex applied to the element's text.
+     * @param locator The element locator.
+     * @return The value of the named regex group from the supplied regex applied to the element's text.
+     */
+    default String getRegexGroupFromElement(String group, String regex, String locator) {
+        return getRegexGroupFromElementIfExists(group, regex, locator, null);
+    }
 
-    default String getRegexGroupFromElement(String group, String regex, String locator, int waitTime) {return getRegexGroupFromElementIfExists(group, regex, locator, waitTime, null);}
+    /**
+     * Return the regex group value extracted from the text of an element.
+     *
+     * @param group    The name of the regex group whose value is returned.
+     * @param regex    The regex applied to the element's text.
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     * @return The value of the named regex group from the supplied regex applied to the element's text.
+     */
+    default String getRegexGroupFromElement(String group, String regex, String locator, int waitTime) {
+        return getRegexGroupFromElementIfExists(group, regex, locator, waitTime, null);
+    }
 
+    /**
+     * Return the regex group value extracted from the text of an element.
+     *
+     * @param group          The name of the regex group whose value is returned.
+     * @param regex          The regex applied to the element's text.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @return The value of the named regex group from the supplied regex applied to the element's text.
+     */
     String getRegexGroupFromElementIfExists(String group, String regex, String locator, String ifExistsOption);
 
+    /**
+     * Return the regex group value extracted from the text of an element.
+     *
+     * @param group          The name of the regex group whose value is returned.
+     * @param regex          The regex applied to the element's text.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     * @return The value of the named regex group from the supplied regex applied to the element's text.
+     */
     String getRegexGroupFromElementIfExists(String group, String regex, String locator, int waitTime, String ifExistsOption);
 
-    default void verifyTextFromElement(String locator, String regex) {verifyTextFromElementIfExists(locator, regex, null);}
+    /**
+     * Verify that the element's text matches the supplied regex.
+     *
+     * @param regex   The regex applied to the element's text.
+     * @param locator The element locator.
+     */
+    default void verifyTextFromElement(String locator, String regex) {
+        verifyTextFromElementIfExists(locator, regex, null);
+    }
 
-    default void verifyTextFromElement(String locator, String regex, int waitTime) {verifyTextFromElementIfExists(locator, regex, waitTime, null);}
+    /**
+     * Verify that the element's text matches the supplied regex.
+     *
+     * @param regex    The regex applied to the element's text.
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
+    default void verifyTextFromElement(String locator, String regex, int waitTime) {
+        verifyTextFromElementIfExists(locator, regex, waitTime, null);
+    }
 
+    /**
+     * Verify that the element's text matches the supplied regex.
+     *
+     * @param regex          The regex applied to the element's text.
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyTextFromElementIfExists(String locator, String regex, String ifExistsOption);
 
+    /**
+     * Verify that the element's text matches the supplied regex.
+     *
+     * @param regex          The regex applied to the element's text.
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyTextFromElementIfExists(String locator, String regex, int waitTime, String ifExistsOption);
 
+    /**
+     * Scroll the element into view vertically, with an optional offset.
+     *
+     * @param locator The element locator.
+     * @param offset  If not blank, offset the vertical scroll by the supplied value in pixels.
+     */
     default void scrollElementIntoView(String locator, String offset) {
-        scrollElementIntoViewIfExists(locator, offset, null);}
+        scrollElementIntoViewIfExists(locator, offset, null);
+    }
 
+    /**
+     * Scroll the element into view vertically, with an optional offset.
+     *
+     * @param locator  The element locator.
+     * @param offset   If not blank, offset the vertical scroll by the supplied value in pixels.
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void scrollElementIntoView(String locator, String offset, int waitTime) {
-        scrollElementIntoViewIfExists(locator, offset, waitTime, null);}
+        scrollElementIntoViewIfExists(locator, offset, waitTime, null);
+    }
 
+    /**
+     * Scroll the element into view vertically, with an optional offset.
+     *
+     * @param locator        The element locator.
+     * @param offset         If not blank, offset the vertical scroll by the supplied value in pixels.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void scrollElementIntoViewIfExists(String locator, String offset, String ifExistsOption);
 
+    /**
+     * Scroll the element into view vertically, with an optional offset.
+     *
+     * @param locator        The element locator.
+     * @param offset         If not blank, offset the vertical scroll by the supplied value in pixels.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void scrollElementIntoViewIfExists(String locator, String offset, int waitTime, String ifExistsOption);
 
+    /**
+     * Set the default offset applied when any external highlight is applied to an element.
+     *
+     * @param offset the default offset applied when any external highlight is applied to an element.
+     */
     void setDefaultHighlightOffset(String offset);
 
+    /**
+     * Apply a highlight to an element.
+     *
+     * @param location Set to either "inside" or "outside".
+     * @param lift     If not blank, change the elements z-index to bring it above other elements (this option is experimental).
+     * @param locator  The element locator.
+     * @param offset   If not blank, use this offset if the location is set to "outside".
+     */
     default void elementHighlight(String location, String lift, String locator, final String offset) {
-        elementHighlightIfExists(location, lift, locator, offset, null);}
+        elementHighlightIfExists(location, lift, locator, offset, null);
+    }
 
+    /**
+     * Apply a highlight to an element.
+     *
+     * @param location Set to either "inside" or "outside".
+     * @param lift     If not blank, change the elements z-index to bring it above other elements (this option is experimental).
+     * @param locator  The element locator.
+     * @param offset   If not blank, use this offset if the location is set to "outside".
+     * @param waitTime The amount of time to wait for the element.
+     */
     default void elementHighlight(String location, String lift, String locator, final String offset, int waitTime) {
-        elementHighlightIfExists(location, lift, locator, offset, waitTime, null);}
+        elementHighlightIfExists(location, lift, locator, offset, waitTime, null);
+    }
 
+    /**
+     * Apply a highlight to an element.
+     *
+     * @param location       Set to either "inside" or "outside".
+     * @param lift           If not blank, change the elements z-index to bring it above other elements (this option is experimental).
+     * @param locator        The element locator.
+     * @param offset         If not blank, use this offset if the location is set to "outside".
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void elementHighlightIfExists(String location, String lift, String locator, final String offset, String ifExistsOption);
 
+    /**
+     * Apply a highlight to an element.
+     *
+     * @param location       Set to either "inside" or "outside".
+     * @param lift           If not blank, change the elements z-index to bring it above other elements (this option is experimental).
+     * @param locator        The element locator.
+     * @param offset         If not blank, use this offset if the location is set to "outside".
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void elementHighlightIfExists(String location, String lift, String locator, String offset, int waitTime, String ifExistsOption);
 
+    /**
+     * Remove a highlight from an element by reapplying the style on the element before the highlight was applied.
+     * Note that this method will remove any styling changes between the highlight being applied and then removed, so it
+     * is best to apply the highlight, take a screenshot and remove the highlight without any other interactions inbetween.
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void removeElementHighlight(String locator, final String ifExistsOption);
 
+    /**
+     * Remove a highlight from an element by reapplying the style on the element before the highlight was applied.
+     * Note that this method will remove any styling changes between the highlight being applied and then removed, so it
+     * is best to apply the highlight, take a screenshot and remove the highlight without any other interactions inbetween.
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void removeElementHighlight(String locator, int waitTime, final String ifExistsOption);
 
-    default void verifyElementExists(String locator) {verifyElementExists(locator, null);}
+    /**
+     * Verify an element exists in the page.
+     *
+     * @param locator The element locator.
+     */
+    default void verifyElementExists(String locator) {
+        verifyElementExists(locator, null);
+    }
 
+    /**
+     * Verify an element exists in the page, optionally silently failing. This is useful if you need to wait for an
+     * message or some other kind of feedback, but want to proceed regardless after a certain period of time.
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyElementExists(String locator, String ifExistsOption);
 
+    /**
+     * Verify an element exists in the page, optionally silently failing. This is useful if you need to wait for an
+     * message or some other kind of feedback, but want to proceed regardless after a certain period of time.
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyElementExists(String locator, int waitTime, String ifExistsOption);
 
-    default void verifyElementIsClickable(String locator) {verifyElementIsClickable(locator, null);}
+    /**
+     * Verify an element is clickable.
+     *
+     * @param locator The element locator.
+     */
+    default void verifyElementIsClickable(String locator) {
+        verifyElementIsClickable(locator, null);
+    }
 
+    /**
+     * Verify an element is clickable. This is useful if you need to wait for an
+     * message or some other kind of feedback, but want to proceed regardless after a certain period of time.
+     *
+     * @param locator        The element locator.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyElementIsClickable(String locator, String ifExistsOption);
 
+    /**
+     * Verify an element is clickable. This is useful if you need to wait for an
+     * message or some other kind of feedback, but want to proceed regardless after a certain period of time.
+     *
+     * @param locator        The element locator.
+     * @param waitTime       The amount of time to wait for the element.
+     * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
+     */
     void verifyElementIsClickable(String locator, int waitTime, String ifExistsOption);
 
+    /**
+     * Verify an element does not exist in the page.
+     *
+     * @param locator The element locator.
+     */
     void verifyElementDoesNotExist(String locator);
 
+    /**
+     * Verify an element does not exist in the page.
+     *
+     * @param locator  The element locator.
+     * @param waitTime The amount of time to wait for the element.
+     */
     void verifyElementDoesNotExist(String locator, int waitTime);
 
+    /**
+     * Get the page title.
+     *
+     * @return the page title.
+     */
     String getTitle();
     //</editor-fold>
 
     //<editor-fold desc="Network Alter and Capture">
+
+    /**
+     * If BrowserMob is enabled, start capturing the default data in a HAR file.
+     */
     void captureHarFile();
 
+    /**
+     * If BrowserMob is enabled, start capturing the all data in a HAR file.
+     */
     void captureCompleteHarFile();
 
+    /**
+     * Save the network events stored since captureHarFile() or captureCompleteHarFile() were called to a file.
+     *
+     * @param file The name of the file to save.
+     */
     void saveHarFile(String file);
 
+    /**
+     * If BrowserMob is enabled, block request to the supplied URL and immediately return the supplied response code.
+     *
+     * @param url          The URL to block.
+     * @param responseCode The response code for any requests to the supplied URL.
+     */
     void blockRequestTo(String url, int responseCode);
 
+    /**
+     * If BrowserMob is enabled, return the supply body and response code to any request to the supplied URL.
+     *
+     * @param url          The URL to block.
+     * @param responseCode The response code for any requests to the supplied URL.
+     * @param responseBody The body of the response to any requests to the supplied URL.
+     */
     void alterResponseFrom(String url, int responseCode, String responseBody);
 
+    /**
+     * @return A list of HTTP errors in the network traffic recorded by captureHarFile() or captureCompleteHarFile().
+     */
     List<Pair<String, Integer>> getErrors();
     //</editor-fold>
 
     //<editor-fold desc="Transitions and Annotations">
+
+    /**
+     * Clear any screen transitions
+     */
     void clearTransition();
 
+    /**
+     * Fade the screen from transparent to the supplied color
+     *
+     * @param red      The red component of the final color.
+     * @param green    The green component of the final color.
+     * @param blue     The blue component of the final color.
+     * @param duration The duration of the screen fade.
+     */
     void fadeScreen(String red, String green, String blue, String duration);
 
+    /**
+     * Display a note in the HTML.
+     *
+     * @param text     The note text.
+     * @param duration The duration to display the note.
+     */
     void displayNote(String text, String duration);
     //</editor-fold>
 
     //<editor-fold desc="Raw JavaScript">
+
+    /**
+     * Run raw JavaScript.
+     *
+     * @param code The JavaScript code.
+     * @return The value returned by the JavaScript code.
+     */
     Object runJavascript(String code);
     //</editor-fold>
 
     //<editor-fold desc="Statistics">
+
+    /**
+     * @return the number of interactions (clicks, selects, populations etc) recorded by the browser.
+     */
     int getInteractionCount();
     //</editor-fold>
 
     //<editor-fold desc="Octopus">
+
+    /**
+     * Print an Octopus service message that sets the percent complete for a step.
+     *
+     * @param percent The percent value
+     * @param message The message accompanying the progress
+     */
     void setOctopusPercent(String percent, String message);
 
+    /**
+     * Print an Octopus service message that sets an Octopus variable from the value of an alias.
+     *
+     * @param alias    The name of the source alias.
+     * @param variable The name of the destination Octopus variable.
+     */
     void writeAliasValueToOctopusVariable(String alias, String variable);
 
+    /**
+     * Print an Octopus service message that sets an Octopus sensitive variable from the value of an alias.
+     *
+     * @param alias    The name of the source alias.
+     * @param variable The name of the destination Octopus variable.
+     */
     void writeAliasValueToOctopusSensitiveVariable(String alias, String variable);
 
+    /**
+     * Print an Octopus service message that creates an artifact from the supplied path.
+     *
+     * @param name The name of the Octopus artifact.
+     * @param path The path to the artifact.
+     */
     void defineArtifact(String name, String path);
     //</editor-fold>
 
     //<editor-fold desc="Github Actions">
+
+    /**
+     * Print a GitHub action service message to create an environment variable.
+     *
+     * @param name  The name of the environment variable.
+     * @param value The value of the environment variable.
+     */
     void setGithubEnvironmentVariable(String name, String value);
+
+    /**
+     * Print a GitHub action service message to create an output parameter.
+     *
+     * @param name  The name of the output parameter.
+     * @param value The value of the output parameter.
+     */
     void setGithubOutputParameter(String name, String value);
+
+    /**
+     * Print a GitHub action service message to append a directory to the PATH.
+     *
+     * @param path The directory to append to the PATH.
+     */
     void addGithubSystemPath(String path);
+
+    /**
+     * Print a GitHub action service message to print a debug message.
+     *
+     * @param message The message.
+     */
     void setGithubDebugMessage(String message);
+
+    /**
+     * Print a GitHub action service message to print a warning message.
+     *
+     * @param message The message.
+     */
     void setGithubWarningMessage(String message);
+
+    /**
+     * Print a GitHub action service message to print a error message.
+     *
+     * @param message The message.
+     */
     void setGithubErrorMessage(String message);
+
+    /**
+     * Print a GitHub action service message to identify a value to mask from the logs.
+     *
+     * @param value The value to mask from the logs.
+     */
     void maskGithubValue(String value);
+
+    /**
+     * Print a GitHub action service message to stop log processing.
+     *
+     * @param token A token used to identify the command.
+     */
     void stopGithubLogging(String token);
+
+    /**
+     * Print a GitHub action service message to restart log processing.
+     *
+     * @param token The token passed to stopGithubLogging()
+     */
     void startGithubLogging(String token);
     //</editor-fold>
 
+    /**
+     * Switch to an iframe.
+     *
+     * @param locator The iframe locator.
+     */
     void switchToIFrame(String locator);
+
+    /**
+     * Switch back to the main page frame.
+     */
     void switchToMainFrame();
 }
