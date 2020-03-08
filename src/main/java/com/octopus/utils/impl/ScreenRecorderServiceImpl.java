@@ -16,9 +16,18 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class ScreenRecorderServiceImpl implements ScreenRecorderService {
+    /**
+     * Shared Logger instance.
+     */
     static final Logger LOGGER = Logger.getLogger(ScreenRecorderServiceImpl.class.toString());
+    /**
+     * Shared SystemPropertyUtilsImpl instance.
+     */
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
 
+    /**
+     * The screen recorder.
+     */
     private ScreenRecorder screenRecorder;
 
     @Override

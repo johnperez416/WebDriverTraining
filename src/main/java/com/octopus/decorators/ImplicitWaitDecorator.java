@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImplicitWaitDecorator extends AutomatedBrowserBase {
 
+    /**
+     * How long to wait for elements to be available.
+     */
     private final int waitTime;
 
     public ImplicitWaitDecorator(final int waitTime, final AutomatedBrowser automatedBrowser) {

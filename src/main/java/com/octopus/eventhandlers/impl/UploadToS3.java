@@ -68,7 +68,7 @@ public class UploadToS3 implements EventHandler {
                     + StringUtils.left(id.replaceAll("[^A-Za-z0-9_]", "_"), MAX_ID_LENGTH) + "-"
                     + UUID.randomUUID() + ".zip";
 
-            try (final AutoDeletingTempFile report = new AutoDeletingTempFile("htmlreport", ".zip")) {
+            try (AutoDeletingTempFile report = new AutoDeletingTempFile("htmlreport", ".zip")) {
                 FileUtils.copyFileToDirectory(new File(featureFile), new File(htmlOutputDir));
                 ZIP_UTILS.zipDirectory(report.getFile().getAbsolutePath(), new File(htmlOutputDir).getAbsolutePath());
 

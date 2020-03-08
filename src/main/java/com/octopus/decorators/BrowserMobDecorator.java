@@ -46,6 +46,15 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
      */
     private static final OSUtils OS_UTILS = new OSUtilsImpl();
     /**
+     * The start of the error response code range.
+     */
+    private static final int HTTP_START_ERROR = 400;
+    /**
+     * The end of the error response code range.
+     */
+    private static final int HTTP_END_ERROR = 599;
+
+    /**
      * The BrowserMob proxy instance.
      */
     private BrowserMobProxy proxy;
@@ -159,7 +168,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
                 .map(HarLog::getEntries)
                 .orElse(List.of())
                 .stream()
-                .filter(s -> Range.between(400, 599).contains(s.getResponse().getStatus()))
+                .filter(s -> Range.between(HTTP_START_ERROR, HTTP_END_ERROR).contains(s.getResponse().getStatus()))
                 .map(s -> Pair.of(s.getRequest().getUrl(), s.getResponse().getStatus()))
                 .collect(Collectors.toList());
     }

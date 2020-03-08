@@ -7,6 +7,9 @@ import java.io.IOException;
 
 public class AutoDeletingTempFile implements AutoCloseable {
 
+    /**
+     * The file that is deleted on close.
+     */
     private final File file;
 
     public AutoDeletingTempFile(final String prefix, final String suffix) throws IOException {

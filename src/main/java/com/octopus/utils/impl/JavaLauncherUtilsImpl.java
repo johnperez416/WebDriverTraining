@@ -55,7 +55,7 @@ public class JavaLauncherUtilsImpl implements JavaLauncherUtils {
     }
 
     @Override
-    public int launchAppInternally(String[] args) {
+    public int launchAppInternally(final String[] args) {
         final ArrayList<String> options = new ArrayList<>(Constants.DEFAULT_CUCUMBER_OPTIONS);
         Collections.addAll(options, args);
         return io.cucumber.core.cli.Main.run(
