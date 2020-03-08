@@ -8,8 +8,6 @@ import com.octopus.exceptions.ValidationException;
 import com.octopus.exceptions.WebElementException;
 import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import io.vavr.control.Try;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -21,7 +19,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.retry.RetryCallback;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -1046,7 +1043,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
 
     @Override
     public void pressArrow(final String force, final String key, final String locator) {
-
+        pressArrow(force, key, locator, getDefaultExplicitWaitTime());
     }
 
     @Override

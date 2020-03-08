@@ -4,7 +4,10 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.AutomatedBrowserFactory;
 import com.octopus.Constants;
 import com.octopus.Main;
-import com.octopus.exceptions.*;
+import com.octopus.exceptions.BrowserException;
+import com.octopus.exceptions.NetworkException;
+import com.octopus.exceptions.SaveException;
+import com.octopus.exceptions.ScriptException;
 import com.octopus.utils.*;
 import com.octopus.utils.impl.*;
 import io.cucumber.java.After;
@@ -49,7 +52,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
      * This alias is used to store the value of any text extracted from the web page. Cucumber does not have the notion of
      * creating variables, but verification steps can test the value of the LastReturn alias to perform their checks.
      */
-    static private final String LastReturn = "LastReturn";
+    static private final String LAST_RETURN = "LastReturn";
     static private final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final JavaLauncherUtils JAVA_LAUNCHER_UTILS = new JavaLauncherUtilsImpl();
@@ -190,10 +193,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    /**
-     * Sleep for a period of seconds
-     * @param seconds The time to sleep for
-     */
     @Override
     @And("^I (?:sleep|wait) for \"([^\"]*)\" seconds?$")
     public void sleep(final String seconds) {
@@ -235,11 +234,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         sharedAutomatedBrowser = null;
     }
 
-    /**
-     * Defines how long to wait for by default for any elements located with an explicit wait time. This includes
-     * all steps that use the simple locator syntax.
-     * @param waitTime The default wait time for elements located with an explicit wait.
-     */
     @And("^I set the default explicit wait time to \"(\\d+)\" seconds?$")
     @Override
     public void setDefaultExplicitWaitTime(final int waitTime) {
@@ -248,9 +242,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    /**
-     * @return The default explicit wait time
-     */
     @Override
     public int getDefaultExplicitWaitTime() {
         if (getAutomatedBrowser() != null) {
@@ -260,9 +251,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return 0;
     }
 
-    /**
-     * @return The WebDriver instance from the browser
-     */
     @Override
     public WebDriver getWebDriver() {
         if (getAutomatedBrowser() != null) {
@@ -272,9 +260,6 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         return null;
     }
 
-    /**
-     * @param webDriver The WebDriver instance from the browser
-     */
     @Override
     public void setWebDriver(final WebDriver webDriver) {
         if (getAutomatedBrowser() != null) {
@@ -371,9 +356,9 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     @Override
     public void copyLastReturnAliasTo(final String shared, final String newAlias) {
         if (StringUtils.isEmpty(shared)) {
-            aliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+            aliases.put(getSubstitutedString(newAlias), aliases.get(LAST_RETURN));
         } else {
-            sharedAliases.put(getSubstitutedString(newAlias), aliases.get(LastReturn));
+            sharedAliases.put(getSubstitutedString(newAlias), aliases.get(LAST_RETURN));
         }
     }
 
@@ -1041,11 +1026,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
             final String text = getAutomatedBrowser().getTextFromElementIfExists(
                     getSubstitutedString(locator),
                     ifExistsOption);
-            aliases.put(LastReturn, text);
+            aliases.put(LAST_RETURN, text);
             return text;
         }
 
-        aliases.put(LastReturn, null);
+        aliases.put(LAST_RETURN, null);
         return null;
     }
 
@@ -1057,11 +1042,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(locator),
                     waitTime,
                     ifExistsOption);
-            aliases.put(LastReturn, text);
+            aliases.put(LAST_RETURN, text);
             return text;
         }
 
-        aliases.put(LastReturn, null);
+        aliases.put(LAST_RETURN, null);
         return null;
     }
 
@@ -1078,11 +1063,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(regex),
                     getSubstitutedString(locator),
                     ifExistsOption);
-            aliases.put(LastReturn, text);
+            aliases.put(LAST_RETURN, text);
             return text;
         }
 
-        aliases.put(LastReturn, null);
+        aliases.put(LAST_RETURN, null);
         return null;
     }
 
@@ -1101,11 +1086,11 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
                     getSubstitutedString(locator),
                     waitTime,
                     ifExistsOption);
-            aliases.put(LastReturn, text);
+            aliases.put(LAST_RETURN, text);
             return text;
         }
 
-        aliases.put(LastReturn, null);
+        aliases.put(LAST_RETURN, null);
         return null;
     }
 
@@ -1353,7 +1338,7 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
     public String getTitle() {
         if (getAutomatedBrowser() != null) {
             final String text = getAutomatedBrowser().getTitle();
-            aliases.put(LastReturn, text);
+            aliases.put(LAST_RETURN, text);
             return text;
         }
         return null;
