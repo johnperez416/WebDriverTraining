@@ -1175,18 +1175,21 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         final boolean refreshIfExists = StringUtils.isBlank(doesNotExist);
 
         final Try result = RETRY_SERVICE.getTemplate(retries, frequency * 1000).execute(context -> {
-            Try.run(() -> SIMPLE_BY.getElement(
+            final Try thisRefresh = Try.run(() -> SIMPLE_BY.getElement(
                     getWebDriver(),
                     locator,
                     waitTime,
                     ExpectedConditions::presenceOfElementLocated))
             .onFailure(exception -> {if (!refreshIfExists) refresh();})
             .onSuccess(element -> {if (refreshIfExists) {refresh();}});
-            return null;
+
+            if (refreshIfExists && thisRefresh.isFailure())  throw new WebElementException("Element " + locator + " was not found after refreshing the page for " + duration + " seconds");
+            if (!refreshIfExists && thisRefresh.isSuccess()) throw new WebElementException("Element " + locator + " was found after refreshing the page for " + duration + " seconds");
+
+            return thisRefresh;
         });
 
-        if (refreshIfExists && result.isFailure())  throw new WebElementException("Element " + locator + " was not found after refreshing the page for " + duration + " seconds");
-        if (!refreshIfExists && result.isSuccess()) throw new WebElementException("Element " + locator + " was found after refreshing the page for " + duration + " seconds");
+        if (result.isFailure()) throw new WebElementException(result.getCause().getMessage());
     }
 
     @Override
