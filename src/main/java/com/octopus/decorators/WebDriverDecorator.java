@@ -1165,6 +1165,31 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
+    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist) {
+        refreshIfExists(frequency, duration, locator, doesNotExist, getDefaultExplicitWaitTime());
+    }
+
+    @Override
+    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist, final int waitTime) {
+        final int retries = duration / frequency;
+        final boolean refreshIfExists = StringUtils.isBlank(doesNotExist);
+
+        final Try result = RETRY_SERVICE.getTemplate(retries, frequency * 1000).execute(context -> {
+            Try.run(() -> SIMPLE_BY.getElement(
+                    getWebDriver(),
+                    locator,
+                    waitTime,
+                    ExpectedConditions::presenceOfElementLocated))
+            .onFailure(exception -> {if (!refreshIfExists) refresh();})
+            .onSuccess(element -> {if (refreshIfExists) {refresh();}});
+            return null;
+        });
+
+        if (refreshIfExists && result.isFailure())  throw new WebElementException("Element " + locator + " was not found after refreshing the page for " + duration + " seconds");
+        if (!refreshIfExists && result.isSuccess()) throw new WebElementException("Element " + locator + " was found after refreshing the page for " + duration + " seconds");
+    }
+
+    @Override
     public void verifyTextFromElementIfExists(final String locator, final String regex, final String ifExistsOption) {
         verifyTextFromElementIfExists(locator, regex, getDefaultExplicitWaitTime(), ifExistsOption);
     }

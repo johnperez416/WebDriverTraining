@@ -370,6 +370,31 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
+    @And("^I refresh the page every \"(\\d+)\" seconds? for \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (does not )?exists?$")
+    @Override
+    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().refreshIfExists(
+                    frequency,
+                    duration,
+                    getSubstitutedString(locator),
+                    doesNotExist);
+        }
+    }
+
+    @And("^I refresh the page every \"(\\d+)\" seconds? for \"(\\d+)\" seconds? if the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (does not )?exists? waiting up to \"(\\d+)\" seconds?$")
+    @Override
+    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist, final int waitTime) {
+        if (getAutomatedBrowser() != null) {
+            getAutomatedBrowser().refreshIfExists(
+                    frequency,
+                    duration,
+                    getSubstitutedString(locator),
+                    doesNotExist,
+                    waitTime);
+        }
+    }
+
     @And("^I refresh the page if the \"([^\"]*)\" \\w+(?:\\s+\\w+)* (does not )?exists? waiting up to \"(\\d+)\" seconds?$")
     @Override
     public void refreshIfExists(final String locator, final String doesNotExist, final int waitTime) {
