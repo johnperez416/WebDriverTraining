@@ -88,23 +88,21 @@ public interface AutomatedBrowser {
     /**
      * Refresh the page if an element exists on the page or does not exit.
      *
-     * @param frequency    How frequently to refresh the page
      * @param duration     How long to keep refreshing the page for
      * @param locator      The element to locate.
      * @param doesNotExist This string is not blank if the lack of the element triggers a page refresh.
      */
-    void refreshIfExists(int frequency, int duration, String locator, String doesNotExist);
+    void refreshIfExists(int duration, String locator, String doesNotExist);
 
     /**
      * Refresh the page if an element exists on the page or does not exit.
      *
-     * @param frequency    How frequently to refresh the page
      * @param duration     How long to keep refreshing the page for
      * @param locator      The element to locate.
      * @param doesNotExist This string is not blank if the lack of the element triggers a page refresh.
      * @param waitTime     How long to wait for the element to appear.
      */
-    void refreshIfExists(int frequency, int duration, String locator, String doesNotExist, int waitTime);
+    void refreshIfExists(int duration, String locator, String doesNotExist, int waitTime);
 
     /**
      * Maximize the browser window.

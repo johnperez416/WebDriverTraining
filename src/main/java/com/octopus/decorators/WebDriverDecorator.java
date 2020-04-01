@@ -1165,16 +1165,16 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist) {
-        refreshIfExists(frequency, duration, locator, doesNotExist, getDefaultExplicitWaitTime());
+    public void refreshIfExists(final int duration, final String locator, final String doesNotExist) {
+        refreshIfExists(duration, locator, doesNotExist, getDefaultExplicitWaitTime());
     }
 
     @Override
-    public void refreshIfExists(final int frequency, final int duration, final String locator, final String doesNotExist, final int waitTime) {
-        final int retries = duration / frequency;
+    public void refreshIfExists(final int duration, final String locator, final String doesNotExist, final int waitTime) {
+        final int retries = duration / (waitTime <= 1 ? 1 : waitTime - 1);
         final boolean refreshIfExists = StringUtils.isBlank(doesNotExist);
 
-        final Try result = RETRY_SERVICE.getTemplate(retries, frequency * 1000).execute(context -> {
+        final Try result = RETRY_SERVICE.getTemplate(retries, 1000).execute(context -> {
             final Try thisRefresh = Try.run(() -> SIMPLE_BY.getElement(
                     getWebDriver(),
                     locator,
