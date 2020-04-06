@@ -14,16 +14,16 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <selenium.version>3.14.0</selenium.version>
         <junit.version>4.13</junit.version>
         <browsermob.version>2.1.5</browsermob.version>
-        <cucumber.version>5.5.0</cucumber.version>
+        <cucumber.version>5.6.0</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.0</aws.lambda.version>
-        <aws.sdk.version>1.11.756</aws.sdk.version>
+        <aws.sdk.version>1.11.759</aws.sdk.version>
         <commons.io.version>2.6</commons.io.version>
         <commons.text.version>1.8</commons.text.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
         <slf4jjdk14.version>1.7.28</slf4jjdk14.version>
         <vavr.version>0.9.2</vavr.version>
-        <bouncy.castle.version>1.64</bouncy.castle.version>
+        <bouncy.castle.version>1.65</bouncy.castle.version>
         <netty.version>4.1.42.Final</netty.version>
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <apache.http.version>4.5.12</apache.http.version>
