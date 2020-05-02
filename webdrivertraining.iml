@@ -12,6 +12,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-lambda:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:jmespath-java:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-ses:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-java:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-core:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin-vintage:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:datatable:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-plugin:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:docstring:5.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-junit:5.6.0" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.759" level="project" />
+    <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.65" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.retry:spring-retry:1.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.22.RELEASE" level="project" />
