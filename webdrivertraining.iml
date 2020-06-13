@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module">
+    <option name="configuration">
+      <map />
+    </option>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_13_PREVIEW">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -66,17 +71,19 @@
     <orderEntry type="library" name="Maven: com.jcraft:jzlib:1.1.3" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcpkix-jdk15on:1.58" level="project" />
     <orderEntry type="library" name="Maven: net.lightbody.bmp:mitm:2.1.5" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-java:5.7.0" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-core:5.7.0" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin:5.7.0" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin-vintage:5.7.0" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:tag-expressions:2.0.4" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-expressions:8.3.1" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-java:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-core:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-gherkin-messages:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:messages:12.1.1" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:tag-expressions:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-expressions:10.2.0" level="project" />
     <orderEntry type="library" name="Maven: io.cucumber:datatable:3.3.1" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:cucumber-plugin:5.7.0" level="project" />
-    <orderEntry type="library" name="Maven: io.cucumber:docstring:5.7.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:cucumber-plugin:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:docstring:6.1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.cucumber:html-formatter:6.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-junit:5.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.cucumber:cucumber-junit:6.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.monte:screen-recorder:0.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-jdk14:1.7.28" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.10" level="project" />
