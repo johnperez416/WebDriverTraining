@@ -16,7 +16,6 @@ public class Constants {
         add("com.octopus.stephandlers.impl.SlackStepHandler");
         add("--plugin");
         add("com.octopus.stephandlers.impl.StepPauseHandler");
-        add("--strict");
     }};
 
     /**
