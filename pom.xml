@@ -14,10 +14,10 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <selenium.version>3.14.0</selenium.version>
         <junit.version>4.13</junit.version>
         <browsermob.version>2.1.5</browsermob.version>
-        <cucumber.version>6.1.1</cucumber.version>
+        <cucumber.version>6.1.2</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.1</aws.lambda.version>
-        <aws.sdk.version>1.11.806</aws.sdk.version>
+        <aws.sdk.version>1.11.810</aws.sdk.version>
         <commons.io.version>2.7</commons.io.version>
         <commons.text.version>1.8</commons.text.version>
         <screenrecorder.version>0.7.7</screenrecorder.version>
