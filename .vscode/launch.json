@@ -9,6 +9,12 @@
             "name": "Package App",
             "request": "launch",
             "type": "node-terminal"
+        },
+        {
+            "command": "JAVA_HOME=/opt/jdk-14.0.2+12 ./mvnw versions:display-dependency-updates",
+            "name": "Get dependency updates",
+            "request": "launch",
+            "type": "node-terminal"
         }
     ]
 }
