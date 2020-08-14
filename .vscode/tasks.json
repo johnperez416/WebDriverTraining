@@ -1,0 +1,19 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "updates",
+            "type": "shell",
+            "command": "JAVA_HOME=/opt/jdk-14.0.2+12 ./mvnw versions:display-dependency-updates",
+            "group": "build"
+        },
+        {
+            "label": "package",
+            "type": "shell",
+            "command": "JAVA_HOME=/opt/jdk-14.0.2+12 ./mvnw versions:display-dependency-updates",
+            "group": "test"
+        }
+    ]
+}
