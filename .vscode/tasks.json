@@ -12,7 +12,7 @@
         {
             "label": "package",
             "type": "shell",
-            "command": "JAVA_HOME=/opt/jdk-14.0.2+12 ./mvnw versions:display-dependency-updates",
+            "command": "JAVA_HOME=/opt/jdk-14.0.2+12 ./mvnw package -Dmaven.test.skip=true",
             "group": "test"
         }
     ]
