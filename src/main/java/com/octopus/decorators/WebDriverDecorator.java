@@ -572,11 +572,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
         try {
             if (StringUtils.isNotBlank(force)) {
-                final Select select = new Select(SIMPLE_BY.getElement(
+                final WebElement select = SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
-                        ExpectedConditions::presenceOfElementLocated));
+                        ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("""
                         for ( var i = 0, len = arguments[0].options.length; i < len; i++ ) {
                             opt = arguments[0].options[i];
@@ -609,11 +609,11 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
         try {
             if (StringUtils.isNotBlank(force)) {
-                final Select select = new Select(SIMPLE_BY.getElement(
+                final WebElement select = SIMPLE_BY.getElement(
                         getWebDriver(),
                         locator,
                         waitTime,
-                        ExpectedConditions::presenceOfElementLocated));
+                        ExpectedConditions::presenceOfElementLocated);
                 ((JavascriptExecutor) getWebDriver()).executeScript("""
                         arguments[0].value = arguments[1]
                     """, select, optionValue);

@@ -287,6 +287,9 @@ public class FormTest {
             automatedBrowser.selectOptionByValueFromSelect("", "option22", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
+            automatedBrowser.selectOptionByTextFromSelect("force", "Option 2.1", formDropDownListLocator, 10);
+            automatedBrowser.selectOptionByValueFromSelect("force", "option22", formDropDownListLocator, 10);
+
             automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
 
             automatedBrowser.verifyElementExists(formTextBoxLocator);
