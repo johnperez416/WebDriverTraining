@@ -89,6 +89,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                     <archive>
                         <manifest>
                             <mainClass>com.octopus.Main</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
                 </configuration>
