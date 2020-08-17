@@ -278,13 +278,13 @@ public class FormTest {
             automatedBrowser.clear(formTextAreaLocator);
             automatedBrowser.verifyTextFromElement(formTextAreaLocator, "");
 
-            automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator, 10);
+            automatedBrowser.selectOptionByTextFromSelect("", "Option 2.1", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElement(formCheckboxLocator, 10);
             assertEquals("Checkbox Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.selectOptionByValueFromSelect("option22", formDropDownListLocator, 10);
+            automatedBrowser.selectOptionByValueFromSelect("", "option22", formDropDownListLocator, 10);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElementIfExists("thisdoesnotexist", 2, "true");
@@ -412,7 +412,7 @@ public class FormTest {
 
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator);
+            automatedBrowser.selectOptionByTextFromSelect("", "Option 2.1", formDropDownListLocator);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElement(formCheckboxLocator);
@@ -458,7 +458,7 @@ public class FormTest {
             automatedBrowser.populateElement(formTextAreaLocator, "test text");
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.selectOptionByTextFromSelect("Option 2.1", formDropDownListLocator);
+            automatedBrowser.selectOptionByTextFromSelect("", "Option 2.1", formDropDownListLocator);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElement(formCheckboxLocator);

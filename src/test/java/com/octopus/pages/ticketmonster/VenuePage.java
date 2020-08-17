@@ -13,7 +13,7 @@ public class VenuePage extends BasePage {
     }
 
     public VenuePage selectVenue(final String venue) {
-        automatedBrowser.selectOptionByTextFromSelect(venue, VENUE_DROP_DOWN_LIST, WAIT_TIME);
+        automatedBrowser.selectOptionByTextFromSelect("", venue, VENUE_DROP_DOWN_LIST, WAIT_TIME);
         return this;
     }
 

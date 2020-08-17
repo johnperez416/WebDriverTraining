@@ -564,18 +564,35 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
-        selectOptionByTextFromSelectIfExists(optionText, locator, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final String ifExistsOption) {
+        selectOptionByTextFromSelectIfExists(force, optionText, locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
         try {
-            new Select(SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    ExpectedConditions::elementToBeClickable)).selectByVisibleText(optionText);
+            if (StringUtils.isNotBlank(force)) {
+                final Select select = new Select(SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        ExpectedConditions::presenceOfElementLocated));
+                ((JavascriptExecutor) getWebDriver()).executeScript("""
+                        for ( var i = 0, len = arguments[0].options.length; i < len; i++ ) {
+                            opt = arguments[0].options[i];
+                            if ( opt.text === arguments[1] ) {
+                                opt.selected = true;
+                                break;
+                            }
+                        }
+                        """, select, optionText);
+            } else {
+                new Select(SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        ExpectedConditions::elementToBeClickable)).selectByVisibleText(optionText);
+            }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;
@@ -584,18 +601,29 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExistsOption) {
-        selectOptionByValueFromSelectIfExists(optionValue, locator, getDefaultExplicitWaitTime(), ifExistsOption);
+    public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final String ifExistsOption) {
+        selectOptionByValueFromSelectIfExists(force, optionValue, locator, getDefaultExplicitWaitTime(), ifExistsOption);
     }
 
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
         try {
-            new Select(SIMPLE_BY.getElement(
-                    getWebDriver(),
-                    locator,
-                    waitTime,
-                    ExpectedConditions::elementToBeClickable)).selectByValue(optionValue);
+            if (StringUtils.isNotBlank(force)) {
+                final Select select = new Select(SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        ExpectedConditions::presenceOfElementLocated));
+                ((JavascriptExecutor) getWebDriver()).executeScript("""
+                        arguments[0].value = arguments[1]
+                    """, select, optionValue);
+            } else {
+                new Select(SIMPLE_BY.getElement(
+                        getWebDriver(),
+                        locator,
+                        waitTime,
+                        ExpectedConditions::elementToBeClickable)).selectByValue(optionValue);
+            }
         } catch (final WebElementException ex) {
             if (StringUtils.isEmpty(ifExistsOption)) {
                 throw ex;

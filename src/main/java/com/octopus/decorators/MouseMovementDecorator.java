@@ -655,7 +655,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -672,6 +672,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                        force,
                         optionText,
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
@@ -686,7 +687,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -703,6 +704,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                        force,
                         optionText,
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(
@@ -717,7 +719,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
     }
 
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
         ++interactionCount;
 
         try {
@@ -734,6 +736,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
 
             if (getAutomatedBrowser() != null) {
                 getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                        force,
                         optionValue,
                         locator,
                         SYSTEM_PROPERTY_UTILS.getPropertyAsBoolean(

@@ -37,11 +37,11 @@ public class TicketMonsterTest {
 
             automatedBrowser.clickElement("Rock concert of the decade", WAIT_TIME);
 
-            automatedBrowser.selectOptionByTextFromSelect("Toronto : Roy Thomson Hall", "venueSelector", WAIT_TIME);
+            automatedBrowser.selectOptionByTextFromSelect("", "Toronto : Roy Thomson Hall", "venueSelector", WAIT_TIME);
 
             automatedBrowser.clickElement("bookButton", WAIT_TIME);
 
-            automatedBrowser.selectOptionByTextFromSelect("A - Premier platinum reserve", "sectionSelect", WAIT_TIME);
+            automatedBrowser.selectOptionByTextFromSelect("","A - Premier platinum reserve", "sectionSelect", WAIT_TIME);
 
             automatedBrowser.populateElement("tickets-1", "2", WAIT_TIME);
 

@@ -737,8 +737,8 @@ public interface AutomatedBrowser {
      * @param optionText The visible text of the option to select.
      * @param locator    The element locator.
      */
-    default void selectOptionByTextFromSelect(String optionText, String locator) {
-        selectOptionByTextFromSelectIfExists(optionText, locator, null);
+    default void selectOptionByTextFromSelect(String force, String optionText, String locator) {
+        selectOptionByTextFromSelectIfExists(force, optionText, locator, null);
     }
 
     /**
@@ -748,68 +748,74 @@ public interface AutomatedBrowser {
      * @param locator    The element locator.
      * @param waitTime   The amount of time to wait for the element.
      */
-    default void selectOptionByTextFromSelect(String optionText, String locator, int waitTime) {
-        selectOptionByTextFromSelectIfExists(optionText, locator, waitTime, null);
+    default void selectOptionByTextFromSelect(String force, String optionText, String locator, int waitTime) {
+        selectOptionByTextFromSelectIfExists(force, optionText, locator, waitTime, null);
     }
 
     /**
      * Select an option by its visible text from a drop down list.
      *
+     * @param force          If not blank, populate the element using JavaScript.
      * @param optionText     The visible text of the option to select.
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void selectOptionByTextFromSelectIfExists(String optionText, String locator, String ifExistsOption);
+    void selectOptionByTextFromSelectIfExists(String force, String optionText, String locator, String ifExistsOption);
 
     /**
      * Select an option by its visible text from a drop down list.
      *
+     * @param force          If not blank, populate the element using JavaScript.
      * @param optionText     The visible text of the option to select.
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void selectOptionByTextFromSelectIfExists(String optionText, String locator, int waitTime, String ifExistsOption);
+    void selectOptionByTextFromSelectIfExists(String force, String optionText, String locator, int waitTime, String ifExistsOption);
 
     /**
      * Select an option by its value from a drop down list.
      *
+     * @param force       If not blank, populate the element using JavaScript.
      * @param optionValue The value of the option to select.
      * @param locator     The element locator.
      */
-    default void selectOptionByValueFromSelect(String optionValue, String locator) {
-        selectOptionByValueFromSelectIfExists(optionValue, locator, null);
+    default void selectOptionByValueFromSelect(String force, String optionValue, String locator) {
+        selectOptionByValueFromSelectIfExists(force, optionValue, locator, null);
     }
 
     /**
      * Select an option by its value from a drop down list.
      *
+     * @param force       If not blank, populate the element using JavaScript.
      * @param optionValue The value of the option to select.
      * @param locator     The element locator.
      * @param waitTime    The amount of time to wait for the element.
      */
-    default void selectOptionByValueFromSelect(String optionValue, String locator, int waitTime) {
-        selectOptionByValueFromSelectIfExists(optionValue, locator, waitTime, null);
+    default void selectOptionByValueFromSelect(String force, String optionValue, String locator, int waitTime) {
+        selectOptionByValueFromSelectIfExists(force, optionValue, locator, waitTime, null);
     }
 
     /**
      * Select an option by its value from a drop down list.
      *
+     * @param force          If not blank, populate the element using JavaScript.
      * @param optionValue    The value of the option to select.
      * @param locator        The element locator.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, String ifExistsOption);
+    void selectOptionByValueFromSelectIfExists(String force, String optionValue, String locator, String ifExistsOption);
 
     /**
      * Select an option by its value from a drop down list.
      *
+     * @param force          If not blank, populate the element using JavaScript.
      * @param optionValue    The value of the option to select.
      * @param locator        The element locator.
      * @param waitTime       The amount of time to wait for the element.
      * @param ifExistsOption If this is not blank then silently fail if the element does not exist.
      */
-    void selectOptionByValueFromSelectIfExists(String optionValue, String locator, int waitTime, String ifExistsOption);
+    void selectOptionByValueFromSelectIfExists(String force, String optionValue, String locator, int waitTime, String ifExistsOption);
 
     /**
      * Populate an element with the supplied text.

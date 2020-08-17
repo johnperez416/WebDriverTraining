@@ -874,22 +874,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
+    @And("^I( force)? select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final String ifExistsOption) {
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                    force,
                     getSubstitutedString(optionText),
                     getSubstitutedString(locator),
                     ifExistsOption);
         }
     }
 
-    @And("^I select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I( force)? select the option \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void selectOptionByTextFromSelectIfExists(final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByTextFromSelectIfExists(final String force, final String optionText, final String locator, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByTextFromSelectIfExists(
+                    force,
                     getSubstitutedString(optionText),
                     getSubstitutedString(locator),
                     waitTime,
@@ -897,22 +899,24 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
     }
 
-    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
+    @And("^I( force)? select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)*?( if it exists)?$")
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final String ifExistsOption) {
+    public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                    force,
                     getSubstitutedString(optionValue),
                     getSubstitutedString(locator),
                     ifExistsOption);
         }
     }
 
-    @And("^I select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
+    @And("^I( force)? select the option value \"([^\"]*)\" from the \"([^\"]*)\" \\w+(?:\\s+\\w+)* waiting up to \"(\\d+)\" seconds?( if it exists)?$")
     @Override
-    public void selectOptionByValueFromSelectIfExists(final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
+    public void selectOptionByValueFromSelectIfExists(final String force, final String optionValue, final String locator, final int waitTime, final String ifExistsOption) {
         if (getAutomatedBrowser() != null) {
             getAutomatedBrowser().selectOptionByValueFromSelectIfExists(
+                    force,
                     getSubstitutedString(optionValue),
                     getSubstitutedString(locator),
                     waitTime,

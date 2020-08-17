@@ -22,7 +22,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public CheckoutPage selectSection(final String section) {
-        automatedBrowser.selectOptionByTextFromSelect(section, SECTION_DROP_DOWN_LIST, WAIT_TIME);
+        automatedBrowser.selectOptionByTextFromSelect("", section, SECTION_DROP_DOWN_LIST, WAIT_TIME);
         return this;
     }
 
@@ -33,7 +33,7 @@ public class CheckoutPage extends BasePage {
 
     public CheckoutPage buySectionTickets(final String section, final
     Integer adultCount) {
-        automatedBrowser.selectOptionByTextFromSelect(section, SECTION_DROP_DOWN_LIST, WAIT_TIME);
+        automatedBrowser.selectOptionByTextFromSelect("", section, SECTION_DROP_DOWN_LIST, WAIT_TIME);
         automatedBrowser.populateElement(ADULT_TICKET_COUNT, adultCount.toString(), WAIT_TIME);
         automatedBrowser.clickElement(ADD_TICKETS_BUTTON, WAIT_TIME);
         return this;
