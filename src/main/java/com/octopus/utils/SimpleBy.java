@@ -8,4 +8,11 @@ public interface SimpleBy {
                           String locator,
                           int waitTime,
                           ExpectedConditionCallback expectedConditionCallback);
+
+    WebElement getElement(
+            WebDriver webDriver,
+            String locator,
+            int waitTime,
+            ExpectedConditionCallback expectedConditionCallback,
+            int timeSlice);
 }
