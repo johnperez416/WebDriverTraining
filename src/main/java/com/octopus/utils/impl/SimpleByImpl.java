@@ -34,7 +34,12 @@ public class SimpleByImpl implements SimpleBy {
             final ExpectedConditionCallback expectedConditionCallback) {
 
         // If the wait time is less than a second, poll every 100 milliseconds. Otherwise poll every second.
-        return getElement(webDriver, locator, waitTime, expectedConditionCallback, Math.min(SUB_SECOND_TIME_SLICE, SECOND_TIME_SLICE));
+        return getElement(
+                webDriver,
+                locator,
+                waitTime,
+                expectedConditionCallback,
+                waitTime * MILLISECONDS_PER_SECOND >= SECOND_TIME_SLICE ? SECOND_TIME_SLICE : SUB_SECOND_TIME_SLICE);
     }
 
     @Override
