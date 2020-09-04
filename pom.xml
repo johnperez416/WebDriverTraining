@@ -13,7 +13,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <selenium.version>3.14.0</selenium.version>
         <junit.version>4.13</junit.version>
         <browsermob.version>2.1.5</browsermob.version>
-        <cucumber.version>6.4.0</cucumber.version>
+        <cucumber.version>6.6.0</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.1</aws.lambda.version>
         <aws.sdk.version>1.11.842</aws.sdk.version>
