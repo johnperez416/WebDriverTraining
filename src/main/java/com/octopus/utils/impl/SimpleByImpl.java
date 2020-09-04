@@ -23,7 +23,8 @@ public class SimpleByImpl implements SimpleBy {
     static final Logger LOGGER = Logger.getLogger(SimpleByImpl.class.toString());
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final int MILLISECONDS_PER_SECOND = 1000;
-    private static final int TIME_SLICE = 100;
+    private static final int SUB_SECOND_TIME_SLICE = 100;
+    private static final int SECOND_TIME_SLICE = 1000;
 
     @Override
     public WebElement getElement(
@@ -31,6 +32,23 @@ public class SimpleByImpl implements SimpleBy {
             final String locator,
             final int waitTime,
             final ExpectedConditionCallback expectedConditionCallback) {
+
+        // If the wait time is less than a second, poll every 100 milliseconds. Otherwise poll every second.
+        return getElement(
+                webDriver,
+                locator,
+                waitTime,
+                expectedConditionCallback,
+                waitTime * MILLISECONDS_PER_SECOND >= SECOND_TIME_SLICE ? SECOND_TIME_SLICE : SUB_SECOND_TIME_SLICE);
+    }
+
+    @Override
+    public WebElement getElement(
+            final WebDriver webDriver,
+            final String locator,
+            final int waitTime,
+            final ExpectedConditionCallback expectedConditionCallback,
+            final int timeSlice) {
 
         final By[] byInstances = new By[] {
                 By.id(locator),
@@ -48,7 +66,7 @@ public class SimpleByImpl implements SimpleBy {
                 try {
                     final WebDriverWaitEx wait = new WebDriverWaitEx(
                             webDriver,
-                            TIME_SLICE,
+                            timeSlice,
                             TimeUnit.MILLISECONDS);
                     final ExpectedCondition<WebElement> condition =
                             expectedConditionCallback.getExpectedCondition(by);
@@ -63,7 +81,7 @@ public class SimpleByImpl implements SimpleBy {
                   */
                 }
 
-                time += TIME_SLICE;
+                time += timeSlice;
             }
         }
 
