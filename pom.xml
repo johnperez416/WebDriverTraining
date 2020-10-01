@@ -39,7 +39,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <argLine>--enable-preview -Djava.util.logging.config.file=logging.properties</argLine>
+                    <argLine>-Djava.util.logging.config.file=logging.properties</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -47,9 +47,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>14</source>
-                    <target>14</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -99,8 +98,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>14</source>
-                    <target>14</target>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,7 +1,7 @@
 FROM debian:stable
 
 RUN apt-get update && apt-get install -y curl wget xvfb chromium chromium-driver fluxbox xcompmgr
-RUN wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz -O openjdk.tar.gz && \
+RUN wget https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz -O openjdk.tar.gz && \
     tar xzf openjdk.tar.gz && \
     for d in jdk*; do mv $d jdk; done &&  \
     mv jdk /opt/
@@ -9,7 +9,7 @@ RUN apt-get install bzip2 libdbus-glib-1-2
 RUN wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/linux-x86_64/en-US/firefox-71.0.tar.bz2 -O firefox.tar.bz2 && \
      tar xjf firefox.tar.bz2 && \
      mv firefox /opt/
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz -O geckodriver.tar.gz && \
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz -O geckodriver.tar.gz && \
     tar xzf geckodriver.tar.gz && \
     mv geckodriver /usr/bin/geckodriver
 

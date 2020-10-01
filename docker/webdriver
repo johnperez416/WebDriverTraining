@@ -34,6 +34,6 @@ launch_window_manager() {
 
 main
 
-JAVA_OPTS="--enable-preview -Dwebdriver.firefox.bin=/opt/firefox/firefox-bin -Dwebdriver.gecko.driver=/usr/bin/geckodriver $JAVA_OPTS"
+JAVA_OPTS="-Dwebdriver.firefox.bin=/opt/firefox/firefox-bin -Dwebdriver.gecko.driver=/usr/bin/geckodriver $JAVA_OPTS"
 eval /opt/jdk/bin/java "$JAVA_OPTS" -jar /opt/webdriver.jar "$@"
 
