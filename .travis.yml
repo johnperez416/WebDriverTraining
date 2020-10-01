@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: java
 jdk:
-- oraclejdk13
+- oraclejdk15
 addons:
   firefox: "69.0"
 before_install:
