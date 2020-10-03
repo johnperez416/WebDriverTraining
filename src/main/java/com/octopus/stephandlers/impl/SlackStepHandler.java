@@ -110,6 +110,12 @@ public class SlackStepHandler implements EventListener {
                     // get the value
                     .map(Try::get);
 
+            final Optional<Throwable> imageFailure = imageUrlFuture.map(s -> Try.of(s::get))
+                    // ignore any failed attempts to get the value
+                    .filter(Try::isFailure)
+                    // get the value
+                    .map(Try::getCause);
+
             try (final CloseableHttpClient client = HttpClients.createDefault()) {
                 final SlackMessage message = SlackMessage
                         .builder()
@@ -122,15 +128,29 @@ public class SlackStepHandler implements EventListener {
                                         .orElse(""))
                         .build();
 
-                imageUrl.ifPresent(s ->
-                        message.attachments = new Attachments[]{
-                                Attachments
-                                        .builder()
-                                        .color(event.getResult().getStatus() == Status.PASSED ? "good" : "danger")
-                                        .imageUrl(s)
-                                        .build()
-                        }
+                imageUrl.ifPresentOrElse(s ->
+                        // attach the image if it exists
+                                message.attachments = new Attachments[]{
+                                        Attachments
+                                                .builder()
+                                                .color(event.getResult().getStatus() == Status.PASSED ? "good" : "danger")
+                                                .imageUrl(s)
+                                                .build()
+                                }
+                        ,
+                        // attach the reason why we have no image if such a failure exists
+                        () -> imageFailure.ifPresent(s ->
+                                message.attachments = new Attachments[]{
+                                        Attachments
+                                                .builder()
+                                                .color(event.getResult().getStatus() == Status.PASSED ? "warning" : "danger")
+                                                .text(s.toString())
+                                                .build()
+
+                                }
+                        )
                 );
+
 
                 return RETRY_SERVICE.getTemplate(
                         SYSTEM_PROPERTY_UTILS.getPropertyAsInt(Constants.SLACK_RETRIES, Constants.DEFAULT_SLACK_RETRIES),
