@@ -14,6 +14,7 @@ import io.cucumber.plugin.event.EventPublisher;
 import io.cucumber.plugin.event.PickleStepTestStep;
 import io.cucumber.plugin.event.Status;
 import io.cucumber.plugin.event.TestStepFinished;
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
@@ -118,9 +119,9 @@ public class SlackStepHandler implements EventListener {
                                 + event.getResult().getStatus() +
                                 " " +
                                 getStepName(event) +
-                                event.getResult().getError() == null
-                                    ? ""
-                                    : " " + event.getResult().getError().toString())
+                                Optional.ofNullable(event.getResult().getError())
+                                        .map(e -> " " + e.toString())
+                                        .orElse(""))
                         .build();
 
                 imageUrl.ifPresent(s ->
