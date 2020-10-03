@@ -7,10 +7,7 @@ import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

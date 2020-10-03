@@ -4,7 +4,6 @@ import com.kevinmost.junit_retry_rule.Retry;
 import com.octopus.pages.ticketmonster.*;
 import io.vavr.control.Try;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TicketMonsterTest {
