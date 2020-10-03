@@ -17,6 +17,7 @@ import io.cucumber.plugin.event.TestStepFinished;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -114,7 +115,12 @@ public class SlackStepHandler implements EventListener {
                 final SlackMessage message = SlackMessage
                         .builder()
                         .text(SYSTEM_PROPERTY_UTILS.getPropertyNullAsEmpty(Constants.STEP_HANDLER_MESSAGE, " ")
-                                + event.getResult().getStatus() + " " + getStepName(event))
+                                + event.getResult().getStatus() +
+                                " " +
+                                getStepName(event) +
+                                event.getResult().getError() == null
+                                    ? ""
+                                    : " " + event.getResult().getError().toString())
                         .build();
 
                 imageUrl.ifPresent(s ->
