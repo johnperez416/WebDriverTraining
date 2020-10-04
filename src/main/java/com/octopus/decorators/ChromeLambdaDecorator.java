@@ -61,7 +61,12 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase {
         if (headless) {
             options.addArguments("--headless");
         }
-        options.addArguments("--disable-gpu");
+        // https://stackoverflow.com/questions/54297559/getting-cannot-activate-web-view
+        options.addArguments("--disable-infobars"); // https://stackoverflow.com/a/43840128/1689770
+        options.addArguments("--disable-dev-shm-usage"); // https://stackoverflow.com/a/50725918/1689770
+        options.addArguments("--disable-browser-side-navigation"); // https://stackoverflow.com/a/49123152/1689770
+        options.addArguments("--disable-gpu"); // https://stackoverflow.com/questions/51959986/how-to-solve-selenium-chromedriver-timed-out-receiving-message-from-renderer-exc
+        options.addArguments("--disable-features=VizDisplayCompositor");  // https://stackoverflow.com/a/55371396/491553
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--single-process");
         options.addArguments("--no-sandbox");
