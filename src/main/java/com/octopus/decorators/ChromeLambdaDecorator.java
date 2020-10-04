@@ -61,7 +61,13 @@ public class ChromeLambdaDecorator extends AutomatedBrowserBase {
         if (headless) {
             options.addArguments("--headless");
         }
-        // https://stackoverflow.com/questions/54297559/getting-cannot-activate-web-view
+        /*
+            Chrome is hard work. You need to set a lot of cryptic options to get
+            it to work. The posts below offer more details.
+            https://stackoverflow.com/questions/54297559/getting-cannot-activate-web-view
+            https://stackoverflow.com/questions/48450594/selenium-timed-out-receiving-message-from-renderer/52340526#52340526
+         */
+        options.addArguments("start-maximized"); // https://stackoverflow.com/a/26283818/1689770
         options.addArguments("--disable-infobars"); // https://stackoverflow.com/a/43840128/1689770
         options.addArguments("--disable-dev-shm-usage"); // https://stackoverflow.com/a/50725918/1689770
         options.addArguments("--disable-browser-side-navigation"); // https://stackoverflow.com/a/49123152/1689770
