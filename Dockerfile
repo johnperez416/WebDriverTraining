@@ -6,7 +6,7 @@ RUN wget https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db
     for d in jdk*; do mv $d jdk; done &&  \
     mv jdk /opt/
 RUN apt-get install bzip2 libdbus-glib-1-2
-RUN wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/71.0/linux-x86_64/en-US/firefox-71.0.tar.bz2 -O firefox.tar.bz2 && \
+RUN wget https://archive.mozilla.org/pub/firefox/releases/83.0/linux-x86_64/en-US/firefox-83.0.tar.bz2 -O firefox.tar.bz2 && \
      tar xjf firefox.tar.bz2 && \
      mv firefox /opt/
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.28.0/geckodriver-v0.28.0-linux64.tar.gz -O geckodriver.tar.gz && \
