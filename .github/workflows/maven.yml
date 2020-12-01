@@ -20,7 +20,9 @@ jobs:
         sudo /usr/bin/Xvfb :99 -screen 0 1024x768x24 &
         sudo apt-get install -y firefox
         sudo apt-get install -y libappindicator1 fonts-liberation libgbm1
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        # A fixed version of chrome, which we can pair a fixed version of chrome driver to
+        wget https://octopus-guides.s3.amazonaws.com/chrome/google-chrome-stable_current_amd64.deb
+        #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         #wget https://dl.google.com/linux/direct/google-chrome-beta_current_amd64.deb
         #wget https://dl.google.com/linux/direct/google-chrome-unstable_current_amd64.deb
         sudo dpkg -i google-chrome*.deb
