@@ -8,14 +8,14 @@ public class InitialTest {
     @Test
     public void openURL() {
         final ChromeDriver chromeDriver = new ChromeDriver();
-        chromeDriver.get("https://octopus.com/");
+        chromeDriver.get("https://google.com/");
         chromeDriver.quit();
     }
 
     @Test
     public void openURLFirefox() {
         final FirefoxDriver firefoxDriver = new FirefoxDriver();
-        firefoxDriver.get("https://octopus.com/");
+        firefoxDriver.get("https://google.com/");
         firefoxDriver.quit();
     }
 }
