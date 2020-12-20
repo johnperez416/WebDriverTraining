@@ -1,6 +1,7 @@
 name: Java CI
 on:
   push:
+  repository_dispatch:
 jobs:
   build:
     env:
