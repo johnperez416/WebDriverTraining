@@ -34,7 +34,7 @@ public class FactoryTest {
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
         automatedBrowser.init();
-        automatedBrowser.goTo("https://google.com/");
+        automatedBrowser.goTo("http://kmeleonbrowser.org/");
         automatedBrowser.destroy();
     }
 }
