@@ -71,6 +71,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     @Override
     public DesiredCapabilities getDesiredCapabilities() {
         proxy = new BrowserMobProxyServer();
+        proxy.setMitmDisabled(true);
         proxy.start(0);
 
         final DesiredCapabilities desiredCapabilities =
