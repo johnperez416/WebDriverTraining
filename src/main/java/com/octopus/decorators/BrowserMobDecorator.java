@@ -57,7 +57,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     /**
      * The BrowserMob proxy instance.
      */
-    private BrowserMobProxy proxy;
+    private BrowserMobProxyServer proxy;
 
     /**
      * Decorator constructor.
@@ -71,6 +71,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     @Override
     public DesiredCapabilities getDesiredCapabilities() {
         proxy = new BrowserMobProxyServer();
+        // Disabling mitm was necessary to allow https sites to work again in late 2020. Not sure what the underlying casue was here though.
         proxy.setMitmDisabled(true);
         proxy.start(0);
 
