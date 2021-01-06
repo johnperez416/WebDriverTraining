@@ -15,6 +15,10 @@ import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarLog;
+import net.lightbody.bmp.mitm.KeyStoreFileCertificateSource;
+import net.lightbody.bmp.mitm.keys.ECKeyGenerator;
+import net.lightbody.bmp.mitm.keys.RSAKeyGenerator;
+import net.lightbody.bmp.mitm.manager.ImpersonatingMitmManager;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +79,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         // Not sure what the underlying cause was here though.
         //proxy.setTrustAllServers(true);
         //proxy.setUseEcc(true);
-        //proxy.setMitmDisabled(true);
+        proxy.setMitmDisabled(true);
         proxy.start(0);
 
         final DesiredCapabilities desiredCapabilities =
