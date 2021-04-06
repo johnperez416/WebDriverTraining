@@ -23,9 +23,6 @@ public class FormTest {
             automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElementWithId("button_element");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
-
             automatedBrowser.populateElementWithId("text_element", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
 
@@ -63,9 +60,6 @@ public class FormTest {
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElementWithId("button_element");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
-
             automatedBrowser.populateElementWithId("text_element", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
 
@@ -101,9 +95,6 @@ public class FormTest {
             automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElementWithId("button_element");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
-
             automatedBrowser.populateElementWithId("text_element", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
 
@@ -137,9 +128,6 @@ public class FormTest {
         try {
             automatedBrowser.init();
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
-
-            automatedBrowser.clickElementWithId("button_element");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
 
             automatedBrowser.populateElementWithId("text_element", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
@@ -176,9 +164,6 @@ public class FormTest {
             automatedBrowser.setDefaultExplicitWaitTime(2);
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElementWithXPath("//*[@id=\"button_element\"]");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
-
             automatedBrowser.populateElementWithXPath("//*[@id=\"text_element\"]", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
 
@@ -213,9 +198,6 @@ public class FormTest {
             automatedBrowser.setDefaultExplicitWaitTime(2);
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
-
-            automatedBrowser.clickElementWithCSSSelector("#button_element");
-            assertEquals("Button Clicked", automatedBrowser.getTextFromElementWithId("message"));
 
             automatedBrowser.populateElementWithCSSSelector("#text_element", "test text");
             assertEquals("Text Input Changed", automatedBrowser.getTextFromElementWithId("message"));
