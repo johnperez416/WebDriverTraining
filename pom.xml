@@ -12,7 +12,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
         <selenium.version>3.14.0</selenium.version>
         <junit.version>4.13.2</junit.version>
-        <browsermob.version>2.1.5</browsermob.version>
+        <browserup.version>2.1.2</browserup.version>
         <cucumber.version>6.10.2</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.1</aws.lambda.version>
@@ -179,9 +179,9 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.lightbody.bmp</groupId>
-            <artifactId>browsermob-core</artifactId>
-            <version>${browsermob.version}</version>
+            <groupId>com.browserup</groupId>
+            <artifactId>browserup-proxy-core</artifactId>
+            <version>${browserup.version}</version>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>

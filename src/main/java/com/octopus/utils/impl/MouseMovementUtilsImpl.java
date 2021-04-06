@@ -8,8 +8,7 @@ import com.octopus.utils.SystemPropertyUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import java.awt.*;
 import java.util.Optional;
@@ -20,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Implementation of MouseMovementUtils
  */
 public class MouseMovementUtilsImpl implements MouseMovementUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MouseMovementUtilsImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(MouseMovementUtilsImpl.class.toString());
 
     private static final SystemPropertyUtils SYSTEM_PROPERTY_UTILS = new SystemPropertyUtilsImpl();
     private static final RetryService RETRY_SERVICE = new RetryServiceImpl();
@@ -41,7 +40,7 @@ public class MouseMovementUtilsImpl implements MouseMovementUtils {
                 r.mouseMove((int) (x1 + dx * step), (int) (y1 + dy * step));
             }
         } catch (final AWTException | InterruptedException ex) {
-            LOGGER.error("Exception thrown while moving mouse cursor", ex);
+            LOGGER.severe("Exception thrown while moving mouse cursor");
         }
     }
 

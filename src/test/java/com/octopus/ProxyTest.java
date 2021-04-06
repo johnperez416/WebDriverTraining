@@ -10,7 +10,6 @@ public class ProxyTest {
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
     @Test
-    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void modifyRequests() {
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
@@ -25,7 +24,6 @@ public class ProxyTest {
     }
 
     @Test
-    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void mockRequests() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
@@ -47,7 +45,6 @@ public class ProxyTest {
     }
 
     @Test
-    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void mockRequests2() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 

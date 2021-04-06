@@ -1,5 +1,9 @@
 package com.octopus.decorators;
 
+import com.browserup.bup.BrowserUpProxyServer;
+import com.browserup.bup.proxy.CaptureType;
+import com.browserup.harreader.model.Har;
+import com.browserup.harreader.model.HarLog;
 import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
@@ -11,15 +15,6 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import net.lightbody.bmp.BrowserMobProxy;
-import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.core.har.Har;
-import net.lightbody.bmp.core.har.HarLog;
-import net.lightbody.bmp.mitm.KeyStoreFileCertificateSource;
-import net.lightbody.bmp.mitm.keys.ECKeyGenerator;
-import net.lightbody.bmp.mitm.keys.RSAKeyGenerator;
-import net.lightbody.bmp.mitm.manager.ImpersonatingMitmManager;
-import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -61,7 +56,7 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
     /**
      * The BrowserMob proxy instance.
      */
-    private BrowserMobProxyServer proxy;
+    private BrowserUpProxyServer proxy;
 
     /**
      * Decorator constructor.
@@ -74,12 +69,9 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
 
     @Override
     public DesiredCapabilities getDesiredCapabilities() {
-        proxy = new BrowserMobProxyServer();
-        // Disabling mitm was necessary to allow https sites to work again in late 2020.
-        // Not sure what the underlying cause was here though.
-        //proxy.setTrustAllServers(true);
-        //proxy.setUseEcc(true);
-        proxy.setMitmDisabled(true);
+        proxy = new BrowserUpProxyServer();
+        proxy.setTrustAllServers(true);
+        proxy.setUseEcc(true);
         proxy.start(0);
 
         final DesiredCapabilities desiredCapabilities =
