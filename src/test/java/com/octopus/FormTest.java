@@ -260,7 +260,8 @@ public class FormTest {
 
             automatedBrowser.goTo(FormTest.class.getResource("/form.html").toURI().toString());
 
-            automatedBrowser.clickElement(formButtonLocator, 10);
+            // Mouse click also triggers a mouse move, so force the click
+            automatedBrowser.clickElementIfExists("force", formButtonLocator, null);
             assertEquals("Button Clicked", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.populateElement(formTextBoxLocator, "test text", 10);
