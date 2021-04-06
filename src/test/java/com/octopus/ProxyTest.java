@@ -1,6 +1,7 @@
 package com.octopus;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URISyntaxException;
@@ -9,17 +10,22 @@ public class ProxyTest {
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
     @Test
+    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void modifyRequests() {
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
-
-        automatedBrowser.init();
-        automatedBrowser.blockRequestTo(".*?\\.png", 201);
-        automatedBrowser.blockRequestTo("https://.*?twitter\\.com/", 500);
-        automatedBrowser.goTo("https://octopus.com/");
+        try {
+            automatedBrowser.init();
+            automatedBrowser.blockRequestTo(".*?\\.png", 201);
+            automatedBrowser.blockRequestTo("https://.*?twitter\\.com/", 500);
+            automatedBrowser.goTo("https://octopus.com/");
+        } finally {
+            automatedBrowser.destroy();
+        }
     }
 
     @Test
+    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void mockRequests() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
@@ -41,6 +47,7 @@ public class ProxyTest {
     }
 
     @Test
+    @Ignore("Browsermob https proxy is currently broken. See BrowserMobDecorator.getDesiredCapabilities()")
     public void mockRequests2() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("Firefox");
 
