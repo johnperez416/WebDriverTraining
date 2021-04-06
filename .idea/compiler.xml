@@ -12,6 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="webdrivertraining" target="15" />
+      <module name="wrapper" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
