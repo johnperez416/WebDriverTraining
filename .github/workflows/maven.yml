@@ -44,7 +44,7 @@ jobs:
     - name: Build with Maven
       run: mvn package -DskipTests --batch-mode
     - name: Test
-      run: mvn test
+      run: mvn test --batch-mode
       env:
         DISPLAY: ":99.0"
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
