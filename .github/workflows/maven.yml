@@ -42,7 +42,7 @@ jobs:
     - name: Set version
       run: mvn versions:set -DnewVersion=0.2.${GITHUB_RUN_NUMBER}
     - name: Build with Maven
-      run: mvn package -DskipTests
+      run: mvn package -DskipTests --batch-mode
     - name: Test
       run: mvn test
       env:
