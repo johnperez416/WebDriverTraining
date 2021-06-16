@@ -35,6 +35,10 @@ public class AutomatedBrowserFactory {
             return getChromeBrowserNoImplicitWait();
         }
 
+        if ("ChromeNoImplicitWaitNoProxy".equalsIgnoreCase(browser)) {
+            return getChromeBrowserNoImplicitWaitNoProxy();
+        }
+
         if ("FirefoxNoImplicitWait".equalsIgnoreCase(browser)) {
             return getFirefoxBrowserNoImplicitWait();
         }
@@ -107,6 +111,16 @@ public class AutomatedBrowserFactory {
                                 )
                         )
                 )
+        );
+    }
+
+    private AutomatedBrowser getChromeBrowserNoImplicitWaitNoProxy() {
+        return new ChromeDecorator(
+            new MouseMovementDecorator(
+                    new HighlightDecorator(
+                            new WebDriverDecorator()
+                    )
+            )
         );
     }
 

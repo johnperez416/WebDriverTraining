@@ -18,7 +18,7 @@ public class TicketMonsterTest {
     public void purchaseTickets() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWaitNoProxy");
 
         try {
 
