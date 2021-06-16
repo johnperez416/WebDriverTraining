@@ -31,8 +31,8 @@ jobs:
         unzip chromedriver_linux64.zip
         sudo cp chromedriver /usr/local/bin
         sudo chmod +x /usr/local/bin/chromedriver
-        wget https://github.com/mozilla/geckodriver/releases/download/v0.28.0/geckodriver-v0.28.0-linux64.tar.gz
-        tar -xzf geckodriver-v0.28.0-linux64.tar.gz
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz
+        tar -xzf geckodriver-v0.29.1-linux64.tar.gz
         sudo cp geckodriver /usr/local/bin
         sudo chmod +x /usr/local/bin/geckodriver
     - name: Check for updates
@@ -42,9 +42,9 @@ jobs:
     - name: Set version
       run: mvn versions:set -DnewVersion=0.2.${GITHUB_RUN_NUMBER}
     - name: Build with Maven
-      run: mvn package -DskipTests
+      run: mvn package -DskipTests --batch-mode
     - name: Test
-      run: mvn test
+      run: mvn test --batch-mode
       env:
         DISPLAY: ":99.0"
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
@@ -53,12 +53,12 @@ jobs:
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/webdriver:0.2.${GITHUB_RUN_NUMBER}
-        docker tag ${{ secrets.DOCKER_USERNAME }}/webdriver:0.2.${GITHUB_RUN_NUMBER} ${{ secrets.DOCKER_USERNAME }}/webdriver:latest
+        docker tag ${{ secrets.DOCKER_USERNAME }}/webdriver:1.0.${GITHUB_RUN_NUMBER} ${{ secrets.DOCKER_USERNAME }}/webdriver:latest
     - name: Docker login
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
     - name: Push the Docker image
       run: |
-        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:0.2.${GITHUB_RUN_NUMBER}
+        docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:1.0.${GITHUB_RUN_NUMBER}
         docker push docker.io/${{ secrets.DOCKER_USERNAME }}/webdriver:latest
     - name: Deploy to Github Package Registry
       run: |
