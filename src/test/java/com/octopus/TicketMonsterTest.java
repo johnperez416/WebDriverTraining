@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class TicketMonsterTest {
 
-    private static final String BROWSER = "ChromeNoImplicitWaitNoProxy";
+    private static final String BROWSER = "FirefoxNoImplicitWaitNoProxy";
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY =
             new AutomatedBrowserFactory();
 
