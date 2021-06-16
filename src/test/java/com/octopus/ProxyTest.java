@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.net.URISyntaxException;
 
+@Ignore
 public class ProxyTest {
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
