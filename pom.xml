@@ -23,7 +23,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <slf4jjdk14.version>1.7.28</slf4jjdk14.version>
         <vavr.version>0.9.2</vavr.version>
         <bouncy.castle.version>1.69</bouncy.castle.version>
-        <netty.version>4.1.42.Final</netty.version>
+        <netty.version>4.1.65.Final</netty.version>
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <apache.http.version>4.5.13</apache.http.version>
         <lombok.version>1.18.20</lombok.version>
