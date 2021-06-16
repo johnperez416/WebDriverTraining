@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class TicketMonsterTest {
 
+    private static final String BROWSER = "ChromeNoImplicitWaitNoProxy";
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY =
             new AutomatedBrowserFactory();
 
@@ -18,7 +19,7 @@ public class TicketMonsterTest {
     public void purchaseTickets() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWaitNoProxy");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
 
@@ -72,7 +73,7 @@ public class TicketMonsterTest {
     public void purchaseTicketsPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
 
@@ -107,7 +108,7 @@ public class TicketMonsterTest {
     public void verifyPricesPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
-                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("ChromeNoImplicitWait");
+                AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();

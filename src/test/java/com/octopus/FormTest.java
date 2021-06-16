@@ -11,12 +11,13 @@ import static junit.framework.TestCase.assertEquals;
 
 public class FormTest {
 
+    private static final String BROWSER = "FirefoxNoImplicitWaitNoProxy";
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
     @Test
     public void formTestByID() throws URISyntaxException {
         final AutomatedBrowser automatedBrowser =
-                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -157,7 +158,7 @@ public class FormTest {
     @Test
     public void formTestByXPath() throws URISyntaxException {
 
-        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -191,7 +192,7 @@ public class FormTest {
 
     @Test
     public void formTestByCSSSelector() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser =  AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -226,7 +227,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleBy() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         final String formButtonLocator = "button_element";
         final String formTextBoxLocator = "text_element";
@@ -282,7 +283,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleByForceInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         final String formButtonLocator = "button_element";
 
@@ -303,7 +304,7 @@ public class FormTest {
 
     @Test
     public void formTestWithSimpleByMoveTo() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         final String formButtonLocator = "button_element";
 
@@ -325,7 +326,7 @@ public class FormTest {
     @Test
     public void captureHarFile() {
         final AutomatedBrowser automatedBrowser =
-                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -344,7 +345,7 @@ public class FormTest {
     public void captureCompleteHarFile() {
 
         final AutomatedBrowser automatedBrowser =
-                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();

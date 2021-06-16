@@ -8,11 +8,12 @@ import java.util.Objects;
 import static junit.framework.TestCase.assertEquals;
 
 public class StepTest {
+    private static final String BROWSER = "FirefoxNoImplicitWaitNoProxy";
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
     @Test
     public void windowInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -33,7 +34,7 @@ public class StepTest {
 
     @Test
     public void keyInteraction() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -48,7 +49,7 @@ public class StepTest {
 
     @Test
     public void keyInteractionForce() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -63,7 +64,7 @@ public class StepTest {
 
     @Test
     public void javascriptTest() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -77,7 +78,7 @@ public class StepTest {
 
     @Test
     public void javascriptTestWithReturn() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
@@ -91,7 +92,7 @@ public class StepTest {
 
     @Test
     public void verifyDoesNotExist() throws URISyntaxException {
-        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser("FirefoxNoImplicitWait");
+        final AutomatedBrowser automatedBrowser = AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(BROWSER);
 
         try {
             automatedBrowser.init();
