@@ -1,5 +1,6 @@
 package com.octopus;
 
+import io.vavr.control.Try;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -34,7 +35,10 @@ public class FactoryTest {
         final AutomatedBrowser automatedBrowser =
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
         automatedBrowser.init();
-        automatedBrowser.goTo("https://octopus.com/");
-        automatedBrowser.destroy();
+        try {
+            automatedBrowser.goTo("https://octopus.com/");
+        } finally {
+            automatedBrowser.destroy();
+        }
     }
 }
