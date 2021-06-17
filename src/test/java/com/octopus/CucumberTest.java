@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(glue = "com.octopus.decoratorbase")
 @Retry
-@Ignore
 public class CucumberTest {
 
 }
