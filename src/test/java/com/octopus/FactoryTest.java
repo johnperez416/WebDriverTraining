@@ -1,6 +1,5 @@
 package com.octopus;
 
-import io.vavr.control.Try;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,12 +22,11 @@ public class FactoryTest {
     public static Iterable data() {
         return Arrays.asList(
                 "FirefoxNoImplicitWaitNoProxy",
-                "ChromeNoImplicitWaitNoProxy"
-                // Proxying HTTPS pages has started to fail. Not sure why.
-                /*"FirefoxNoImplicitWait",
+                "ChromeNoImplicitWaitNoProxy",
+                "FirefoxNoImplicitWait",
                 "Firefox",
                 "Chrome",
-                "ChromeNoImplicitWait"*/
+                "ChromeNoImplicitWait"
         );
     }
 

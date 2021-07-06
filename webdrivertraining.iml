@@ -102,7 +102,7 @@
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.992" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.992" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.68" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.42.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.59.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.github.kevinmost:junit-retry-rule:cbdd972d7c" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.4" level="project" />
