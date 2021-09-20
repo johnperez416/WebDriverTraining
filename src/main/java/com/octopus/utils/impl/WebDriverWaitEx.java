@@ -40,6 +40,8 @@ public class WebDriverWaitEx extends WebDriverWait {
             final long timeOut,
             final long sleepTimeOut,
             final TimeUnit time) {
+
+        // Call the WebDriverWait constructor with a timeout of 0
         super(driver, Duration.of(timeOut, time.toChronoUnit()), Duration.ofSeconds(sleepTimeOut), clock, sleeper);
     }
 }
