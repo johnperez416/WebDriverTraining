@@ -6,6 +6,7 @@ import com.kevinmost.junit_retry_rule.Retry;
 import com.octopus.decorators.BrowserStackDecorator;
 import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class FormTest {
@@ -409,6 +410,7 @@ public class FormTest {
 
     @Test
     @Retry
+    @Ignore
     public void browserStackAndroidTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
