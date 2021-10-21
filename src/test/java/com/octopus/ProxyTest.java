@@ -1,10 +1,8 @@
 package com.octopus;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.net.URISyntaxException;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ProxyTest {
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();

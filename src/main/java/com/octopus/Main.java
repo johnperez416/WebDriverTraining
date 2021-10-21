@@ -1,5 +1,8 @@
 package com.octopus;
 
+import static com.octopus.Constants.BROWSER_CLEANUP;
+import static com.octopus.Constants.DUMP_OPTIONS;
+
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.decorators.WebDriverDecorator;
 import com.octopus.utils.EnvironmentAliasesProcessor;
@@ -7,15 +10,11 @@ import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.vavr.control.Try;
-
-import java.awt.*;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import static com.octopus.Constants.BROWSER_CLEANUP;
-import static com.octopus.Constants.DUMP_OPTIONS;
 
 /**
  * The application entry class.

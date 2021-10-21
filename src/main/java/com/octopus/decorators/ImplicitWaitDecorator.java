@@ -2,7 +2,6 @@ package com.octopus.decorators;
 
 import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
-
 import java.util.concurrent.TimeUnit;
 
 /**

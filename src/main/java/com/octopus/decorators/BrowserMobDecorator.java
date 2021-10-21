@@ -15,6 +15,13 @@ import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.io.File;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -23,14 +30,6 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * A decorator to enable the BrowserMob proxy and configure WebDriver to send traffic through it.

@@ -1,7 +1,11 @@
 package com.octopus;
 
 import com.kevinmost.junit_retry_rule.Retry;
-import com.octopus.pages.ticketmonster.*;
+import com.octopus.pages.ticketmonster.CheckoutPage;
+import com.octopus.pages.ticketmonster.ConfirmationPage;
+import com.octopus.pages.ticketmonster.EventsPage;
+import com.octopus.pages.ticketmonster.MainPage;
+import com.octopus.pages.ticketmonster.VenuePage;
 import io.vavr.control.Try;
 import org.junit.Assert;
 import org.junit.Test;

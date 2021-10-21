@@ -1,13 +1,12 @@
 package com.octopus;
 
+import static junit.framework.TestCase.assertEquals;
+
 import com.kevinmost.junit_retry_rule.Retry;
 import com.octopus.decorators.BrowserStackDecorator;
+import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-
-import java.net.URISyntaxException;
-
-import static junit.framework.TestCase.assertEquals;
 
 public class FormTest {
 

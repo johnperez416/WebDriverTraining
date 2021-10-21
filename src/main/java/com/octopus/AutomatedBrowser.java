@@ -1,12 +1,11 @@
 package com.octopus;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public interface AutomatedBrowser {
 

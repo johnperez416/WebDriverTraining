@@ -1,10 +1,9 @@
 package com.octopus;
 
+import java.net.URISyntaxException;
 import org.junit.Test;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
-
-import java.net.URISyntaxException;
 
 public class WaitTest {
 

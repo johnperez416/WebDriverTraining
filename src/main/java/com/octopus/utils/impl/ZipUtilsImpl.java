@@ -1,8 +1,6 @@
 package com.octopus.utils.impl;
 
 import com.octopus.utils.ZipUtils;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +8,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import org.apache.commons.io.FileUtils;
 
 public class ZipUtilsImpl implements ZipUtils {
     public void unzipFile(final String fileZip, final String outputDirectory) throws IOException {

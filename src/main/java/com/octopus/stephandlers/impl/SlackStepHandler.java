@@ -15,6 +15,12 @@ import io.cucumber.plugin.event.PickleStepTestStep;
 import io.cucumber.plugin.event.Status;
 import io.cucumber.plugin.event.TestStepFinished;
 import io.vavr.control.Try;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import lombok.Builder;
 import lombok.Getter;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,13 +29,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.retry.RetryCallback;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 /**
  * A step handler to generate a slack message after each step.

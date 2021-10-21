@@ -3,11 +3,10 @@ package com.octopus.decorators;
 import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.ConfigurationException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
  * A decorator to configure a Browser Stack session.

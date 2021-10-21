@@ -1,9 +1,8 @@
 package com.octopus.utils.impl;
 
 import com.google.common.io.Files;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
+import org.apache.commons.io.FileUtils;
 
 public class AutoDeletingTempDir implements AutoCloseable {
 
