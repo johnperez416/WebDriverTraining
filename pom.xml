@@ -240,6 +240,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <version>${netty.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
+            <version>4.1.69.Final</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.kevinmost</groupId>
             <artifactId>junit-retry-rule</artifactId>
             <version>cbdd972d7c</version>
