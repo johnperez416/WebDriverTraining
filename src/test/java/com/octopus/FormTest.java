@@ -410,7 +410,6 @@ public class FormTest {
 
     @Test
     @Retry
-    @Ignore
     public void browserStackAndroidTest() {
 
         if (StringUtils.isBlank(System.getenv(BrowserStackDecorator.USERNAME_ENV)) ||
@@ -445,7 +444,7 @@ public class FormTest {
             automatedBrowser.populateElement(formTextAreaLocator, "test text");
             assertEquals("Text Area Changed", automatedBrowser.getTextFromElement(messageLocator));
 
-            automatedBrowser.selectOptionByTextFromSelect("", "Option 2.1", formDropDownListLocator);
+            automatedBrowser.selectOptionByTextFromSelect("force", "Option 2.1", formDropDownListLocator);
             assertEquals("Select Changed", automatedBrowser.getTextFromElement(messageLocator));
 
             automatedBrowser.clickElement(formCheckboxLocator);
