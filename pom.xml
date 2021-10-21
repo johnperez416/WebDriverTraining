@@ -147,12 +147,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-remote-driver</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -194,6 +188,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>com.browserup</groupId>
             <artifactId>browserup-proxy-core</artifactId>
             <version>${browserup.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-codec</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
