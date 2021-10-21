@@ -52,29 +52,29 @@ public class SimpleByImpl implements SimpleBy {
       final ExpectedConditionCallback expectedConditionCallback,
       final int timeSlice) {
 
-    final By[] byInstances = new By[]{
-        By.id(locator),
-        By.xpath(locator),
-        By.cssSelector(locator),
-        By.className(locator),
-        By.linkText(locator),
-        By.name(locator)
-    };
+    final List<Try<By>> byInstances = List.of(
+        Try.of(() -> By.id(locator)),
+        Try.of(() -> By.xpath(locator)),
+        Try.of(() -> By.cssSelector(locator)),
+        Try.of(() -> By.className(locator)),
+        Try.of(() -> By.linkText(locator)),
+        Try.of(() -> By.name(locator))
+    );
 
     long time = -1;
 
     while (time < waitTime * MILLISECONDS_PER_SECOND) {
-      for (final By by : byInstances) {
+      for (final Try<By> by : byInstances) {
         try {
           final WebDriverWait wait = new WebDriverWait(
               webDriver,
               Duration.ofMillis(timeSlice),
               Duration.ZERO);
           final ExpectedCondition<WebElement> condition =
-              expectedConditionCallback.getExpectedCondition(by);
+              expectedConditionCallback.getExpectedCondition(by.get());
           final WebElement element = wait.until(condition);
 
-          saveMultipleElements(webDriver, by, locator);
+          saveMultipleElements(webDriver, by.get(), locator);
 
           return element;
         } catch (final Exception ignored) {
