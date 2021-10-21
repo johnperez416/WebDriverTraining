@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpHeaders;
 import org.openqa.selenium.Proxy;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -58,6 +59,8 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
      */
     private BrowserUpProxyServer proxy;
 
+    final Proxy seleniumProxy;
+
     /**
      * Decorator constructor.
      *
@@ -65,19 +68,12 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
      */
     public BrowserMobDecorator(final AutomatedBrowser automatedBrowser) {
         super(automatedBrowser);
-    }
-
-    @Override
-    public DesiredCapabilities getDesiredCapabilities() {
         proxy = new BrowserUpProxyServer();
         proxy.setTrustAllServers(true);
         proxy.setUseEcc(true);
         proxy.start(0);
 
-        final DesiredCapabilities desiredCapabilities =
-                getAutomatedBrowser().getDesiredCapabilities();
-
-        final Proxy seleniumProxy = new Proxy();
+        seleniumProxy = new Proxy();
         final String proxyStr = "localhost:" + proxy.getPort();
 
         seleniumProxy.setHttpProxy(proxyStr);
@@ -86,10 +82,23 @@ public class BrowserMobDecorator extends AutomatedBrowserBase {
         if (StringUtils.isNotBlank(SYSTEM_PROPERTY_UTILS.getProperty(Constants.NO_PROXY_LIST))) {
             seleniumProxy.setNoProxy(SYSTEM_PROPERTY_UTILS.getProperty(Constants.NO_PROXY_LIST));
         }
+    }
+
+    @Override
+    public DesiredCapabilities getDesiredCapabilities() {
+        final DesiredCapabilities desiredCapabilities =
+            getAutomatedBrowser().getDesiredCapabilities();
 
         desiredCapabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
 
         return desiredCapabilities;
+    }
+
+    @Override
+    public FirefoxOptions getFirefoxOptions() {
+        final FirefoxOptions options = new FirefoxOptions();
+        options.setCapability(CapabilityType.PROXY, seleniumProxy);
+        return options;
     }
 
     @Override

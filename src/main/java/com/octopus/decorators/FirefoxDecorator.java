@@ -66,7 +66,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         myprofile.setPreference("browser.cache.memory.capacity", 0);
         myprofile.setPreference("browser.fullscreen.autohide", false);
 
-        final FirefoxOptions options = new FirefoxOptions();
+        final FirefoxOptions options = new FirefoxOptions(getFirefoxOptions());
         options.setHeadless(headless);
         options.setProfile(myprofile);
         options.merge(getDesiredCapabilities());

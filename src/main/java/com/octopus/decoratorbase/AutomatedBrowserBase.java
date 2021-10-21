@@ -24,6 +24,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringSubstitutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -328,6 +329,15 @@ public class AutomatedBrowserBase implements AutomatedBrowser {
         }
 
         return new DesiredCapabilities();
+    }
+
+    @Override
+    public FirefoxOptions getFirefoxOptions() {
+        if (getAutomatedBrowser() != null) {
+            return getAutomatedBrowser().getFirefoxOptions();
+        }
+
+        return new FirefoxOptions();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.octopus;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.List;
@@ -36,6 +37,11 @@ public interface AutomatedBrowser {
      * @return The desired capabilities used when building the WebDriver instance.
      */
     DesiredCapabilities getDesiredCapabilities();
+
+    /**
+     * @return The firefox options used when building the WebDriver interface.
+     */
+    FirefoxOptions getFirefoxOptions();
 
     /**
      * Build the WebDriver instance.
