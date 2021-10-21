@@ -35,7 +35,7 @@ public class FactoryTest {
                 AUTOMATED_BROWSER_FACTORY.getAutomatedBrowser(browser);
         automatedBrowser.init();
         try {
-            automatedBrowser.goTo("https://octopus.com/");
+            automatedBrowser.goTo("https://google.com/");
         } finally {
             automatedBrowser.destroy();
         }

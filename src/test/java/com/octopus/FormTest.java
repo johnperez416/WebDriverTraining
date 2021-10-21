@@ -331,7 +331,7 @@ public class FormTest {
         try {
             automatedBrowser.init();
             automatedBrowser.captureHarFile();
-            automatedBrowser.goTo("https://octopus.com/");
+            automatedBrowser.goTo("https://google.com/");
         } finally {
             try {
                 automatedBrowser.saveHarFile("test.har");
@@ -350,7 +350,7 @@ public class FormTest {
         try {
             automatedBrowser.init();
             automatedBrowser.captureCompleteHarFile();
-            automatedBrowser.goTo("https://octopus.com/");
+            automatedBrowser.goTo("https://google.com/");
         } finally {
             try {
                 automatedBrowser.saveHarFile("test.har");

@@ -15,7 +15,7 @@ public class ProxyTest {
             automatedBrowser.init();
             automatedBrowser.blockRequestTo(".*?\\.png", 201);
             automatedBrowser.blockRequestTo("https://.*?twitter\\.com/", 500);
-            automatedBrowser.goTo("https://octopus.com/");
+            automatedBrowser.goTo("https://google.com/");
         } finally {
             automatedBrowser.destroy();
         }
