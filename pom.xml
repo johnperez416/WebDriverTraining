@@ -147,6 +147,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -239,12 +245,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-codec</artifactId>
-            <version>4.1.69.Final</version>
-        </dependency>
-
         <dependency>
             <groupId>com.github.kevinmost</groupId>
             <artifactId>junit-retry-rule</artifactId>
