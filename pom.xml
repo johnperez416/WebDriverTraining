@@ -25,9 +25,9 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <apache.http.version>4.5.13</apache.http.version>
         <lombok.version>1.18.22</lombok.version>
         <spring.retry.version>1.3.1.RELEASE</spring.retry.version>
-        <commons.cli.version>1.4</commons.cli.version>
-        <gson.version>2.8.8</gson.version>
-        <spring.version>5.3.11</spring.version>
+        <commons.cli.version>1.5.0</commons.cli.version>
+        <gson.version>2.8.9</gson.version>
+        <spring.version>5.3.12</spring.version>
         <bouncy.castle.version>1.46</bouncy.castle.version>
         <netty.version>4.1.69.Final</netty.version>
         <aws.sdk.version>1.11.992</aws.sdk.version>
