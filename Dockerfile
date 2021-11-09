@@ -1,7 +1,7 @@
 FROM debian:stable
 
 RUN apt-get update && apt-get install -y curl wget xvfb chromium chromium-driver fluxbox xcompmgr
-RUN wget https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz -O openjdk.tar.gz && \
+RUN wget https://download.java.net/java/GA/jdk17.0.1/2a2082e5a09d4267845be086888add4f/12/GPL/openjdk-17.0.1_linux-x64_bin.tar.gz -O openjdk.tar.gz && \
     tar xzf openjdk.tar.gz && \
     for d in jdk*; do mv $d jdk; done &&  \
     mv jdk /opt/
