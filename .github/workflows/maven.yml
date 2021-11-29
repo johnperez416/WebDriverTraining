@@ -44,7 +44,16 @@ jobs:
     - name: Build with Maven
       run: mvn package -DskipTests --batch-mode
     - name: Test
-      run: mvn test --batch-mode
+      run: |
+        max_retry=5
+        counter=0
+        until $command
+        do
+           sleep 1
+           [[ counter -eq $max_retry ]] && echo "Failed!" && exit 1
+           mvn test --batch-mode
+           ((counter++))
+        done
       env:
         DISPLAY: ":99.0"
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
