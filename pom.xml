@@ -10,7 +10,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
-        <selenium.version>4.1.0</selenium.version>
+        <selenium.version>4.1.1</selenium.version>
         <junit.version>4.13.2</junit.version>
         <browserup.version>2.1.2</browserup.version>
         <cucumber.version>7.1.0</cucumber.version>
