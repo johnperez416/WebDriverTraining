@@ -53,6 +53,7 @@ jobs:
            [[ counter -eq $max_retry ]] && echo "Failed!" && exit 1           
            ((counter++))
         done
+      shell: /usr/bin/bash {0}
       env:
         DISPLAY: ":99.0"
         BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
