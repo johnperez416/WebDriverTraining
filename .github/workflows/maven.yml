@@ -46,12 +46,11 @@ jobs:
     - name: Test
       run: |
         max_retry=5
-        counter=0
-        until $command
+        counter=0    
+        until mvn test --batch-mode
         do
            sleep 1
-           [[ counter -eq $max_retry ]] && echo "Failed!" && exit 1
-           mvn test --batch-mode
+           [[ counter -eq $max_retry ]] && echo "Failed!" && exit 1           
            ((counter++))
         done
       env:
