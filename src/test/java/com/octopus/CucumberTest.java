@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(glue = "com.octopus.decoratorbase")
-@Ignore("Ticketmonster has been shuit down")
+@Ignore("Ticketmonster has been shut down")
 public class CucumberTest {
 
 }
