@@ -1,12 +1,9 @@
 package com.octopus;
 
+import java.net.URISyntaxException;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.net.URISyntaxException;
-
-@Ignore
 public class ProxyTest {
     private static final AutomatedBrowserFactory AUTOMATED_BROWSER_FACTORY = new AutomatedBrowserFactory();
 
@@ -18,7 +15,7 @@ public class ProxyTest {
             automatedBrowser.init();
             automatedBrowser.blockRequestTo(".*?\\.png", 201);
             automatedBrowser.blockRequestTo("https://.*?twitter\\.com/", 500);
-            automatedBrowser.goTo("https://octopus.com/");
+            automatedBrowser.goTo("https://google.com/");
         } finally {
             automatedBrowser.destroy();
         }

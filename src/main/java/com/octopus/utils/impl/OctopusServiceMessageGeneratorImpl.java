@@ -1,15 +1,14 @@
 package com.octopus.utils.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.octopus.Constants;
 import com.octopus.utils.OctopusServiceMessageGenerator;
 import com.octopus.utils.SystemPropertyUtils;
-import org.apache.commons.text.WordUtils;
-
 import java.io.File;
 import java.util.Base64;
 import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.apache.commons.text.WordUtils;
 
 public class OctopusServiceMessageGeneratorImpl implements OctopusServiceMessageGenerator {
     private static final Logger LOGGER = Logger.getLogger(OctopusServiceMessageGeneratorImpl.class.toString());

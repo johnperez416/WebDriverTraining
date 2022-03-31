@@ -4,7 +4,6 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.stephandlers.ScreenshotUploader;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

@@ -3,12 +3,11 @@ package com.octopus.decorators;
 import com.google.common.io.Files;
 import com.octopus.AutomatedBrowser;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
+import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-import java.io.File;
 
 /**
  * A decorator to configure a Chrome session in a restricted environment such as AWS Lambdas. This

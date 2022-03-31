@@ -1,6 +1,16 @@
 package com.octopus;
 
-import com.octopus.decorators.*;
+import com.octopus.decorators.BrowserMobDecorator;
+import com.octopus.decorators.BrowserStackAndroidDecorator;
+import com.octopus.decorators.BrowserStackDecorator;
+import com.octopus.decorators.BrowserStackEdgeDecorator;
+import com.octopus.decorators.ChromeDecorator;
+import com.octopus.decorators.ChromeLambdaDecorator;
+import com.octopus.decorators.FirefoxDecorator;
+import com.octopus.decorators.HighlightDecorator;
+import com.octopus.decorators.ImplicitWaitDecorator;
+import com.octopus.decorators.MouseMovementDecorator;
+import com.octopus.decorators.WebDriverDecorator;
 
 /**
  * A factory to create AutomatedBrowser instances with various configurations.

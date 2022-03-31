@@ -9,14 +9,13 @@ import com.octopus.eventhandlers.EventHandler;
 import com.octopus.utils.ZipUtils;
 import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.ZipUtilsImpl;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class UploadToS3 implements EventHandler {
     /**

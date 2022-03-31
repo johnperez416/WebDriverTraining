@@ -1,9 +1,14 @@
 package com.octopus;
 
 import com.kevinmost.junit_retry_rule.Retry;
-import com.octopus.pages.ticketmonster.*;
+import com.octopus.pages.ticketmonster.CheckoutPage;
+import com.octopus.pages.ticketmonster.ConfirmationPage;
+import com.octopus.pages.ticketmonster.EventsPage;
+import com.octopus.pages.ticketmonster.MainPage;
+import com.octopus.pages.ticketmonster.VenuePage;
 import io.vavr.control.Try;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TicketMonsterTest {
@@ -15,7 +20,7 @@ public class TicketMonsterTest {
     private static final int WAIT_TIME = 30;
 
     @Test
-    @Retry
+    @Ignore("The public instance of TicketMonster is no longer available")
     public void purchaseTickets() {
 
         final AutomatedBrowser automatedBrowser =
@@ -69,7 +74,7 @@ public class TicketMonsterTest {
     }
 
     @Test
-    @Retry
+    @Ignore("The public instance of TicketMonster is no longer available")
     public void purchaseTicketsPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =
@@ -104,7 +109,7 @@ public class TicketMonsterTest {
     }
 
     @Test
-    @Retry
+    @Ignore("The public instance of TicketMonster is no longer available")
     public void verifyPricesPageObjectModel() {
 
         final AutomatedBrowser automatedBrowser =

@@ -7,12 +7,11 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.octopus.utils.S3Uploader;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.commons.lang3.StringUtils;
 
 public class S3UploaderImpl implements S3Uploader {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(10);

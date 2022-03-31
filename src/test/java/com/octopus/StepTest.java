@@ -1,11 +1,10 @@
 package com.octopus;
 
-import org.junit.Test;
+import static junit.framework.TestCase.assertEquals;
 
 import java.net.URISyntaxException;
 import java.util.Objects;
-
-import static junit.framework.TestCase.assertEquals;
+import org.junit.Test;
 
 public class StepTest {
     private static final String BROWSER = "FirefoxNoImplicitWaitNoProxy";

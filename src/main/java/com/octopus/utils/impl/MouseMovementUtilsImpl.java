@@ -1,19 +1,22 @@
 package com.octopus.utils.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.octopus.Constants;
 import com.octopus.utils.GetElement;
 import com.octopus.utils.MouseMovementUtils;
 import com.octopus.utils.RetryService;
 import com.octopus.utils.SystemPropertyUtils;
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.util.Optional;
+import java.util.logging.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import java.util.logging.Logger;
-
-import java.awt.*;
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Implementation of MouseMovementUtils

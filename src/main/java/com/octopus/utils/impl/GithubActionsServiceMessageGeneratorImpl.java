@@ -1,12 +1,11 @@
 package com.octopus.utils.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.octopus.Constants;
 import com.octopus.utils.GithubActionsServiceMessageGenerator;
 import com.octopus.utils.SystemPropertyUtils;
-
 import java.util.logging.Logger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class GithubActionsServiceMessageGeneratorImpl implements GithubActionsServiceMessageGenerator {
     private static final Logger LOGGER = Logger.getLogger(GithubActionsServiceMessageGeneratorImpl.class.toString());

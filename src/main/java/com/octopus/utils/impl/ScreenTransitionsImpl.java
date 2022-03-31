@@ -2,9 +2,8 @@ package com.octopus.utils.impl;
 
 import com.octopus.utils.ScreenTransitions;
 import io.vavr.control.Try;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import javax.swing.JFrame;
 
 public class ScreenTransitionsImpl implements ScreenTransitions {
     private static JFrame frame = null;

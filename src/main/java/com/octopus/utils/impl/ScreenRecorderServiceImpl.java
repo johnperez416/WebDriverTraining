@@ -4,16 +4,16 @@ import com.octopus.Constants;
 import com.octopus.exceptions.VideoException;
 import com.octopus.utils.ScreenRecorderService;
 import com.octopus.utils.SystemPropertyUtils;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.VideoFormatKeys;
 import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ScreenRecorderServiceImpl implements ScreenRecorderService {
     /**

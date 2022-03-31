@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="webdrivertraining" target="15" />
+      <module name="webdrivertraining" target="17" />
       <module name="wrapper" target="1.5" />
     </bytecodeTargetLevel>
   </component>

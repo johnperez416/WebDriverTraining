@@ -4,11 +4,16 @@ import com.octopus.AutomatedBrowser;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.exceptions.WebElementException;
-import com.octopus.utils.*;
+import com.octopus.utils.ExpectedConditionCallback;
+import com.octopus.utils.MouseMovementUtils;
+import com.octopus.utils.RetryService;
+import com.octopus.utils.SimpleBy;
+import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.MouseMovementUtilsImpl;
 import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import java.time.Duration;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -66,7 +71,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getWebDriver().findElement(By.id(id));
         } else {
-            final WebDriverWait wait = new WebDriverWait(getWebDriver(), waitTime);
+            final WebDriverWait wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.elementToBeClickable((By.id(id))));
         }
     }
@@ -75,7 +80,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getWebDriver().findElement(By.xpath(xpath));
         } else {
-            final WebDriverWait wait = new WebDriverWait(getWebDriver(), waitTime);
+            final WebDriverWait wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.elementToBeClickable((By.xpath(xpath))));
         }
     }
@@ -84,7 +89,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getWebDriver().findElement(By.cssSelector(css));
         } else {
-            final WebDriverWait wait = new WebDriverWait(getWebDriver(), waitTime);
+            final WebDriverWait wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.elementToBeClickable((By.cssSelector(css))));
         }
     }
@@ -93,7 +98,7 @@ public class MouseMovementDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getWebDriver().findElement(By.name(name));
         } else {
-            final WebDriverWait wait = new WebDriverWait(getWebDriver(), waitTime);
+            final WebDriverWait wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.elementToBeClickable((By.name(name))));
         }
     }

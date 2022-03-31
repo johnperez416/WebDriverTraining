@@ -3,7 +3,6 @@ package com.octopus.utils.impl;
 import com.octopus.Constants;
 import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.utils.EnvironmentAliasesProcessor;
-
 import java.util.Map;
 import java.util.stream.Collectors;
 

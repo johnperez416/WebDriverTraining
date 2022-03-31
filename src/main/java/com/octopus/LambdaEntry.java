@@ -1,5 +1,7 @@
 package com.octopus;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.octopus.eventhandlers.EventHandler;
 import com.octopus.eventhandlers.impl.SeqLogging;
@@ -12,9 +14,6 @@ import com.octopus.utils.impl.AutoDeletingTempFile;
 import com.octopus.utils.impl.EnvironmentAliasesProcessorImpl;
 import com.octopus.utils.impl.ZipUtilsImpl;
 import io.vavr.control.Try;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,8 +23,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * The entry class when this application is called from an AWS Lambda.

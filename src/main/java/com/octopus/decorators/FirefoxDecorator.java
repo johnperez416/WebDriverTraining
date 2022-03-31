@@ -5,6 +5,7 @@ import com.octopus.decoratorbase.AutomatedBrowserBase;
 import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
 import io.vavr.control.Try;
+import java.io.File;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,8 +13,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
-import java.io.File;
 
 /**
  * A decorator to configure a Firefox session.
@@ -66,7 +65,7 @@ public class FirefoxDecorator extends AutomatedBrowserBase {
         myprofile.setPreference("browser.cache.memory.capacity", 0);
         myprofile.setPreference("browser.fullscreen.autohide", false);
 
-        final FirefoxOptions options = new FirefoxOptions();
+        final FirefoxOptions options = new FirefoxOptions(getFirefoxOptions());
         options.setHeadless(headless);
         options.setProfile(myprofile);
         options.merge(getDesiredCapabilities());

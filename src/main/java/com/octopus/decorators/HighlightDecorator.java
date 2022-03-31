@@ -10,16 +10,15 @@ import com.octopus.utils.SystemPropertyUtils;
 import com.octopus.utils.impl.RetryServiceImpl;
 import com.octopus.utils.impl.SimpleByImpl;
 import com.octopus.utils.impl.SystemPropertyUtilsImpl;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.springframework.retry.RetryCallback;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * A decorator to provide highlighting of HTML elements.

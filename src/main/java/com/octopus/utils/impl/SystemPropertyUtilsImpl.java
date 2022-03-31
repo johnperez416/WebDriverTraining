@@ -1,17 +1,16 @@
 package com.octopus.utils.impl;
 
-import com.octopus.utils.SystemPropertyUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
+import static com.google.common.base.Preconditions.checkArgument;
 
+import com.octopus.utils.SystemPropertyUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkArgument;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Implementation that deals with the restrictions imposed by web start
