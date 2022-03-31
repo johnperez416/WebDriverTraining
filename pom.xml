@@ -31,6 +31,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <bouncy.castle.version>1.46</bouncy.castle.version>
         <netty.version>4.1.69.Final</netty.version>
         <aws.sdk.version>1.11.992</aws.sdk.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
     <build>
         <finalName>${project.name}.${project.version}</finalName>
@@ -109,6 +110,11 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
