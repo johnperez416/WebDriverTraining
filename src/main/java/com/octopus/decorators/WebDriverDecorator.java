@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -209,7 +210,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             clickElementWithId(id);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.elementToBeClickable((By.id(id)))).click();
         }
     }
@@ -228,7 +229,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             selectOptionByTextFromSelectWithId(optionText, id);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             new Select(wait.until(ExpectedConditions.elementToBeClickable((By.id(id))))).selectByVisibleText(optionText);
         }
     }
@@ -247,7 +248,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             populateElementWithId(id, text);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.presenceOfElementLocated((By.id(id)))).sendKeys(text);
         }
     }
@@ -272,7 +273,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getTextFromElementWithId(id);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.presenceOfElementLocated((By.id(id)))).getText();
         }
     }
@@ -291,7 +292,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             clickElementWithXPath(xpath);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.elementToBeClickable((By.xpath(xpath)))).click();
         }
     }
@@ -310,7 +311,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             selectOptionByTextFromSelectWithXPath(optionText, xpath);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             new Select(wait.until(ExpectedConditions.elementToBeClickable((By.xpath(xpath))))).selectByVisibleText(optionText);
         }
     }
@@ -329,7 +330,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             populateElementWithXPath(xpath, text);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.presenceOfElementLocated((By.xpath(xpath)))).sendKeys(text);
         }
     }
@@ -354,7 +355,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getTextFromElementWithXPath(xpath);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.presenceOfElementLocated((By.xpath(xpath)))).getText();
         }
     }
@@ -373,7 +374,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             clickElementWithCSSSelector(css);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.elementToBeClickable((By.cssSelector(css)))).click();
         }
     }
@@ -393,7 +394,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             selectOptionByTextFromSelectWithCSSSelector(optionText, css);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             new Select(wait.until(ExpectedConditions.elementToBeClickable((By.cssSelector(css))))).selectByVisibleText(optionText);
         }
     }
@@ -412,7 +413,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             populateElementWithCSSSelector(css, text);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.presenceOfElementLocated((By.cssSelector(css)))).sendKeys(text);
         }
     }
@@ -437,7 +438,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getTextFromElementWithCSSSelector(css);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.presenceOfElementLocated((By.cssSelector(css)))).getText();
         }
     }
@@ -456,7 +457,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             clickElementWithName(name);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.elementToBeClickable((By.name(name)))).click();
         }
     }
@@ -475,7 +476,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             selectOptionByTextFromSelectWithName(name, optionText);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             new Select(wait.until(ExpectedConditions.elementToBeClickable((By.name(name))))).selectByVisibleText(optionText);
         }
     }
@@ -494,7 +495,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             populateElementWithName(name, text);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             wait.until(ExpectedConditions.presenceOfElementLocated((By.name(name)))).sendKeys(text);
         }
     }
@@ -519,7 +520,7 @@ public class WebDriverDecorator extends AutomatedBrowserBase {
         if (waitTime <= 0) {
             return getTextFromElementWithName(name);
         } else {
-            final WebDriverWait wait = new WebDriverWait(webDriver, waitTime);
+            final WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(waitTime));
             return wait.until(ExpectedConditions.presenceOfElementLocated((By.name(name)))).getText();
         }
     }
