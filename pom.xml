@@ -10,16 +10,16 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
-        <selenium.version>4.4.0</selenium.version>
+        <selenium.version>4.5.0</selenium.version>
         <junit.version>4.13.2</junit.version>
         <browserup.version>2.1.2</browserup.version>
         <cucumber.version>7.8.0</cucumber.version>
         <shade.version>3.1.0</shade.version>
         <aws.lambda.version>1.2.1</aws.lambda.version>
         <commons.io.version>2.11.0</commons.io.version>
-        <commons.text.version>1.9</commons.text.version>
+        <commons.text.version>1.10.0</commons.text.version>
         <screenrecorder.version>0.7.7.0</screenrecorder.version>
-        <slf4jjdk14.version>2.0.2</slf4jjdk14.version>
+        <slf4jjdk14.version>2.0.3</slf4jjdk14.version>
         <vavr.version>1.0.0-alpha-4</vavr.version>
         <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
         <apache.http.version>4.5.13</apache.http.version>
